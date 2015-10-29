@@ -21,12 +21,75 @@ DWORD DropTitleColor_Buff;
 DWORD DropTitleColor_Buff2;
 DWORD	AddWingsEffect_Buff;
 float	Color[3];
-LPVOID	F1_This;
-DWORD	F1_Arg1;
-DWORD	F1_Arg11;
-DWORD	F1_Arg2;
-DWORD	F2_Arg5;
-DWORD	F3_Arg3;
+LPVOID F1_Thisv1; 
+DWORD F1_Arg1v1; 
+DWORD F1_Arg11v1; 
+DWORD F1_Arg2v1; 
+DWORD F2_Arg5v1; 
+DWORD F3_Arg3v1; 
+// 
+LPVOID F1_Thisv2; 
+DWORD F1_Arg1v2; 
+DWORD F1_Arg11v2; 
+DWORD F1_Arg2v2; 
+DWORD F2_Arg5v2; 
+DWORD F3_Arg3v2; 
+// 
+LPVOID F1_Thisv3; 
+DWORD F1_Arg1v3; 
+DWORD F1_Arg11v3; 
+DWORD F1_Arg2v3; 
+DWORD F2_Arg5v3; 
+DWORD F3_Arg3v3; 
+// 
+LPVOID F1_Thisv4; 
+DWORD F1_Arg1v4; 
+DWORD F1_Arg11v4; 
+DWORD F1_Arg2v4; 
+DWORD F2_Arg5v4; 
+DWORD F3_Arg3v4; 
+// 
+LPVOID F1_Thisv5; 
+DWORD F1_Arg1v5; 
+DWORD F1_Arg11v5; 
+DWORD F1_Arg2v5; 
+DWORD F2_Arg5v5; 
+DWORD F3_Arg3v5; 
+// 
+LPVOID F1_Thisv6; 
+DWORD F1_Arg1v6; 
+DWORD F1_Arg11v6; 
+DWORD F1_Arg2v6; 
+DWORD F2_Arg5v6; 
+DWORD F3_Arg3v6; 
+// 
+LPVOID F1_Thisv7; 
+DWORD F1_Arg1v7; 
+DWORD F1_Arg11v7; 
+DWORD F1_Arg2v7; 
+DWORD F2_Arg5v7; 
+DWORD F3_Arg3v7; 
+// 
+LPVOID F1_Thisv8; 
+DWORD F1_Arg1v8; 
+DWORD F1_Arg11v8; 
+DWORD F1_Arg2v8; 
+DWORD F2_Arg5v8; 
+DWORD F3_Arg3v8; 
+// 
+LPVOID F1_Thisv9; 
+DWORD F1_Arg1v9; 
+DWORD F1_Arg11v9; 
+DWORD F1_Arg2v9; 
+DWORD F2_Arg5v9; 
+DWORD F3_Arg3v9; 
+// 
+LPVOID F1_Thisv10; 
+DWORD F1_Arg1v10; 
+DWORD F1_Arg11v10; 
+DWORD F1_Arg2v10; 
+DWORD F2_Arg5v10; 
+DWORD F3_Arg3v10; 
 // ----------------------------------------------------------------------------------------------
 
 Naked(FixWingsExcellentGlow)
@@ -157,94 +220,167 @@ Naked(FixWingsJewelsInsert)
 // ----------------------------------------------------------------------------------------------
 
 Naked(AddWingsEffect)
-{
-	_asm
-	{
-		mov AddWingsEffect_Buff, edx
-		mov edx, dword ptr ss:[ebp-0x68]
-		mov F1_This, edx
-		lea edx, [ebp-0x58]
-		mov F1_Arg1, edx
-		lea edx, [ebp-0x18]
-		mov F1_Arg11, edx
-		mov edx, dword ptr ss:[ebp-0x6c]
-		mov F1_Arg2, edx
-		fldz
-		fstp dword ptr ss:[esp]
-		mov edx, dword ptr ss:[ebp-0x70]
-		mov F2_Arg5, edx
-		mov edx, AddWingsEffect_Buff
-	}
-	// ----
-	if( gItem.IsCustomWings(AddWingsEffect_Buff, true) )
-	{
-		if( AddWingsEffect_Buff == ITEM2(12, 180) )
-		{
-			Color[0] = 0.4;
-			Color[1] = 0.7;
-			Color[2] = 1.0;
-		}
-		else if( AddWingsEffect_Buff == ITEM2(12, 181) )
-		{
-			Color[0] = 0.9;
-			Color[1] = 0.0;
-			Color[2] = 0.2;
-		}
-		else if( AddWingsEffect_Buff == ITEM2(12, 186) )
-		{
-			Color[0] = 0.9;
-			Color[1] = 0.0;
-			Color[2] = 0.2;
-		}
-		else if( AddWingsEffect_Buff == ITEM2(12, 186) )
-		{
-			Color[0] = 0.9;
-			Color[1] = 0.0;
-			Color[2] = 0.2;
-		}
-		else if( AddWingsEffect_Buff == ITEM2(12, 186) )
-		{
-			Color[0] = 0.9;
-			Color[1] = 0.0;
-			Color[2] = 0.2;
-		}
-		else if( AddWingsEffect_Buff == ITEM2(12, 186) )
-		{
-			Color[0] = 0.9;
-			Color[1] = 0.0;
-			Color[2] = 0.2;
-		}
-		else if( AddWingsEffect_Buff == ITEM2(12, 186) )
-		{
-			Color[0] = 0.9;
-			Color[1] = 0.0;
-			Color[2] = 0.2;
-		}
-		// ----
-		pAllowStaticEffect(F1_This, &F1_Arg11, F1_Arg2, 1, 0);
-		pPlayStaticEffect(0x7D02, &F1_Arg11, 8.0, Color, F2_Arg5, 0.0, 0);
-		// ----
-		_asm
-		{
-			mov AddWingsEffect_Buff, 0x0056CA63
-			jmp AddWingsEffect_Buff
-		}
-	}
-	// ----
-	if( AddWingsEffect_Buff > 0x0A9D )
-	{
-		_asm
-		{
-			mov AddWingsEffect_Buff, 0x005667BB
-			jmp AddWingsEffect_Buff
-		}
-	}
-	// ----
-	_asm
-	{
-		mov AddWingsEffect_Buff, 0x00566707
-		jmp AddWingsEffect_Buff
-	}
+{ /* 
+            0x7d83    // ~ Lights (1-5)             
+            ------   ---------------------------------- 
+            0x7d7E    // ~ Flower 1 
+            0x7d7F    // ~ Flower 2 
+            0x7d80    // ~ Flower 3 
+            ------   ---------------------------------- 
+            0x7d4d    // ~ Flame (0 / 1+) 
+            0x7e73    // ~ Flame Type 2 
+            0x7eaf    // ~ Flame Type 3   
+            ------   ---------------------------------- 
+            0x7e35    // ~ Snow Type 1 
+            0x7e36    // ~ Snow Type 2 
+            ------   ---------------------------------- 
+            0x7e63    // ~ Heart (0 / 1) 
+            ------   ---------------------------------- 
+            0x7E1F    // ~ Blue Effect  
+            ------   ---------------------------------- 
+            0x7d30    // ~ Some Balls 
+            ------   ---------------------------------- 
+            0x7d65    // ~ Basic Smoke(phun khoi) 
+            0x7d65    // ~ Green Smoke 
+            0x7d65    // ~ Smoke Up-Right 
+            0x7d65    // ~ Smoke Type (3 / 4+) 
+            0x7e04    // ~ Smoke Ball (0 / 5+) 
+            ------   ---------------------------------- 
+            0x7e22    // ~ Some effect 
+            ------   ---------------------------------- 
+            0x7e7c    // ~ Static Light 
+            ------   ---------------------------------- 
+            0x7d36    // ~ Blue Dynamic Light (0+) 
+            ------   ---------------------------------- 
+            0x7d71    // ~ Stars (id 4 like w3 elf) 
+            */ 
+     
+     
+    _asm 
+    { 
+        mov AddWingsEffect_Buff, edx 
+        mov edx, dword ptr ss: [ebp - 0x68] 
+        mov F1_Thisv1, edx 
+        mov F1_Thisv2, edx 
+        mov F1_Thisv3, edx 
+        mov F1_Thisv4, edx 
+        mov F1_Thisv5, edx 
+        mov F1_Thisv6, edx 
+        mov F1_Thisv7, edx 
+        mov F1_Thisv8, edx 
+        mov F1_Thisv9, edx 
+        mov F1_Thisv10, edx 
+        lea edx, [ebp - 0x58] 
+        mov F1_Arg1v1, edx 
+        mov F1_Arg1v2, edx 
+        mov F1_Arg1v3, edx 
+        mov F1_Arg1v4, edx 
+        mov F1_Arg1v5, edx 
+        mov F1_Arg1v6, edx 
+        mov F1_Arg1v7, edx 
+        mov F1_Arg1v8, edx 
+        mov F1_Arg1v9, edx 
+        mov F1_Arg1v10, edx 
+        lea edx, [ebp - 0x18] 
+        mov F1_Arg11v1, edx 
+        mov F1_Arg11v2, edx 
+        mov F1_Arg11v3, edx 
+        mov F1_Arg11v4, edx 
+        mov F1_Arg11v5, edx 
+        mov F1_Arg11v6, edx 
+        mov F1_Arg11v7, edx 
+        mov F1_Arg11v8, edx 
+        mov F1_Arg11v9, edx 
+        mov F1_Arg11v10, edx 
+        mov edx, dword ptr ss: [ebp - 0x6c] 
+        mov F1_Arg2v1, edx 
+        mov F1_Arg2v2, edx 
+        mov F1_Arg2v3, edx 
+        mov F1_Arg2v4, edx 
+        mov F1_Arg2v5, edx 
+        mov F1_Arg2v6, edx 
+        mov F1_Arg2v7, edx 
+        mov F1_Arg2v8, edx 
+        mov F1_Arg2v9, edx 
+        mov F1_Arg2v10, edx 
+        fldz 
+        fstp dword ptr ss: [esp] 
+        mov edx, dword ptr ss: [ebp - 0x70] 
+        mov F2_Arg5v1, edx 
+        mov F2_Arg5v2, edx 
+        mov F2_Arg5v3, edx 
+        mov F2_Arg5v4, edx 
+        mov F2_Arg5v5, edx 
+        mov F2_Arg5v6, edx 
+        mov F2_Arg5v7, edx 
+        mov F2_Arg5v8, edx 
+        mov F2_Arg5v9, edx 
+        mov F2_Arg5v10, edx 
+        mov edx, AddWingsEffect_Buff 
+    } 
+     
+
+    if (gItem.IsCustomWings(AddWingsEffect_Buff, true)) 
+    { 
+         
+        if(AddWingsEffect_Buff == ITEM2(12, 184)) 
+        { 
+            Color= 1.0;
+            Color [1] = 0.3; 
+            Color [2] = 0.0; 
+            // ---- 
+            pAllowStaticEffect (F1_Thisv1, & F1_Arg11v1, F1_Arg2v1, 4, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v1, 2, Color, F2_Arg5v1, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv2, & F1_Arg11v2, F1_Arg2v2, 42, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v2, 2, Color, F2_Arg5v2, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv3, & F1_Arg11v3, F1_Arg2v3, 27, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v3, 2, Color, F2_Arg5v3, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv4, & F1_Arg11v4, F1_Arg2v4, 21, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v4, 2, Color, F2_Arg5v4, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv5, & F1_Arg11v5, F1_Arg2v5, 53, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v5, 2, Color, F2_Arg5v5, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv6, & F1_Arg11v6, F1_Arg2v6, 59, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v6, 2, Color, F2_Arg5v6, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv7, & F1_Arg11v7, F1_Arg2v7, 5, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v7, 2, Color, F2_Arg5v7, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv8, & F1_Arg11v8, F1_Arg2v8, 28, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v8, 2, Color, F2_Arg5v8, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv9, & F1_Arg11v9, F1_Arg2v9, 10, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v9, 2, Color, F2_Arg5v9, 2.0, 0); 
+            // - 
+            pAllowStaticEffect (F1_Thisv10, & F1_Arg11v10, F1_Arg2v10, 33, 0); 
+            pPlayStaticEffect (0x7D03, & F1_Arg11v10, 2, Color, F2_Arg5v10, 2.0, 0); 
+        } 
+         
+        _asm 
+        { 
+            mov AddWingsEffect_Buff, 0x0056CA63 
+            jmp AddWingsEffect_Buff 
+        } 
+    }     
+        // ---- 
+    if( AddWingsEffect_Buff > 0x0A9D ) 
+    { 
+        _asm 
+        { 
+            mov AddWingsEffect_Buff, 0x005667BB 
+            jmp AddWingsEffect_Buff 
+        } 
+    } 
+    // ---- 
+    _asm 
+    { 
+        mov AddWingsEffect_Buff, 0x00566707 
+        jmp AddWingsEffect_Buff 
+    } 
 }
 // ----------------------------------------------------------------------------------------------
 
