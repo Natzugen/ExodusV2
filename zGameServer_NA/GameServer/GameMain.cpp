@@ -791,6 +791,8 @@ BOOL gEnableBattleSoccer=1;
 int	gLootingTime=3;
 int	gPkItemDrop=1;
 int	gItemDropPer=10;
+//int gItemLuckDropPer = 4; //TEST!!!
+int gItemSkillDropPer = 6; //TEST!!!
 int gItemLuckyDropPer = 10;
 int	gExcItemDropRate = 10;
 int  gEvent1ItemDropTodayMax=1;
@@ -1021,7 +1023,7 @@ void GameMainInit(HWND hWnd)
 
 	if ( gEnableServerDivision != 0 )
 	{
-		MessageBox(NULL, "¼­¹öºÐÇÒÀÌ °¡´ÉÇÑ ¼­¹öÀÔ´Ï´Ù.", "Warning", MB_OK);
+		MessageBox(NULL, "Â¼Â­Â¹Ã¶ÂºÃÃ‡Ã’Ã€ÃŒ Â°Â¡Â´Ã‰Ã‡Ã‘ Â¼Â­Â¹Ã¶Ã€Ã”Â´ÃÂ´Ã™.", "Warning", MB_OK);
 	}
 
 	if ( gUdpSoc.CreateSocket() == 0)
@@ -1054,7 +1056,7 @@ void GameMainInit(HWND hWnd)
 	}
 	if ( false )
 	{
-		MsgBox("ÁÖÀÇ!! Ä³¸¯ÅÍ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏÁö ¾Ê½À´Ï´Ù.");
+		MsgBox("ÃÃ–Ã€Ã‡!! Ã„Â³Â¸Â¯Ã…Ã ÂµÂ¥Ã€ÃŒÃ…ÃÂ¸Â¦ Ã€ÃºÃ€Ã¥Ã‡ÃÃÃ¶ Â¾ÃŠÂ½Ã€Â´ÃÂ´Ã™.");
 	}
 
 	gObjInit();
@@ -1581,7 +1583,7 @@ void GMServerMsgProc(WPARAM wParam, LPARAM lParam)
 		SCPJoinResultSend( addnumber, 0x01);
 		}
 		else 
-		{// »??????¦ ?©¶??? µ?..
+		{// Â»??????Â¦ ?Â©Â¶??? Âµ?..
 		wsGServer.Close(cSocket);
 		}
 		}
@@ -2170,7 +2172,7 @@ void ReadCommonServerInfo()
 	if(iMaxUser >= 0 && iMaxUser <= OBJMAXUSER)
 	{
 		gServerMaxUser = iMaxUser;
-		LogAddTD("[Option Reload] ¡Ú¡Ú¡Ú MaxUser ¡Ù¡Ù¡Ù  : %d", gServerMaxUser);
+		LogAddTD("[Option Reload] Â¡ÃšÂ¡ÃšÂ¡Ãš MaxUser Â¡Ã™Â¡Ã™Â¡Ã™  : %d", gServerMaxUser);
 	}
 
 	g_iServerGroupGuildChatting = GetPrivateProfileInt("GameServerInfo","ServerGroupGuildChatting",0, gDirPath.GetNewPath("commonserver.cfg"));
@@ -2261,6 +2263,8 @@ void ReadCommonServerInfo()
 	gItemDropPer = atoi(szTemp);
 	GetPrivateProfileString("GameServerInfo", "ItemLuckDropPer", "10", szTemp, 5, gDirPath.GetNewPath("commonserver.cfg"));
 	gItemLuckyDropPer = atoi(szTemp);
+	GetPrivateProfileString("GameServerInfo", "ItemSkillDropPer", "6", szTemp, 5, gDirPath.GetNewPath("commonserver.cfg"));
+	gItemSkillDropPer = atoi(szTemp);
 	gExcItemDropRate = GetPrivateProfileInt("GameServerInfo", "ItemExcDropRate", 10, gDirPath.GetNewPath("commonserver.cfg"));
 	LogAddTD(lMsg.Get(413), gItemDropPer);
 	gZenDurationTime = GetPrivateProfileInt("GameServerInfo","ZenDurationTime",30, gDirPath.GetNewPath("commonserver.cfg"));
@@ -2682,7 +2686,7 @@ void ReadCommonServerInfo()
 		g_bPostFloodProtectTime = 5000;
 	}
 
-	if( g_PostChatColor < 1 || g_PostChatColor > 10 )
+	if( g_PostChatColor < 1 || g_PostChatColor > 8 )//gs crash fix
 	{
 		g_PostChatColor = 2;
 	}
