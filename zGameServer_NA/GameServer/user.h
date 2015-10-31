@@ -1134,6 +1134,9 @@ struct OBJECTSTRUCT
 #ifdef __ALIEN__
 	DWORD	m_PotionTick;
 #endif
+	int	gOpenDelayTick;
+	int gOffTradeTick;
+	int CallToClose;
 #ifdef WZQUEST
 	UserQuestInfo* m_pUserQuestInfo;
 	int m_bUserQuestInfoSent;
