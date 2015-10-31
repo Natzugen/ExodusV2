@@ -7151,13 +7151,23 @@ void CGPShopReqBuyList(PMSG_REQ_BUYLIST_FROM_PSHOP * lpMsg, int aSourceIndex)
 		return;
 	}
 
-	LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]",
-		gObj[aSourceIndex].AccountID, gObj[aSourceIndex].Name, lpObj->AccountID, lpObj->Name);
+	if ( gOpenDelay > lpObj->gOpenDelayTick )
+	{
+		int Delay = gOpenDelay - lpObj->gOpenDelayTick;
+		char Text[100];
+		sprintf(Text, "Protect disabled after: %dsecond(s)", Delay);
+		GCServerMsgStringSend(Text, aSourceIndex, 1);
+		::CGPShopAnsBuyList(aSourceIndex, -1, 3, 0);
+		return;
+	}
+	else
+	{
+		LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]",	gObj[aSourceIndex].AccountID, gObj[aSourceIndex].Name, lpObj->AccountID, lpObj->Name);
 
-	gObj[aSourceIndex].m_bPShopWantDeal = true;
-	gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
-	memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
-	::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
+		gObj[aSourceIndex].m_bPShopWantDeal = true;		gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
+		memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
+		::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
+	}
 }
 
 struct PMSG_BUYLIST_FROM_PSHOP
