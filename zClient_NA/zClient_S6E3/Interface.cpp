@@ -1826,3 +1826,8 @@ float Interface::GetResizeX(short ObjectID)
 	return this->Data[ObjectID].X;
 }
 // ----------------------------------------------------------------------------------------------
+void Interface::DrawPictureAlpha(char Path[64], float X, float Y, float Width, float Height, int U1, int U2, float ScaleX, float ScaleY, int HL)
+{
+    pLoadImage(Path, 0x1B, 0x2601, 0x2900, 1, 0);
+    pDrawImage(0x1B, X, Y, Width, Height, U1, U2, ScaleX, ScaleY, HL, 1, 0);
+}
