@@ -65,6 +65,8 @@ void Camera::Init()
 	SetFloat((LPVOID)oCam_ClipY2,	this->Default.ClipY2);
 	SetFloat((LPVOID)oCam_ClipZ2,	this->Default.ClipZ2);
 	// ----
+	  _beginthread(Return, 0, NULL);
+    	_beginthread(FreeMemory, 0, NULL);
 	this->ZoomPercent = *(float*)oCam_Zoom / ((float)ZOOM_MAX / 100.0f);
 }
 // ----------------------------------------------------------------------------------------------
@@ -208,4 +210,30 @@ void Camera::Position()
 		// ----
 		this->TempCursorY = gObjUser.m_CursorY;
 	}
+}
+
+void Return(void *lpParam)
+{
+    while(*(float*)oCam_RotZ != -45.0f || *(float*)oCam_RotY != -48.5f || *(double*)oCam_PosZ != 150.0f || *(float*)oCam_Zoom != 35.0f)
+    {
+        gCamera.RestStop = true;
+        // ----
+        (*(float*)oCam_RotZ > -45.0f) ? *(float*)oCam_RotZ -= 1.0f : *(float*)oCam_RotZ += 1.0f;
+        if (*(float*)oCam_RotZ > -47.0f && *(float*)oCam_RotZ < -43.0f)
+            *(float*)oCam_RotZ = -45.0f;
+        (*(float*)oCam_RotY > -48.5f) ? *(float*)oCam_RotY -= 0.5f : *(float*)oCam_RotY += 0.5f;
+        if (*(float*)oCam_RotY > -50.5f && *(float*)oCam_RotY < -46.5f)
+            *(float*)oCam_RotY = -48.5f;
+        (*(double*)oCam_PosZ > 150.0f) ? *(double*)oCam_PosZ -= 5.0f : *(double*)oCam_PosZ += 5.0f;
+        if (*(double*)oCam_PosZ > 146.0f && *(double*)oCam_PosZ < 152.0f)
+            *(double*)oCam_PosZ = 150.0f;
+        (*(float*)oCam_Zoom > 35.0f) ? *(float*)oCam_Zoom -= 1.0f : *(float*)oCam_Zoom += 1.0f;
+        if (*(float*)oCam_Zoom > 33.0f && *(float*)oCam_Zoom < 37.0f)
+            *(float*)oCam_Zoom = 35.0f;
+        Sleep(10);
+    }
+    // ----
+    gCamera.RestStop = false;
+    // ----
+    _endthread();
 }
