@@ -100,6 +100,9 @@ void CheckArguments()
 
 extern "C" __declspec(dllexport)void Init()
 {
+	 DWORD OldProtect;
+    	// ----
+    	if(VirtualProtect(LPVOID(0x401000),0xD21FFF,PAGE_EXECUTE_READWRITE,&OldProtect))
 	// ----
 #ifdef __MUANGEL__
 	if( pMUIsLoaded == 1 )
