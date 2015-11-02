@@ -443,6 +443,12 @@ void Interface::DrawCameraUI()
 		// ----
 		this->DrawColoredGUI(eCAMERA_BUTTON2, PosX + 18.5, 1, pMakeColor(255, 204, 20, 200));
 	}
+	 if( gCamera.RestStop == true )
+	{
+        this->DrawColoredGUI(eCAMERA_BUTTON2, PosX + 18.5, 1, pMakeColor(255, 0, 0, 200));
+        this->DrawFormat(eOrange, PosX + 35.0, 25, 210, 3, "Restoring.. Camera");
+        this->DrawPictureAlpha("Custom\\Interface\\TimerClock.tga", PosX + 55.0, 15, 64, 64, 0, 0, 1.0f, 1.0f, 1);
+	}
 }
 // ----------------------------------------------------------------------------------------------
 
