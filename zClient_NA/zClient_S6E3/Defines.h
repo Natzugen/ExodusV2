@@ -1,6 +1,7 @@
 #pragma once
 // ----------------------------------------------------------------------------------------------
-
+// Virtual Key Codes
+#define    VK_N                        0x4E
 #define ITEM_INTER					1171
 #define ITEM(x, y)					((x * 512) + y)
 #define ITEM2(x, y)					((x * 512) + y + ITEM_INTER)
