@@ -182,6 +182,7 @@ public:
 	bool		IsWorkZone(float X, float Y, float MaxX, float MaxY);
 	float		GetResizeX(short ObjectID);
 	// ----
+	void        DrawPictureAlpha(char Path[64], float X, float Y, float Width, float Height, int U1, int U2, float ScaleX, float ScaleY, int HL);
 private:
 	InterfaceObject Data[MAX_OBJECT];
 	// ----
