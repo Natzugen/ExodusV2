@@ -69,4 +69,5 @@ public:
     static const char className[];
     static const Luna<QuestExpLuaBind>::RegType Register[];
 };
+extern int gFreeServer;
 
