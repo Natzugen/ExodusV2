@@ -11037,6 +11037,10 @@ void CGMagicAttack(PMSG_MAGICATTACK* lpMsg, int aIndex)
 	int usernumber = MAKE_NUMBERW(lpMsg->NumberH, lpMsg->NumberL); //loc3
 	CMagicInf * lpMagic; //loc4
 	WORD MagicNumber = MAKE_NUMBERW(lpMsg->MagicNumberH, lpMsg->MagicNumberL); //loc5
+	if(usernumber == OBJMAX && (MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563))
+	{
+		return;
+	}
 
 	if ( usernumber < 0 || usernumber > OBJMAX-1 )
 	{
@@ -19419,9 +19423,26 @@ void GCMonkMagicAttack(PMSG_MAGICATTACK * lpMsg, int aIndex)
 
 	WORD MagicNumber = MAKE_NUMBERW(lpMsg->MagicNumberH, lpMsg->MagicNumberL);
 
-	if( MagicNumber == 263 || MagicNumber == 559 )
+if( MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563)
 	{
-		GCMonkMagicAttackNumberSend(&gObj[aIndex],MagicNumber,gObj[aIndex].m_wDarkSideTargetList[0],TRUE);
+		lpObj = &gObj[aIndex];
+		if ( lpObj->Type == OBJ_USER )
+		{
+			lpMagic = gObjGetMagicSearch(lpObj, MagicNumber);
+		}else{
+			lpMagic = gObjGetMagic(lpObj, MagicNumber);
+		}
+		if ( lpMagic == NULL )
+		{
+			return;
+		}
+		int usemana = gObjUseSkill.GetUseMana(aIndex,lpMagic);
+		if(usemana >= 0)
+		{
+			lpObj->Mana = usemana;
+			GCManaSend(aIndex,lpObj->Mana,0xFF,0,lpObj->BP);
+			GCMonkMagicAttackNumberSend(&gObj[aIndex],MagicNumber,gObj[aIndex].m_wDarkSideTargetList[0],TRUE);
+		}
 		return;
 	}
 
