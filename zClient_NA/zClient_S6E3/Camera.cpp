@@ -184,32 +184,32 @@ void Camera::Rotate()
 // ----------------------------------------------------------------------------------------------
 void Camera::Position()
 {
-	if( !this->IsActive )
-	{
-		return;
-	}
-	// ----
-	if ( this->InMove )
-	{
-		if( this->TempCursorY < gObjUser.m_CursorY )
-		{
-			if( *(float*)oCam_RotY < -45 )
-			{
-				SetDouble((LPVOID)oCam_PosZ, *(double*)oCam_PosZ -= 44);
-				SetFloat((LPVOID)oCam_RotY, *(float*)oCam_RotY += (double)2.42);
-			}
-		}
-		else if( this->TempCursorY > gObjUser.m_CursorY )
-		{
-			if( *(float*)oCam_RotY > -90 )
-			{
-				SetDouble((LPVOID)oCam_PosZ, *(double*)oCam_PosZ += 44);
-				SetFloat((LPVOID)oCam_RotY, *(float*)oCam_RotY -= (double)2.42);
-			}
-		}
-		// ----
-		this->TempCursorY = gObjUser.m_CursorY;
-	}
+    if (!this->IsActive)
+    {
+        return;
+    }
+    // ----
+    if (this->InMove)
+    {
+        if (this->TempCursorY < gObjUser.m_CursorY)
+        {
+            if (*(float*)oCam_RotY < -45)
+            {
+                SetDouble((LPVOID)oCam_PosZ, *(double*)oCam_PosZ - 44);
+                SetFloat((LPVOID)oCam_RotY, *(float*)oCam_RotY + (double)2.42);
+            }
+        }
+        else if (this->TempCursorY > gObjUser.m_CursorY)
+        {
+            if (*(float*)oCam_RotY > -90)
+            {
+                SetDouble((LPVOID)oCam_PosZ, *(double*)oCam_PosZ + 44);
+                SetFloat((LPVOID)oCam_RotY, *(float*)oCam_RotY - (double)2.42);
+            }
+        }
+        // ----
+        this->TempCursorY = gObjUser.m_CursorY;
+    }
 }
 
 void Return(void *lpParam)
