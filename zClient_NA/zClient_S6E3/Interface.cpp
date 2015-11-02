@@ -1888,3 +1888,10 @@ bool Interface::MiniMapCheck()
         return true;
     return false;
 }
+// ----------------------------------------------------------------------------------------------
+bool Interface::WinKeyChecks()
+{
+    if( this->CheckWindow(MuHelper) || this->CheckWindow(FriendList) || this->CheckWindow(ChatWindow) )
+        return true;
+    return false;
+}
