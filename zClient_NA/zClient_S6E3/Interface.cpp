@@ -243,6 +243,27 @@ void Interface::LoadImages()
 	pLoadImage("Custom\\Interface\\CameraUI_Switch.tga", 0x787B, 0x2601, 0x2900, 1, 0);
 	pLoadImage("Custom\\Interface\\CameraUI_Reset.tga", 0x787C, 0x2601, 0x2900, 1, 0);
 	pLoadImage("Custom\\Interface\\NewsBoard_Title.tga", 0x787D, 0x2601, 0x2900, 1, 0);
+	pLoadImage("Custom\\Interface\\MiniMapUI.tga", 0x7882, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\PlayerPoint.jpg", 0x7883, 0x2600, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMapNull.tga", 0x7884, 0x2601, 0x2900, 1, 0);
+    // --
+    pLoadImage("Custom\\Maps\\MiniMap0.tga", 0x7885, 0x2601, 0x2900, 1, 0);
+    // --
+    pLoadImage("Custom\\Maps\\MiniMap1.tga", 0x7886, 0x2601, 0x2900, 1, 0);
+    // --
+    pLoadImage("Custom\\Maps\\MiniMap2.tga", 0x7887, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap3.tga", 0x7888, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap4.tga", 0x7889, 0x2601, 0x2900, 1, 0);
+    // ----
+    // Exile Map 0x788A
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap6.tga", 0x788B, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap7.tga", 0x788C, 0x2601, 0x2900, 1, 0);
 	//#ifdef __BEREZNUK__
 	//pLoadImage("Custom\\Interface\\TimeBar.tga", 0x787E, 0x2601, 0x2900, 1, 0);
 	//#endif
@@ -253,7 +274,121 @@ void Interface::LoadImages()
 	pLoadSomeForm();
 }
 // ----------------------------------------------------------------------------------------------
+bool Interface::MiniMapCheck()
+{
+    if(this->CheckWindow(Inventory) ||
+        this->CheckWindow(CashShop) ||
+        this->CheckWindow(ChaosBox) ||
+        this->CheckWindow(Character) ||
+        this->CheckWindow(CommandWindow) ||
+        this->CheckWindow(ExpandInventory) ||
+        this->CheckWindow(ExpandWarehouse) ||
+        this->CheckWindow(FullMap) ||
+        this->CheckWindow(GensInfo) ||
+        this->CheckWindow(Guild) ||
+        this->CheckWindow(NPC_Dialog) ||
+        this->CheckWindow(NPC_Julia) ||
+        this->CheckWindow(NPC_Titus) ||
+        this->CheckWindow(OtherStore) ||
+        this->CheckWindow(Party) ||
+        this->CheckWindow(PetInfo) ||
+        this->CheckWindow(Shop) ||
+        this->CheckWindow(SkillTree) ||
+        this->CheckWindow(Store) ||
+        this->CheckWindow(Trade) ||
+        this->CheckWindow(Warehouse) )
+        return true;
+    return false;
+}
 
+bool Interface::CombinedChecks()
+{
+    if( (this->CheckWindow(Inventory) 
+        && this->CheckWindow(ExpandInventory) 
+        && this->CheckWindow(Store)) || 
+        (this->CheckWindow(Inventory) 
+        && this->CheckWindow(Warehouse) 
+        && this->CheckWindow(ExpandWarehouse)) || 
+        (this->CheckWindow(Inventory) 
+        && this->CheckWindow(Character) 
+        && this->CheckWindow(Store)) )
+        return true;
+    return false;
+}
+
+void Interface::DrawMiniMapWindow()
+{
+    float MainWidth            = 138.0;
+    float MainHeight        = 265.0;
+    float StartY            = 264.0;
+    float StartX            = 512.0;
+    // ----
+    if( this->MiniMapCheck() || this->CombinedChecks() )
+    {
+        return;
+    }
+    // ----
+    switch(gObjUser.m_MapNumber)
+    {
+        case 0:    //Lorencia
+        {
+            this->DrawGUI(eLORENCIA_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 1:    //Dungeon
+        {
+            this->DrawGUI(eDUNGEON_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 2:    //Devias
+        {
+            this->DrawGUI(eDEVIAS_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 3:    //Noria
+        {
+            this->DrawGUI(eNORIA_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 4:    //LostTower
+        {
+            this->DrawGUI(eLOSTTOWER_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 5:    //Exile (disabled)
+        {
+            return;
+        }
+        break;
+        // --
+        case 6:    //Stadium
+        {
+            this->DrawGUI(eSTADIUM_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 7:    //Atlans
+        {
+            this->DrawGUI(eATLANS_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        default: //Default
+        {
+            this->DrawGUI(eNULL_MAP, StartX, StartY + 30);
+        }
+        break;
+    }
+    // ----
+    this->DrawGUI(eMINI_MAP_BG, StartX, StartY);
+    this->DrawGUI(ePLAYER_POINT, (float)(StartX - 1 + gObjUser.lpViewPlayer->MapPosX / 2), (float)(294 - 1 + ( 255 - gObjUser.lpViewPlayer->MapPosY ) / 2) );
+}
+// ----------------------------------------------------------------------------------------------
 void Interface::LoadModels()
 {
 #ifdef __NOVUS__
@@ -262,7 +397,7 @@ void Interface::LoadModels()
 	pLoadModel(407, "Data\\Custom\\Skill\\", "sign_em", -1);
 	pLoadTexture(407, "Custom\\Skill\\", 0x2901, 0x2600, 1);
 	pLoadModel(408, "Data\\Custom\\Skill\\", "sign_admin", -1);
-	pLoadTexture(408, "Custom\\Skill\\", 0x2901, 0x2600, 1);
+	pLoadTexture(408, "Data\\Custom\\Skill\\", 0x2901, 0x2600, 1);
 #endif
 	// ----
 	pInitModelData2();
