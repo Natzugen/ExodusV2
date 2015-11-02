@@ -37,6 +37,7 @@ public:
 	void		Rotate();
 	void        	Position();
 	// ----
+	bool        	RestStop;
 	bool		IsActive;
 	float		ZoomPercent;
 	// ----
