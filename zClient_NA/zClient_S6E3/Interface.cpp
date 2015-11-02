@@ -296,7 +296,11 @@ bool Interface::MiniMapCheck()
         this->CheckWindow(SkillTree) ||
         this->CheckWindow(Store) ||
         this->CheckWindow(Trade) ||
-        this->CheckWindow(Warehouse) )
+        this->CheckWindow(Warehouse) 
+        this->CheckWindow(FriendList) ||
+        this->CheckWindow(FastMenu) ||
+        this->CheckWindow(MuHelper) ||
+        this->CheckWindow(Quest) )
         return true;
     return false;
 }
