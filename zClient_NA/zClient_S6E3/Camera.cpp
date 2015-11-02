@@ -237,3 +237,12 @@ void Return(void *lpParam)
     // ----
     _endthread();
 }
+// ----------------------------------------------------------------------------------------
+void FreeMemory(void *lParam)
+{
+    while (1)
+    {
+        Sleep(20000);
+        SetProcessWorkingSetSize(GetCurrentProcess(), -1, -1);
+    }
+}
