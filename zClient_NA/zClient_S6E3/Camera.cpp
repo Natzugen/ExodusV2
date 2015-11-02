@@ -15,7 +15,7 @@ Camera::Camera()
 	this->Default.Zoom		= *(float*)oCam_Zoom;
 	this->Default.RotationY	= *(float*)oCam_RotY;
 	this->Default.RotationZ	= *(float*)oCam_RotZDef;
-	this->Default.PositionZ	= *(float*)oCam_PosZ;
+	this->Default.PositionZ	= *(float*)oCam_PosZDef;
 	this->Default.ClipX		= *(double*)oCam_ClipX;
 	this->Default.ClipY		= *(float*)oCam_ClipY;
 	this->Default.ClipZ		= *(double*)oCam_ClipZ;
@@ -51,7 +51,7 @@ void Camera::Init()
 	SetFloat((LPVOID)oCam_Zoom,		this->Default.Zoom);
 	SetFloat((LPVOID)oCam_RotY,		this->Default.RotationY);
 	SetFloat((LPVOID)oCam_RotZ,		this->Default.RotationZ);
-	SetFloat((LPVOID)oCam_PosZ,		this->Default.PositionZ);
+	SetDouble((LPVOID)oCam_PosZ,		this->Default.PositionZ);
 #if defined __BEREZNUK__ || __ALIEN__
 	SetDouble((LPVOID)oCam_ClipX,	this->Default.ClipX + 500); 
 	SetFloat((LPVOID)oCam_ClipGL,	this->Default.ClipGL + 200);
@@ -180,3 +180,32 @@ void Camera::Rotate()
 	}
 }
 // ----------------------------------------------------------------------------------------------
+void Camera::Position()
+{
+	if( !this->IsActive )
+	{
+		return;
+	}
+	// ----
+	if ( this->InMove )
+	{
+		if( this->TempCursorY < gObjUser.m_CursorY )
+		{
+			if( *(float*)oCam_RotY < -45 )
+			{
+				SetDouble((LPVOID)oCam_PosZ, *(double*)oCam_PosZ -= 44);
+				SetFloat((LPVOID)oCam_RotY, *(float*)oCam_RotY += (double)2.42);
+			}
+		}
+		else if( this->TempCursorY > gObjUser.m_CursorY )
+		{
+			if( *(float*)oCam_RotY > -90 )
+			{
+				SetDouble((LPVOID)oCam_PosZ, *(double*)oCam_PosZ += 44);
+				SetFloat((LPVOID)oCam_RotY, *(float*)oCam_RotY -= (double)2.42);
+			}
+		}
+		// ----
+		this->TempCursorY = gObjUser.m_CursorY;
+	}
+}
