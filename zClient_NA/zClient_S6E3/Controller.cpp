@@ -7,6 +7,7 @@
 #include "NewsBoard.h"
 #include "TrayMode.h"
 #include "TDebugLog.h"
+#include "Defines.h"
 // ----------------------------------------------------------------------------------------------
 
 Controller	gController;
@@ -102,21 +103,25 @@ LRESULT Controller::Keyboard(int Code, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 			// --
-		case VK_F7:
-			{
-				if( GetForegroundWindow() == pGameWindow )
-				{
-					if( gInterface.CheckNewsWindow() )
-					{
-						gInterface.CloseNewsWindow();
-					}
-					else
-					{
-						gNewsBoard.ReqOpenMain();
-					}
-				}
-			}
-			break;
+	 case VK_N:
+            {
+                if ( gInterface.WinKeyChecks() )
+                {
+                    return false;
+                }
+                if( GetForegroundWindow() == pGameWindow )
+                {
+                    if( gInterface.CheckNewsWindow() )
+                    {
+                        gInterface.CloseNewsWindow();
+                    }
+                    else
+                    {
+                        gNewsBoard.ReqOpenMain();
+                    }
+                }
+            }
+            break;
 			// --
 		case VK_F12:
 			{
