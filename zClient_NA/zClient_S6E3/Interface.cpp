@@ -183,6 +183,26 @@ void Interface::Load()
 	SetRange((LPVOID)0x005E496C, 13, ASM::NOP);
 	SetOp((LPVOID)0x005E496C, (LPVOID)AddSomeShine, ASM::JMP);
 	//#endif
+	    this->BindObject(eMINI_MAP_BG, 0x7882, 138, 265, -1, -1);
+    this->BindObject(ePLAYER_POINT, 0x7883, 3, 3, -1, -1);
+    // ----
+    this->BindObject(eNULL_MAP, 0x7884, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eLORENCIA_MAP, 0x7885, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eDUNGEON_MAP, 0x7886, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eDEVIAS_MAP, 0x7887, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eNORIA_MAP, 0x7888, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eLOSTTOWER_MAP, 0x7889, 128, 128, -1, -1);
+    // ----
+    // Reserved 0x788A for EXILE
+    // ----
+    this->BindObject(eSTADIUM_MAP, 0x788B, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eATLANS_MAP, 0x788C, 128, 128, -1, -1);
 }
 // ----------------------------------------------------------------------------------------------
 
