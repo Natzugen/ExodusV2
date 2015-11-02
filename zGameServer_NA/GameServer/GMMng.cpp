@@ -1425,12 +1425,12 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 			{
 				this->WatchTargetIndex = -1;
 
-				wsprintf(szTemp, "%s : ��������", lpTargetObj->Name);	// #translation
+				wsprintf(szTemp, "%s : 감시해제", lpTargetObj->Name);	// #translation
 				GCServerMsgStringSend(szTemp, lpObj->m_Index, 1);
 			}
 			else
 			{
-				wsprintf(szTemp, "%s : ���ý���", lpTargetObj->Name);	// #translation
+				wsprintf(szTemp, "%s : 감시시작", lpTargetObj->Name);	// #translation
 				GCServerMsgStringSend(szTemp, lpObj->m_Index, 1);
 				this->WatchTargetIndex = lpTargetObj->m_Index;
 			}
@@ -1830,7 +1830,7 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 							if( gObj[aIndex].lpGuild->BattleGroundIndex >= 0 )
 							{
 								//BattleSoccerGoalEnd(gObj[aIndex].lpGuild->BattleGroundIndex);
-								//GCServerMsgStringSend("GuildMaster ��û���� 3�� �� ��Ⱑ �ڵ����� ����˴ϴ�.", aIndex, 0);
+								//GCServerMsgStringSend("GuildMaster 요청으로 3초 후 경기가 자동으로 종료됩니다.", aIndex, 0);
 							}
 						}
 					}
@@ -2402,8 +2402,10 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 #pragma message("!!!!!!!!!!!!!!!!! ADD PREFIX SETTING !!!!!!!!!!!!!!!!")
 				//Need add prefix setting / reading from CommonServer.cfg
 				//PostChatPrefix = [WORLD]
+				char g_PostPrefix[10];
+				GetPrivateProfileStringA("GameServerInfo","PostChatPrefix","[WORLD]",g_PostPrefix,10,("../Data/commonserver.cfg"));
 				g_PostLog.Output("[%s] [%s] %s", lpObj->AccountID, lpObj->Name, Token);
-				MessageSendEx(g_PostChatColor, lpObj->Name, "[WORLD] %s", Token);
+				MessageSendEx(g_PostChatColor, lpObj->Name, "%s %s", g_PostPrefix, Token);
 			}
 			else
 			{
@@ -2551,7 +2553,7 @@ return 0;
 
 void CGMMng::GetInfinityArrowMPConsumption(LPOBJ lpObj)
 {
-	MsgOutput(lpObj->m_Index, "���Ǵ�Ƽ �ַο� MP �Ҹ�[+0:%d] [+1:%d] [+2:%d]",
+	MsgOutput(lpObj->m_Index, "인피니티 애로우 MP 소모량[+0:%d] [+1:%d] [+2:%d]",
 		g_SkillAdditionInfo.GetInfinityArrowMPConsumptionPlus0(),
 		g_SkillAdditionInfo.GetInfinityArrowMPConsumptionPlus1(),
 		g_SkillAdditionInfo.GetInfinityArrowMPConsumptionPlus2());
@@ -2560,28 +2562,28 @@ void CGMMng::GetInfinityArrowMPConsumption(LPOBJ lpObj)
 void CGMMng::ControlInfinityArrowMPConsumption0(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus0(iValue);
-	MsgOutput(lpObj->m_Index, "���Ǵ�Ƽ �ַο� MP �Ҹ� ����(+0) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "인피니티 애로우 MP 소모량 변경(+0) : %d",iValue);
 
 }	
 
 void CGMMng::ControlInfinityArrowMPConsumption1(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus1(iValue);
-	MsgOutput(lpObj->m_Index, "���Ǵ�Ƽ �ַο� MP �Ҹ� ����(+1) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "인피니티 애로우 MP 소모량 변경(+1) : %d",iValue);
 
 }
 
 void CGMMng::ControlInfinityArrowMPConsumption2(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus2(iValue);
-	MsgOutput(lpObj->m_Index, "���Ǵ�Ƽ �ַο� MP �Ҹ� ����(+2) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "인피니티 애로우 MP 소모량 변경(+2) : %d",iValue);
 
 }
 
 void CGMMng::ControlInfinityArrowMPConsumption3(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus3(iValue);
-	MsgOutput(lpObj->m_Index, "���Ǵ�Ƽ �ַο� MP �Ҹ� ����(+3) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "인피니티 애로우 MP 소모량 변경(+3) : %d",iValue);
 
 }
 
@@ -2589,18 +2591,18 @@ void CGMMng::SetInfinityArrowTime(LPOBJ lpObj, int iValue)
 {
 	if ( lpObj->Class == CLASS_ELF && lpObj->Type == OBJ_USER && lpObj->ChangeUP == 1 )
 	{
-		MsgOutput(lpObj->m_Index, "���Ǵ�Ƽ �ַο� �ð� ���� ���� : %d��", iValue);
+		MsgOutput(lpObj->m_Index, "인피니티 애로우 시간 강제 설정 : %d초", iValue);
 	}
 	else
 	{
-		MsgOutput(lpObj->m_Index, "220���� �̻� ������� ��밡���մϴ�.");
+		MsgOutput(lpObj->m_Index, "220레벨 이상 뮤즈엘프만 사용가능합니다.");
 	}
 }
 
 void CGMMng::ControlFireScreamDoubleAttackDistance(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetFireScreamExplosionAttackDistance(iValue);
-	MsgOutput(lpObj->m_Index, "���̾ũ�� ���������� ���߰Ÿ� ����:%d", iValue);
+	MsgOutput(lpObj->m_Index, "파이어스크림 더블데미지 폭발거리 변경:%d", iValue);
 }
 
 // #Season 4.5 NEW FUNCS START
