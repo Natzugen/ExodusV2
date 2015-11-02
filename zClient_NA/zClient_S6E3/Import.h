@@ -128,7 +128,7 @@
 
 //-> Other
 #define oCam_Zoom				0x0D27BFC	//1037DB0
-#define oCam_PosZ				0x0D255AC	//1031A64
+//#define oCam_PosZ				0x00D255A0//0x0D255AC	//1031A64
 #define oCam_RotZ				0x87933D8	//8B4ACC8
 #define oCam_RotZDef			0x0D27B78	//1033AB0
 #define oCam_RotY				0x0D27B88	//1033AC0
@@ -141,6 +141,8 @@
 #define oCam_ClipY2				0x0D2C880	//1038D40
 #define oCam_ClipZ2				0x0D2B94C	//1037DA4
 #define oCam_ClipGL				0x0D2570C	//1031BCC
+#define oCam_PosZDef			0x0D255AC	// Restore PosZ
+#define oCam_PosZ			  0x0D255A0	// PosZ
 #define oCharColor_Loot			(0x0064B6AB + 1)
 #define oCharColor_Exp			(0x0064C9A0 + 1)
 #define pGetMoneyFormat			((int(__cdecl*)(double Value, char * Buff, int Arg3)) 0x5C1170)
