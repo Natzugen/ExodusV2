@@ -413,10 +413,12 @@ void Item::SetOption(ObjectItem * lpItem, BYTE Option, BYTE Special, BYTE Value)
 	int ItemAttr		= *(DWORD*)0x8128AC0 + 84 * lpItem->ItemID; //item.bmd reader
 	int SpecialValue	= GET_ITEMOPT0(Option) + 4 * (GET_ITEMOPT16(Special) >> 6);	
 	// ----
-	lpItem->ReqLevel	= *(short*)(ItemAttr + 60);
+	
 	// ----
 	if( gItem.IsCustomWings(lpItem->ItemID, false) )
 	{
+		lpItem->ReqLevel	= *(short*)(ItemAttr + 60);
+		
 		if( Special & MAX_ITEMOPT_BIT >= 10 && Special & MAX_ITEMOPT_BIT <= 15 )
 		{
 			lpItem->Unknown14 += 1;

@@ -1012,6 +1012,9 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 			case 83:
 				lpObj->DbClass = 80;
 				break;
+			case 98:
+				lpObj->DbClass = 96;
+				break;
 			}
 
 			GCServerMsgStringSend("Reset class complete", lpObj->m_Index, 1);

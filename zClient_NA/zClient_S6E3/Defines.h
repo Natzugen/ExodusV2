@@ -9,7 +9,7 @@
 #define Naked(Function)				void __declspec(naked) Function()
 #define _FC							__fastcall
 #define _CD							__cdecl
-#define IS_NEWWINGS(x)				((x < ITEM(12, 180)) ? FALSE : (x > ITEM(12, 186)) ? FALSE : TRUE)
+#define IS_NEWWINGS(x)				((x < ITEM(12, 180)) ? FALSE : (x > ITEM(12, 193)) ? FALSE : TRUE)
 #define CS_GET_WEAPON(x, y)			( y | (16 * (x & 0xF0)) )
 #define CS_GET_HELM(x, y, z)		( (32 * (z & 0xF)) + 16 * ((x >> 7) & 1) + (y >> 4) )
 #define CS_GET_ARMOR(x, y, z)		( (32 * ((z >> 4) & 0xF)) + 16 * ((x >> 6) & 1) + (y & 0xF) )

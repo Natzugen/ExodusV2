@@ -57,6 +57,26 @@ BOOL CObjAttack::Attack(LPOBJ lpObj, LPOBJ lpTargetObj, CMagicInf* lpMagic,  int
 	int iTotalShieldDamage = 0;
 	int bDragonKickSDAttackSuccess = 0;
 	
+		// Fix for the bug of the friendly fire in the Castle Siege event
+	if(g_CastleSiege.GetCastleState()==CASTLESIEGE_STATE_STARTSIEGE) {
+		if(lpTargetObj->Type == OBJ_USER && lpObj->Type == OBJ_USER) {
+			if( lpObj->GuildNumber!=0 && lpTargetObj->GuildNumber!=0 ) {
+				// same guild
+				if(lpObj->GuildNumber == lpTargetObj->GuildNumber) {
+					return false;
+				}
+				// same union
+				if(lpObj->lpGuild->GetGuildUnion()!=0) {
+					if(lpObj->lpGuild->GetGuildUnion()==lpTargetObj->lpGuild->GetGuildUnion()) {
+						return false;
+					}
+				}
+			}
+		}
+	}
+
+
+	
 	if ( (lpTargetObj->Authority&2) == 2 )
 		return FALSE;
 
