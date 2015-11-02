@@ -1807,6 +1807,12 @@ void ReadCommonServerInfo()
 	g_ServerMinUserReset = GetPrivateProfileInt("GameServerInfo", "MinUserReset", 0, SERVER_INFO_PATH);
 	g_ServerMaxUserReset = GetPrivateProfileInt("GameServerInfo", "MaxUserReset", 0, SERVER_INFO_PATH);
 
+	gFreeServer = GetPrivateProfileIntA("GameServerInfo", "FreeServer", 1, SERVER_INFO_PATH);
+	  if (gFreeServer)
+	{
+	  LogAdd("Free Server"); 
+	}
+	
 	switch(gLanguage)
 	{
 	case 0: // Korea
@@ -1835,6 +1841,11 @@ void ReadCommonServerInfo()
 		if(gEventOff != 0)
 		{
 			LogAdd("EventOff");
+		}
+		gFreeServer = GetPrivateProfileIntA("GameServerInfo", "FreeServer", 1, SERVER_INFO_PATH);
+        	if (gFreeServer)
+		{
+			LogAdd("Free Server"); 
 		}
 		break;
 	case 1: // English
@@ -1865,6 +1876,12 @@ void ReadCommonServerInfo()
 		{
 			LogAdd("EventOff");
 		}
+		gFreeServer = GetPrivateProfileIntA("GameServerInfo", "FreeServer", 1, SERVER_INFO_PATH);
+        	if (gFreeServer)
+		{
+			LogAdd("Free Server"); 
+		}
+		break;
 		break;
 	case 2: // Japan
 		strcpy(szItemTextFileName, gDirPath.GetNewPath("lang\\jpn\\item(jpn).txt"));
