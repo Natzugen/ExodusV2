@@ -92,6 +92,7 @@ enum ObjWindow // -> Season 6.3
 	FriendList		= 1,
 	MoveList		= 2,
 	Party			= 3,
+	Quest   		= 4,
 	Guild			= 6,
 	Trade			= 7,
 	Warehouse		= 8,
@@ -115,8 +116,9 @@ enum ObjWindow // -> Season 6.3
 	NPC_Dialog		= 73,
 	GensInfo		= 74,
 	NPC_Julia		= 75,
-	ExpandInventory	= 77,
-	ExpandWarehouse	= 78,
+	ExpandInventory		= 77,
+	ExpandWarehouse		= 78,
+	MuHelper                = 79,
 };
 // ----------------------------------------------------------------------------------------------
 
