@@ -1857,3 +1857,34 @@ void Interface::DrawPictureAlpha(char Path[64], float X, float Y, float Width, f
     pLoadImage(Path, 0x1B, 0x2601, 0x2900, 1, 0);
     pDrawImage(0x1B, X, Y, Width, Height, U1, U2, ScaleX, ScaleY, HL, 1, 0);
 }
+// ----------------------------------------------------------------------------------------------
+bool Interface::MiniMapCheck()
+{
+    if(this->CheckWindow(Inventory) ||
+        this->CheckWindow(CashShop) ||
+        this->CheckWindow(ChaosBox) ||
+        this->CheckWindow(Character) ||
+        this->CheckWindow(CommandWindow) ||
+        this->CheckWindow(ExpandInventory) ||
+        this->CheckWindow(ExpandWarehouse) ||
+        this->CheckWindow(FullMap) ||
+        this->CheckWindow(GensInfo) ||
+        this->CheckWindow(Guild) ||
+        this->CheckWindow(NPC_Dialog) ||
+        this->CheckWindow(NPC_Julia) ||
+        this->CheckWindow(NPC_Titus) ||
+        this->CheckWindow(OtherStore) ||
+        this->CheckWindow(Party) ||
+        this->CheckWindow(PetInfo) ||
+        this->CheckWindow(Shop) ||
+        this->CheckWindow(SkillTree) ||
+        this->CheckWindow(Store) ||
+        this->CheckWindow(Trade) ||
+        this->CheckWindow(Warehouse) ||
+        this->CheckWindow(FriendList) ||
+        this->CheckWindow(FastMenu) ||
+        this->CheckWindow(MuHelper) ||
+        this->CheckWindow(Quest) )
+        return true;
+    return false;
+}
