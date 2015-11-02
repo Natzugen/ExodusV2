@@ -1192,20 +1192,21 @@ void CCastleSiege::SetState_IDLE_1(BOOL bSetRemainMsec)
 
 	if(bSetRemainMsec != FALSE)
 	{
-		long ttSTime;
-		long ttETime;
+		time_t ttSTime;
+		time_t ttETime;
 		tm tmETime;
 		double dResultSecond;
-
-		memset(&tmETime,0,sizeof(tmETime));
+		
+		memset(&tmETime,0x00,sizeof(tmETime));
 
 		tmETime.tm_year = m_tmStartDate.wYear - 1900;
 		tmETime.tm_mon = m_tmStartDate.wMonth - 1;
 		tmETime.tm_mday = m_tmStartDate.wDay;
 
+		
 		ttETime = mktime(&tmETime);
-		time((time_t*)&ttSTime);
-
+		time(&ttSTime);
+	
 		dResultSecond = difftime(ttETime,ttSTime);
 		this->m_iCS_REMAIN_MSEC = dResultSecond * (double)1000.0;
 	}
@@ -1397,8 +1398,8 @@ void CCastleSiege::SetState_ENDSIEGE(BOOL bSetRemainMsec)
 
 	if(bSetRemainMsec != FALSE)
 	{
-		long ttSTime;
-		long ttETime;
+		time_t ttSTime;
+		time_t ttETime;
 		tm tmETime;
 		double dResultSecond;
 
@@ -1408,8 +1409,8 @@ void CCastleSiege::SetState_ENDSIEGE(BOOL bSetRemainMsec)
 		tmETime.tm_mon = m_tmEndDate.wMonth - 1;
 		tmETime.tm_mday = m_tmEndDate.wDay;
 
-		time((time_t*)&ttSTime);
 		ttETime = mktime(&tmETime);
+		time(&ttSTime);
 
 		dResultSecond = difftime(ttETime,ttSTime);
 		this->m_iCS_REMAIN_MSEC = dResultSecond * (double)1000.0;
@@ -2010,11 +2011,11 @@ int CCastleSiege::CheckSync()
 
 		 if(bSpecificStateExist != FALSE)
 		 {
-			 long ttSTime;
-			 long ttETime;
+			 time_t ttSTime;
+			 time_t ttETime;
 			 tm tmETime;
 			 double dResultSecond;
-			 memset(&tmETime,0,sizeof(tmETime));
+			 memset(&tmETime,0x00,sizeof(tmETime));
 
 			 tmETime.tm_year = this->m_tmFixCastleStateStartDate.wYear - 1900;
 			 tmETime.tm_mon = this->m_tmFixCastleStateStartDate.wMonth - 1;
@@ -2022,7 +2023,7 @@ int CCastleSiege::CheckSync()
 			 tmETime.tm_hour = this->m_tmFixCastleStateStartDate.wHour;
 			 tmETime.tm_min = this->m_tmFixCastleStateStartDate.wMinute;
 
-			 time((time_t*)&ttSTime);
+			 time(&ttSTime);
 			 ttETime = mktime(&tmETime);
 
 			 dResultSecond = difftime(ttETime,ttSTime);
@@ -2097,8 +2098,8 @@ int CCastleSiege::CheckSync()
 
 		 _SYSTEMTIME tmSchduleDate;
 	
-		long ttSTime;
-		long ttETime;
+		time_t ttSTime;
+		time_t ttETime;
 		struct tm tmETime;
 		double dResultSecond;
 
@@ -2113,7 +2114,7 @@ int CCastleSiege::CheckSync()
 		tmSchduleDate.wHour = pScheData_RR.m_iADD_HOUR;
 		tmSchduleDate.wMinute = pScheData_RR.m_iADD_MIN;
 
-		memset(&tmETime,0,sizeof(tmETime));
+		memset(&tmETime,0x00,sizeof(tmETime));
 
 		tmETime.tm_year = tmSchduleDate.wYear - 1900;
 		tmETime.tm_mon = tmSchduleDate.wMonth - 1;
@@ -2121,7 +2122,7 @@ int CCastleSiege::CheckSync()
 		tmETime.tm_hour = tmSchduleDate.wHour;
 		tmETime.tm_min = tmSchduleDate.wMinute;
 
-		time((time_t*)&ttSTime);
+		time(&ttSTime);
 		ttETime = mktime(&tmETime);
 
 		dResultSecond = difftime(ttETime,ttSTime);
