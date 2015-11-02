@@ -18,6 +18,7 @@
 // ----------------------------------------------------------------------------------------------
 
 //-> Interface
+#define pDrawImage                ((void(__cdecl*)(int ImageID, float PosX, float PosY, float Width, float Height, int Arg6, int Arg7, float ScaleX, float ScaleY, int Arg11, int Arg12, int Arg13)) 0x637C60)
 #define pDrawInterface			((void(__cdecl*)()) 0x0080F790)
 #define oDrawInterface_Call		0x0080F6AE
 #define pDrawGUI				((void(__cdecl*)(DWORD, float, float, float, float)) 0x00790A00)
