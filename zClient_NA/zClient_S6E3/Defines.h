@@ -189,6 +189,10 @@ namespace eItemOption
 		ReturnAttack	= 106,		//-> Return's the enemy's attack power in <N>%
 		CompleteLife	= 107,		//-> Complete recovery of life in <N>% rate
 		CompleteMana	= 108,		//-> Complete recovery of Mana in <N>% rate
+		//================
+		IncreaseWizardryDmg = 97,    //-> Increase Wizardry Dmg +2%
+		LifePerMob        = 99,        //-> Increases acquisition rate of Life after hunting monsters +life/8
+		ManaPerMob        = 100,        //-> Increases acquisition rate of Mana after hunting monsters +Mana/8
 	};
 };
 // ----------------------------------------------------------------------------------------------
