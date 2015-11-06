@@ -672,36 +672,65 @@ void Item::SetOptionText(int ItemID, int Line, WORD OptionID, bool Arg4, int Arg
 	}
 	// ----
 	switch(OptionID)
-	{
-	case eItemOption::LifeIncrease:
-		pSetItemTextLine(Line, "Increase Max HP +%d%%",
-			g_ItemRank.GetValue(ItemID, 0));
-		break;
-	case eItemOption::ManaIncrease:
-		pSetItemTextLine(Line, "Increase Max Mana +%d%%",
-			g_ItemRank.GetValue(ItemID, 1));
-		break;
-	case eItemOption::DamageDecrease:
-		pSetItemTextLine(Line, "Damage Decrease +%d%%",
-			g_ItemRank.GetValue(ItemID, 2));
-		break;
-	case eItemOption::IncreaseWizardry:
-		pSetItemTextLine(Line, "Increase Wizardry Dmg +level/%d",
-			g_ItemRank.GetValue(ItemID, 3));
-		break;
-	case eItemOption::Reflect:
-		pSetItemTextLine(Line, "Reflect Damage +%d%%",
-			g_ItemRank.GetValue(ItemID, 3));
-		break;
-	case eItemOption::DefenseSuccess:
-		pSetItemTextLine(Line, "Defense success rate +%d%%",
-			g_ItemRank.GetValue(ItemID, 4));
-		break;
-	case eItemOption::IncreaseZen:
-		pSetItemTextLine(Line, "Increases acquisition rate of Zen after hunting monsters +%d%%",
-			g_ItemRank.GetValue(ItemID, 5));
-		break;
-	}
+    {
+    case eItemOption::LifeIncrease:
+        pSetItemTextLine(Line, "Increase Max HP +%d%%",
+            g_ItemRank.GetValue(ItemID, 0));
+        break;
+    case eItemOption::ExcellentDamage:
+        pSetItemTextLine(Line, "Excellent Damage rate +%d%%",
+            g_ItemRank.GetValue(ItemID, 0));
+        break;
+    case eItemOption::ManaIncrease:
+        pSetItemTextLine(Line, "Increase Max Mana +%d%%",
+            g_ItemRank.GetValue(ItemID, 1));
+        break;
+    case eItemOption::DamageByLevel    :
+        pSetItemTextLine(Line, "Increase Damage +level/%d",
+            g_ItemRank.GetValue(ItemID, 1));
+        break;
+    case eItemOption::IncreaseWizardry:
+        pSetItemTextLine(Line, "Increase Wizardry Dmg +level/%d",
+            g_ItemRank.GetValue(ItemID, 1));
+        break;
+    case eItemOption::DamageDecrease:
+        pSetItemTextLine(Line, "Damage Decrease +%d%%",
+            g_ItemRank.GetValue(ItemID, 2));
+        break;
+    case eItemOption::IncreaseDamage:
+        pSetItemTextLine(Line, "Increase Damage +%d%%",
+            g_ItemRank.GetValue(ItemID, 2));
+        break;
+    case eItemOption::IncreaseWizardryDmg:
+        pSetItemTextLine(Line, "Increase Wizardry Dmg +%d%%",
+            g_ItemRank.GetValue(ItemID, 2));
+        break;
+    case eItemOption::Reflect:
+        pSetItemTextLine(Line, "Reflect Damage +%d%%",
+            g_ItemRank.GetValue(ItemID, 3));
+        break;
+    case eItemOption::IncreaseSpeed:
+        pSetItemTextLine(Line, "Increase Attacking(Wizardy)speed +%d",
+            g_ItemRank.GetValue(ItemID, 3));
+        break;
+    case eItemOption::DefenseSuccess:
+        pSetItemTextLine(Line, "Defense success rate +%d%%",
+            g_ItemRank.GetValue(ItemID, 4));
+        break;
+    case eItemOption::LifePerMob:
+        pSetItemTextLine(Line, " Increases acquisition rate of Life after hunting monsters +life/%d",
+            g_ItemRank.GetValue(ItemID, 4));
+        break;
+    case eItemOption::IncreaseZen:
+        pSetItemTextLine(Line, "Increases acquisition rate of Zen after hunting monsters +%d%%",
+            g_ItemRank.GetValue(ItemID, 5));
+        break;
+    case eItemOption::ManaPerMob:
+        pSetItemTextLine(Line, "Increases acquisition rate of Mana after hunting monsters +Mana/%d",
+            g_ItemRank.GetValue(ItemID, 5));
+        break;
+
+    }
 #endif
 }
 // ----------------------------------------------------------------------------------------------
