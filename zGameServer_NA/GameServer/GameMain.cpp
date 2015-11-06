@@ -792,9 +792,8 @@ BOOL gEnableBattleSoccer=1;
 int	gLootingTime=3;
 int	gPkItemDrop=1;
 int	gItemDropPer=10;
-//int gItemLuckDropPer = 4; //TEST!!!
-int gItemSkillDropPer = 6; //TEST!!!
 int gItemLuckyDropPer = 10;
+int gItemSkillDropPer = 6;
 int	gExcItemDropRate = 10;
 int  gEvent1ItemDropTodayMax=1;
 int  gEvent1ItemDropTodayPercent=80;
@@ -1024,7 +1023,7 @@ void GameMainInit(HWND hWnd)
 
 	if ( gEnableServerDivision != 0 )
 	{
-		MessageBox(NULL, "Â¼Â­Â¹Ã¶ÂºÃÃ‡Ã’Ã€ÃŒ Â°Â¡Â´Ã‰Ã‡Ã‘ Â¼Â­Â¹Ã¶Ã€Ã”Â´ÃÂ´Ã™.", "Warning", MB_OK);
+		MessageBox(NULL, "¼­¹öºÐÇÒÀÌ °¡´ÉÇÑ ¼­¹öÀÔ´Ï´Ù.", "Warning", MB_OK);
 	}
 
 	if ( gUdpSoc.CreateSocket() == 0)
@@ -1057,7 +1056,7 @@ void GameMainInit(HWND hWnd)
 	}
 	if ( false )
 	{
-		MsgBox("ÃÃ–Ã€Ã‡!! Ã„Â³Â¸Â¯Ã…Ã ÂµÂ¥Ã€ÃŒÃ…ÃÂ¸Â¦ Ã€ÃºÃ€Ã¥Ã‡ÃÃÃ¶ Â¾ÃŠÂ½Ã€Â´ÃÂ´Ã™.");
+		MsgBox("ÁÖÀÇ!! Ä³¸¯ÅÍ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏÁö ¾Ê½À´Ï´Ù.");
 	}
 
 	gObjInit();
@@ -1584,7 +1583,7 @@ void GMServerMsgProc(WPARAM wParam, LPARAM lParam)
 		SCPJoinResultSend( addnumber, 0x01);
 		}
 		else 
-		{// Â»??????Â¦ ?Â©Â¶??? Âµ?..
+		{// »??????¦ ?©¶??? µ?..
 		wsGServer.Close(cSocket);
 		}
 		}
@@ -1806,13 +1805,12 @@ void ReadCommonServerInfo()
 
 	g_ServerMinUserReset = GetPrivateProfileInt("GameServerInfo", "MinUserReset", 0, SERVER_INFO_PATH);
 	g_ServerMaxUserReset = GetPrivateProfileInt("GameServerInfo", "MaxUserReset", 0, SERVER_INFO_PATH);
-
 	gFreeServer = GetPrivateProfileIntA("GameServerInfo", "FreeServer", 1, SERVER_INFO_PATH);
-	  if (gFreeServer)
-	{
-	  LogAdd("Free Server"); 
-	}
-	
+	if (gFreeServer)
+		{
+		LogAdd("Free Server");
+		}
+
 	switch(gLanguage)
 	{
 	case 0: // Korea
@@ -1843,10 +1841,10 @@ void ReadCommonServerInfo()
 			LogAdd("EventOff");
 		}
 		gFreeServer = GetPrivateProfileIntA("GameServerInfo", "FreeServer", 1, SERVER_INFO_PATH);
-        	if (gFreeServer)
-		{
-			LogAdd("Free Server"); 
-		}
+		if (gFreeServer)
+			{
+			LogAdd("Free Server");
+			}
 		break;
 	case 1: // English
 		strcpy(szItemTextFileName, gDirPath.GetNewPath("lang\\eng\\item(eng).txt"));
@@ -1877,11 +1875,10 @@ void ReadCommonServerInfo()
 			LogAdd("EventOff");
 		}
 		gFreeServer = GetPrivateProfileIntA("GameServerInfo", "FreeServer", 1, SERVER_INFO_PATH);
-        	if (gFreeServer)
-		{
-			LogAdd("Free Server"); 
-		}
-		break;
+		if (gFreeServer)
+			{
+			LogAdd("Free Server");
+			}
 		break;
 	case 2: // Japan
 		strcpy(szItemTextFileName, gDirPath.GetNewPath("lang\\jpn\\item(jpn).txt"));
@@ -2190,7 +2187,7 @@ void ReadCommonServerInfo()
 	if(iMaxUser >= 0 && iMaxUser <= OBJMAXUSER)
 	{
 		gServerMaxUser = iMaxUser;
-		LogAddTD("[Option Reload] Â¡ÃšÂ¡ÃšÂ¡Ãš MaxUser Â¡Ã™Â¡Ã™Â¡Ã™  : %d", gServerMaxUser);
+		LogAddTD("[Option Reload] ¡Ú¡Ú¡Ú MaxUser ¡Ù¡Ù¡Ù  : %d", gServerMaxUser);
 	}
 
 	g_iServerGroupGuildChatting = GetPrivateProfileInt("GameServerInfo","ServerGroupGuildChatting",0, gDirPath.GetNewPath("commonserver.cfg"));
@@ -2646,8 +2643,7 @@ void ReadCommonServerInfo()
 	gPacketCheckSum.Init();
 
 	gDoPShopOpen = GetPrivateProfileInt("GameServerInfo","PersonalShopOpen", 0, gDirPath.GetNewPath("commonserver.cfg"));
-	gOpenDelay = GetPrivateProfileInt("GameServerInfo","PersonalShopDelay", 0, gDirPath.GetNewPath("commonserver.cfg"));
-	
+	gOpenDelay = GetPrivateProfileInt("GameServerInfo", "PersonalShopDelay", 0, gDirPath.GetNewPath("commonserver.cfg"));
 	ReadEventInfo(MU_EVENT_ALL );
 
 	g_iUseCharacterAutoRecuperationSystem = GetPrivateProfileInt("GameServerInfo","UseCharacterAutoRecuperationSystem", 0, gDirPath.GetNewPath("commonserver.cfg"));
@@ -2705,7 +2701,7 @@ void ReadCommonServerInfo()
 		g_bPostFloodProtectTime = 5000;
 	}
 
-	if( g_PostChatColor < 1 || g_PostChatColor > 8 )//gs crash fix
+	if( g_PostChatColor < 1 || g_PostChatColor > 8 )
 	{
 		g_PostChatColor = 2;
 	}
@@ -4527,7 +4523,7 @@ void ReadGameEtcInfo(MU_ETC_TYPE eGameEtcType)
 		gExcItemDropRate = GetPrivateProfileInt("GameServerInfo", "ItemExcDropRate", 10, gDirPath.GetNewPath("commonserver.cfg"));
 
 		gDoPShopOpen = GetPrivateProfileInt("GameServerInfo", "PersonalShopOpen", 0, gDirPath.GetNewPath("commonserver.cfg"));
-		gOpenDelay = GetPrivateProfileInt("GameServerInfo","PersonalShopDelay", 0, gDirPath.GetNewPath("commonserver.cfg"));
+		gOpenDelay = GetPrivateProfileInt("GameServerInfo", "PersonalShopDelay", 0, gDirPath.GetNewPath("commonserver.cfg"));
 		gAttackSpeedTimeLimit = GetPrivateProfileInt("GameServerInfo", "AttackSpeedTimeLimit", 800, gDirPath.GetNewPath("commonserver.cfg"));
 		bIsIgnorePacketSpeedHackDetect = GetPrivateProfileInt("GameServerInfo", "IsIgnorePacketHackDetect", 0, gDirPath.GetNewPath("commonserver.cfg"));
 		gHackCheckCount = GetPrivateProfileInt("GameServerInfo", "HackCheckCount", 5, gDirPath.GetNewPath("commonserver.cfg"));
@@ -4568,7 +4564,7 @@ void ReadGameEtcInfo(MU_ETC_TYPE eGameEtcType)
 		break;
 	case 5:
 		gDoPShopOpen = GetPrivateProfileInt("GameServerInfo", "PersonalShopOpen", 0, gDirPath.GetNewPath("commonserver.cfg"));
-		gOpenDelay = GetPrivateProfileInt("GameServerInfo","PersonalShopDelay", 0, gDirPath.GetNewPath("commonserver.cfg"));
+		gOpenDelay = GetPrivateProfileInt("GameServerInfo", "PersonalShopDelay", 0, gDirPath.GetNewPath("commonserver.cfg"));
 		break;
 	case 6:
 		GetPrivateProfileString("GameServerInfo", "PKItemDrop", "1", szTemp, 5, gDirPath.GetNewPath("commonserver.cfg"));
@@ -4579,6 +4575,8 @@ void ReadGameEtcInfo(MU_ETC_TYPE eGameEtcType)
 		gItemDropPer = atoi(szTemp);
 		GetPrivateProfileString("GameServerInfo", "ItemLuckDropPer", "10", szTemp, 5, gDirPath.GetNewPath("commonserver.cfg"));
 		gItemLuckyDropPer = atoi(szTemp);
+		GetPrivateProfileString("GameServerInfo", "ItemSkillDropPer", "6", szTemp, 5, gDirPath.GetNewPath("commonserver.cfg"));
+		gItemSkillDropPer = atoi(szTemp);
 		gExcItemDropRate = GetPrivateProfileInt("GameServerInfo", "ItemExcDropRate", 10, gDirPath.GetNewPath("commonserver.cfg"));
 		break;
 	case 8:

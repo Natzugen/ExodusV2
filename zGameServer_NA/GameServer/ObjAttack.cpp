@@ -56,27 +56,37 @@ BOOL CObjAttack::Attack(LPOBJ lpObj, LPOBJ lpTargetObj, CMagicInf* lpMagic,  int
 	int iTempShieldDamage = 0;
 	int iTotalShieldDamage = 0;
 	int bDragonKickSDAttackSuccess = 0;
-	
-		// Fix for the bug of the friendly fire in the Castle Siege event
-	if(g_CastleSiege.GetCastleState()==CASTLESIEGE_STATE_STARTSIEGE) {
-		if(lpTargetObj->Type == OBJ_USER && lpObj->Type == OBJ_USER) {
-			if( lpObj->GuildNumber!=0 && lpTargetObj->GuildNumber!=0 ) {
-				// same guild
-				if(lpObj->GuildNumber == lpTargetObj->GuildNumber) {
+
+	// Fix for the bug of the friendly fire in the Castle Siege event
+	if (g_CastleSiege.GetCastleState() == CASTLESIEGE_STATE_STARTSIEGE) 
+	{
+		if (lpTargetObj->Type == OBJ_USER && lpObj->Type == OBJ_USER)
+		{
+			if (lpObj->GuildNumber != 0 && lpTargetObj->GuildNumber != 0)
+			{
+								// same guild
+					if (lpObj->GuildNumber == lpTargetObj->GuildNumber)
+					{
 					return false;
-				}
-				// same union
-				if(lpObj->lpGuild->GetGuildUnion()!=0) {
-					if(lpObj->lpGuild->GetGuildUnion()==lpTargetObj->lpGuild->GetGuildUnion()) {
-						return false;
+					
 					}
+								// same union
+				if (lpObj->lpGuild->GetGuildUnion() != 0)
+				{
+					if (lpObj->lpGuild->GetGuildUnion() == lpTargetObj->lpGuild->GetGuildUnion())
+					{
+						return false;
+						
+					}
+					
 				}
+				
 			}
+			
 		}
+		
 	}
 
-
-	
 	if ( (lpTargetObj->Authority&2) == 2 )
 		return FALSE;
 
@@ -1551,7 +1561,7 @@ BOOL CObjAttack::Attack(LPOBJ lpObj, LPOBJ lpTargetObj, CMagicInf* lpMagic,  int
 					AttackDamage = (AttackDamage + Energy / 10) * (Energy / 10 + 50) / 100.0f;
 					break;
 				case 265:
-					if ( lpTargetObj->Type == OBJ_USER )
+					if( lpTargetObj->Type == OBJ_USER )
 					{
 						AttackDamage = AttackDamage * (Energy / 10 + 50) / 100.0f;
 					}
@@ -1559,6 +1569,9 @@ BOOL CObjAttack::Attack(LPOBJ lpObj, LPOBJ lpTargetObj, CMagicInf* lpMagic,  int
 					{
 						AttackDamage = (AttackDamage * (Energy / 10 + 50) / 100.0f + 100.0f) * 3.0f;
 					}
+					break;
+				case 269:
+					AttackDamage = AttackDamage*(50 + (Vitality / 10)) / 100.0f;
 					break;
 				case 270:
 					AttackDamage = AttackDamage * (Vitality / 10 + 50) / 100.0f;
@@ -1827,7 +1840,7 @@ BOOL CObjAttack::Attack(LPOBJ lpObj, LPOBJ lpTargetObj, CMagicInf* lpMagic,  int
 					break;
 				case 558:
 				case 562:
-					AttackDamage = (AttackDamage + Vitality / 10)*(Vitality / 10 + 50)/ 100.0f;
+					AttackDamage = (AttackDamage + Vitality / 10)*(Vitality / 10 + 50) / 100.0f;
 				case 559:
 				case 563:
 					AttackDamage = (Dexterity / 8 + AttackDamage + Energy / 10)*(Dexterity / 8 + Energy / 10 + 100) / 100.0f;
@@ -2717,13 +2730,13 @@ BOOL CObjAttack::Attack(LPOBJ lpObj, LPOBJ lpTargetObj, CMagicInf* lpMagic,  int
 
 		gObjLifeCheck(lpTargetObj, lpObj, AttackDamage, 0, MSBFlag, MsgDamage, skill, iTotalShieldDamage);
 
-	/*	if ( iTotalShieldDamage > 0 )
+		if ( iTotalShieldDamage > 0 )
 		{
 			LogAddTD("[PvP System] Victim:[%s][%s], Attacker:[%s][%s] - SD[%d] HP[%f] -> SD[%d] HP[%f]",
 				lpTargetObj->AccountID, lpTargetObj->Name, lpObj->AccountID, lpObj->Name,
 				lpTargetObj->iShield + iTotalShieldDamage, lpTargetObj->Life + AttackDamage, 
 				lpTargetObj->iShield, lpTargetObj->Life);
-	*/	}
+		}
 	}
 	else
 	{

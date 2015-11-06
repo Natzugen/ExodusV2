@@ -352,6 +352,22 @@ void MessageSendEx(int Type, char * Sender, char * Message, ...)
 	DataSendAll((LPBYTE)&pMessage, pMessage.Head.size);
 }
 
+//void MessageSendEx2(int Type, char * Message, ...)
+//{
+//	char szTemp[1024];
+//	va_list pArguments;
+//	va_start(pArguments, Message);
+//	vsprintf(szTemp, Message, pArguments);
+//	va_end(pArguments);
+//	// ----
+//	CHAT_WHISPER_EX pMessage;
+//	//memcpy(pMessage.Name, Sender, 10);
+//	memcpy(pMessage.Message, szTemp, 90);
+//	pMessage.Type = Type;
+//	pMessage.Head.set((LPBYTE)&pMessage, 2, sizeof(CHAT_WHISPER_EX));
+//	DataSendAll((LPBYTE)&pMessage, pMessage.Head.size);
+//}
+
 void CGMMng::MessageAll(int Type, int Type2, char *Sender, char *Msg,...)
 {					  
 	char Messages[1024];
@@ -967,6 +983,10 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 			{
 				lpObj->DbClass = 81;
 			}
+			else if (iDbClass == 96)
+			{
+				lpObj->DbClass = 98;
+			}
 
 			GCServerMsgStringSend("DBCLass is modifyed", lpObj->m_Index, 1);
 
@@ -1428,12 +1448,12 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 			{
 				this->WatchTargetIndex = -1;
 
-				wsprintf(szTemp, "%s : ê°ì‹œí•´ì œ", lpTargetObj->Name);	// #translation
+				wsprintf(szTemp, "%s : °¨½ÃÇØÁ¦", lpTargetObj->Name);	// #translation
 				GCServerMsgStringSend(szTemp, lpObj->m_Index, 1);
 			}
 			else
 			{
-				wsprintf(szTemp, "%s : ê°ì‹œì‹œìž‘", lpTargetObj->Name);	// #translation
+				wsprintf(szTemp, "%s : °¨½Ã½ÃÀÛ", lpTargetObj->Name);	// #translation
 				GCServerMsgStringSend(szTemp, lpObj->m_Index, 1);
 				this->WatchTargetIndex = lpTargetObj->m_Index;
 			}
@@ -1833,7 +1853,7 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 							if( gObj[aIndex].lpGuild->BattleGroundIndex >= 0 )
 							{
 								//BattleSoccerGoalEnd(gObj[aIndex].lpGuild->BattleGroundIndex);
-								//GCServerMsgStringSend("GuildMaster ìš”ì²­ìœ¼ë¡œ 3ì´ˆ í›„ ê²½ê¸°ê°€ ìžë™ìœ¼ë¡œ ì¢…ë£Œë©ë‹ˆë‹¤.", aIndex, 0);
+								//GCServerMsgStringSend("GuildMaster ¿äÃ»À¸·Î 3ÃÊ ÈÄ °æ±â°¡ ÀÚµ¿À¸·Î Á¾·áµË´Ï´Ù.", aIndex, 0);
 							}
 						}
 					}
@@ -2174,6 +2194,14 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 		this->CmdSummonChar(lpObj,this->GetTokenString());
 		break;
 	case COMMAND_SKIN:
+	{
+						 char * Token = &szCmd[strlen("/skin") + 1];
+						 int len = strlen(Token);
+						 if (len > 0)
+							 this->CmdSkin(lpObj, Token);
+						 else
+							 GCServerMsgStringSend("Please enter id or monter name to use /skin", lpObj->m_Index, 1);
+	}
 		break;
 #ifdef __CUSTOMS__
 	case COMMAND_ADDSTR:
@@ -2406,7 +2434,7 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 				//Need add prefix setting / reading from CommonServer.cfg
 				//PostChatPrefix = [WORLD]
 				char g_PostPrefix[10];
-				GetPrivateProfileStringA("GameServerInfo","PostChatPrefix","[WORLD]",g_PostPrefix,10,("../Data/commonserver.cfg"));
+				GetPrivateProfileStringA("GameServerInfo", "PostChatPrefix", "[WORLD]", g_PostPrefix, 10, ("../Data/commonserver.cfg"));
 				g_PostLog.Output("[%s] [%s] %s", lpObj->AccountID, lpObj->Name, Token);
 				MessageSendEx(g_PostChatColor, lpObj->Name, "%s %s", g_PostPrefix, Token);
 			}
@@ -2556,7 +2584,7 @@ return 0;
 
 void CGMMng::GetInfinityArrowMPConsumption(LPOBJ lpObj)
 {
-	MsgOutput(lpObj->m_Index, "ì¸í”¼ë‹ˆí‹° ì• ë¡œìš° MP ì†Œëª¨ëŸ‰[+0:%d] [+1:%d] [+2:%d]",
+	MsgOutput(lpObj->m_Index, "ÀÎÇÇ´ÏÆ¼ ¾Ö·Î¿ì MP ¼Ò¸ð·®[+0:%d] [+1:%d] [+2:%d]",
 		g_SkillAdditionInfo.GetInfinityArrowMPConsumptionPlus0(),
 		g_SkillAdditionInfo.GetInfinityArrowMPConsumptionPlus1(),
 		g_SkillAdditionInfo.GetInfinityArrowMPConsumptionPlus2());
@@ -2565,28 +2593,28 @@ void CGMMng::GetInfinityArrowMPConsumption(LPOBJ lpObj)
 void CGMMng::ControlInfinityArrowMPConsumption0(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus0(iValue);
-	MsgOutput(lpObj->m_Index, "ì¸í”¼ë‹ˆí‹° ì• ë¡œìš° MP ì†Œëª¨ëŸ‰ ë³€ê²½(+0) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "ÀÎÇÇ´ÏÆ¼ ¾Ö·Î¿ì MP ¼Ò¸ð·® º¯°æ(+0) : %d",iValue);
 
 }	
 
 void CGMMng::ControlInfinityArrowMPConsumption1(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus1(iValue);
-	MsgOutput(lpObj->m_Index, "ì¸í”¼ë‹ˆí‹° ì• ë¡œìš° MP ì†Œëª¨ëŸ‰ ë³€ê²½(+1) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "ÀÎÇÇ´ÏÆ¼ ¾Ö·Î¿ì MP ¼Ò¸ð·® º¯°æ(+1) : %d",iValue);
 
 }
 
 void CGMMng::ControlInfinityArrowMPConsumption2(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus2(iValue);
-	MsgOutput(lpObj->m_Index, "ì¸í”¼ë‹ˆí‹° ì• ë¡œìš° MP ì†Œëª¨ëŸ‰ ë³€ê²½(+2) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "ÀÎÇÇ´ÏÆ¼ ¾Ö·Î¿ì MP ¼Ò¸ð·® º¯°æ(+2) : %d",iValue);
 
 }
 
 void CGMMng::ControlInfinityArrowMPConsumption3(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetInfinityArrowMPConsumptionPlus3(iValue);
-	MsgOutput(lpObj->m_Index, "ì¸í”¼ë‹ˆí‹° ì• ë¡œìš° MP ì†Œëª¨ëŸ‰ ë³€ê²½(+3) : %d",iValue);
+	MsgOutput(lpObj->m_Index, "ÀÎÇÇ´ÏÆ¼ ¾Ö·Î¿ì MP ¼Ò¸ð·® º¯°æ(+3) : %d",iValue);
 
 }
 
@@ -2594,18 +2622,18 @@ void CGMMng::SetInfinityArrowTime(LPOBJ lpObj, int iValue)
 {
 	if ( lpObj->Class == CLASS_ELF && lpObj->Type == OBJ_USER && lpObj->ChangeUP == 1 )
 	{
-		MsgOutput(lpObj->m_Index, "ì¸í”¼ë‹ˆí‹° ì• ë¡œìš° ì‹œê°„ ê°•ì œ ì„¤ì • : %dì´ˆ", iValue);
+		MsgOutput(lpObj->m_Index, "ÀÎÇÇ´ÏÆ¼ ¾Ö·Î¿ì ½Ã°£ °­Á¦ ¼³Á¤ : %dÃÊ", iValue);
 	}
 	else
 	{
-		MsgOutput(lpObj->m_Index, "220ë ˆë²¨ ì´ìƒ ë®¤ì¦ˆì—˜í”„ë§Œ ì‚¬ìš©ê°€ëŠ¥í•©ë‹ˆë‹¤.");
+		MsgOutput(lpObj->m_Index, "220·¹º§ ÀÌ»ó ¹ÂÁî¿¤ÇÁ¸¸ »ç¿ë°¡´ÉÇÕ´Ï´Ù.");
 	}
 }
 
 void CGMMng::ControlFireScreamDoubleAttackDistance(LPOBJ lpObj, int iValue)
 {
 	g_SkillAdditionInfo.SetFireScreamExplosionAttackDistance(iValue);
-	MsgOutput(lpObj->m_Index, "íŒŒì´ì–´ìŠ¤í¬ë¦¼ ë”ë¸”ë°ë¯¸ì§€ í­ë°œê±°ë¦¬ ë³€ê²½:%d", iValue);
+	MsgOutput(lpObj->m_Index, "ÆÄÀÌ¾î½ºÅ©¸² ´õºíµ¥¹ÌÁö Æø¹ß°Å¸® º¯°æ:%d", iValue);
 }
 
 // #Season 4.5 NEW FUNCS START
@@ -2747,6 +2775,39 @@ void CGMMng::CmdParty(LPOBJ lpObj,char *szName)
 	GCServerMsgStringSend(szText, lpObj->m_Index, 1);
 }
 
+void CGMMng::CmdSkin(LPOBJ lpObj, char *szMonsterName)
+{
+	if (szMonsterName == NULL)
+	{
+		GCServerMsgStringSend("Result-Invalid Argument", lpObj->m_Index, 1);
+		return;
+	}
+
+	int MonsterClass = atoi(szMonsterName);
+	LPMONSTER_ATTRIBUTE lpMonsterAttr = NULL;
+	if (MonsterClass != 0)
+	{
+		lpMonsterAttr = gMAttr.GetAttr(MonsterClass);
+	}
+	else
+	{
+		lpMonsterAttr = gMAttr.GetAttr(szMonsterName);
+	}
+
+	if (lpMonsterAttr == NULL)
+	{
+		GCServerMsgStringSend("Result-Monster Not Found", lpObj->m_Index, 1);
+		return;
+	}
+
+	if (this->GetType(lpMonsterAttr->m_Index) != OBJ_MONSTER)
+	{
+		GCServerMsgStringSend("Result-Monster Not Found", lpObj->m_Index, 1);
+		return;
+	}
+	lpObj->m_Change = lpMonsterAttr->m_Index;
+	gObjViewportListProtocolCreate(lpObj);
+}
 void CGMMng::CmdSummonMonster(LPOBJ lpObj,char *szMonsterName,int MonsterCount)
 {
 	char szText[256];

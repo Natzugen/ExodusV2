@@ -1338,7 +1338,7 @@ void GameShop::GDSaveStorageItem(int aIndex, GAMESHOP_USER_STORAGE Item)
 	GAMESHOP_GD_SAVE_STORAGEITEM pRequest;
 	PHeadSubSetW((LPBYTE)&pRequest, 0xD3, 1, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 	memcpy(&pRequest.Item, &Item, sizeof(pRequest.Item));
-	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING+1);
+	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING + 1);
 	pRequest.UserIndex = aIndex;
 	cDBSMng.Send((char*)&pRequest, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 }
@@ -1356,7 +1356,7 @@ void GameShop::GDDeleteStorageItem(int aIndex, GAMESHOP_USER_STORAGE Item)
 	GAMESHOP_GD_DEL_STORAGEITEM pRequest;
 	PHeadSubSetW((LPBYTE)&pRequest, 0xD3, 2, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 	memcpy(&pRequest.Item, &Item, sizeof(pRequest.Item));
-	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING+1);
+	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING + 1);
 	pRequest.UserIndex = aIndex;
 	cDBSMng.Send((char*)&pRequest, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 }

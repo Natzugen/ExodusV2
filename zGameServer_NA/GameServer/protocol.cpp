@@ -1705,13 +1705,13 @@ void PChatProc(PMSG_CHATDATA * lpChat, short aIndex)
 	case '/':	// Command
 		if ( slen > 2 )
 		{
-			if(strcmp(&lpChat->chatmsg[1], "ì´ë™ ì¹¼ë¦¬ë§ˆ") == 0) //season4 all changed
+			if(strcmp(&lpChat->chatmsg[1], "ÀÌµ¿ Ä®¸®¸¶") == 0) //season4 all changed
 			{
 				if(IsOKPCBangBenefitAll(lpObj) != FALSE) //season4 add-on :)
 				{
 					if(gMoveCommand.MoveFree2Kalima(lpObj) != FALSE)
 					{
-						LogAddTD("[%s][%s] Use [/ì´ë™ ì¹¼ë¦¬ë§ˆ] PCBANG",lpObj->AccountID, lpObj->Name);
+						LogAddTD("[%s][%s] Use [/ÀÌµ¿ Ä®¸®¸¶] PCBANG",lpObj->AccountID, lpObj->Name);
 						return;
 					}
 				}
@@ -2244,7 +2244,7 @@ void CSPJoinIdPassRequestTEST(PMSG_IDPASS * lpMsg, int aIndex)
 	PHeadSetB((LPBYTE)&spMsg, 0x11, sizeof(spMsg));
 	spMsg.Number = aIndex;
 
-	wsprintf(szId, "ìŠ›ëŒì´%d", logincounttest);
+	wsprintf(szId, "½¸µ¹ÀÌ%d", logincounttest);
 	wsprintf(szPass, "m321", rand()%9);
 	LogAdd("login send : %s %s", szId, szPass);
 
@@ -2402,7 +2402,7 @@ void CGPCharacterCreate( PMSG_CHARCREATE * lpMsg, int aIndex)
 
 	if ( !gCreateCharacter )
 	{
-		GCServerMsgStringSend("ì„œë²„ë¶„í•  ê¸°ê°„ì—ëŠ” ìºë¦­í„°ë¥¼ ìƒì„±í• ìˆ˜ ì—†ìŠµë‹ˆë‹¤", aIndex, 1);
+		GCServerMsgStringSend("¼­¹öºÐÇÒ ±â°£¿¡´Â Ä³¸¯ÅÍ¸¦ »ý¼ºÇÒ¼ö ¾ø½À´Ï´Ù", aIndex, 1);
 		JGCharacterCreateFailSend(aIndex, lpMsg->Name);
 
 		return;
@@ -5847,16 +5847,41 @@ void ItemDurRepaire(LPOBJ lpObj, CItem * DurItem, int pos, int RequestPos)
 	PHeadSetB((LPBYTE)&pResult, 0x34, sizeof(pResult));
 	int itemtype = DurItem->m_Type;
 
-	if( itemtype >= ITEMGET(14,0) 
-		|| (itemtype >= ITEMGET(13,0) && itemtype  < ITEMGET(13,4)) 
-		|| itemtype == ITEMGET(13,10) 
-		|| (itemtype >= ITEMGET(12, 7) && itemtype < ITEMGET(12,36)) 
-		|| ( itemtype > ITEMGET(12,43) && itemtype < ITEMGET(12, 49) )
-		|| ( itemtype > ITEMGET(12, 50) && itemtype < ITEMGET(13,0) )
-		|| itemtype == ITEMGET(4,7) || itemtype == ITEMGET(4,15) 
+	//if( itemtype >= ITEMGET(14,0) 
+	//	|| (itemtype >= ITEMGET(13,0) && itemtype  < ITEMGET(13,4)) 
+	//	|| itemtype == ITEMGET(13,10) 
+	//	|| (itemtype >= ITEMGET(12, 7) && itemtype < ITEMGET(12,36)) 
+	//	|| ( itemtype > ITEMGET(12,43) && itemtype < ITEMGET(12, 49) )
+	//	|| ( itemtype > ITEMGET(12, 50) && itemtype < ITEMGET(13,0) )
+	//	|| itemtype == ITEMGET(4,7) || itemtype == ITEMGET(4,15) 
 #ifdef NEWWINGS
-		&& !IS_NEWWINGS(itemtype)
+	if (IS_NEWWINGS(itemtype))
+	{
+		pResult.Money = GetNeedMoneyItemDurRepaire(DurItem, RequestPos);
+
+		if ((lpObj->Money - pResult.Money) < 1)
+		{
+			pResult.Money = 0;
+		}
+		else
+		{
+			lpObj->Money -= pResult.Money;
+			pResult.Money = lpObj->Money;
+			DurItem->m_Durability = (float)((int)DurItem->m_BaseDurability);
+			DurItem->Convert(DurItem->m_Type, DurItem->m_Option1, DurItem->m_Option2, DurItem->m_Option3, DurItem->m_NewOption, DurItem->m_SetOption, DurItem->m_ItemOptionEx, NULL, 0xFF, 0, CURRENT_DB_VERSION);
+			GCItemDurSend(lpObj->m_Index, pos, DurItem->m_Durability, FALSE);
+		}
+		DataSend(lpObj->m_Index, (LPBYTE)&pResult, pResult.h.size);
+		return;
+	}
 #endif
+	if (itemtype >= ITEMGET(14, 0)
+		|| (itemtype >= ITEMGET(13, 0) && itemtype  < ITEMGET(13, 4))
+		|| itemtype == ITEMGET(13, 10)
+		|| (itemtype >= ITEMGET(12, 7) && itemtype < ITEMGET(12, 36))
+		|| (itemtype > ITEMGET(12, 43) && itemtype < ITEMGET(12, 49))
+		|| (itemtype > ITEMGET(12, 50) && itemtype < ITEMGET(13, 0))
+		|| itemtype == ITEMGET(4, 7) || itemtype == ITEMGET(4, 15)
 		)
 	{
 		pResult.Money = 0;
@@ -7029,15 +7054,15 @@ void CGPShopAnsClose(int aIndex, BYTE btResult)
 {
 	if( gObj[aIndex].IsOffTrade)
 	{
-	//	gObjDel(aIndex);
+	//gObjDel(aIndex);
 	}
-	// ----
+	 //----
 	//gObj[aIndex].IsOffTrade = false;
 	// ----
-gObj[aIndex].IsOffTrade = false; //-> quskevel fix
+	gObj[aIndex].IsOffTrade = false; //-> quskevel fix
 	gObj[aIndex].CallToClose = true; //-> quskevel fix
-	LogAddTD("[PShop] [%s][%s] Close PShop",
-		gObj[aIndex].AccountID, gObj[aIndex].Name);
+
+	LogAddTD("[PShop] [%s][%s] Close PShop",gObj[aIndex].AccountID, gObj[aIndex].Name);
 
 	PMSG_ANS_PSHOP_CLOSE pMsg;
 
@@ -7052,7 +7077,7 @@ gObj[aIndex].IsOffTrade = false; //-> quskevel fix
 	{
 		MsgSendV2(&gObj[aIndex], (LPBYTE)&pMsg, pMsg.h.size);
 	}
-		if( gObj[aIndex].IsOffTrade == false && gObj[aIndex].CallToClose == true && gObj[aIndex].gOffTradeTick > 60 ) //->quskevel fix
+	if (gObj[aIndex].IsOffTrade == false && gObj[aIndex].CallToClose == true && gObj[aIndex].gOffTradeTick > 60) //->quskevel fix
 	{
 		gObjDel(aIndex);
 		LogAddTD("[OffTrade][%s][%s] Delete empty offtrader after 60 seconds!", gObj[aIndex].AccountID, gObj[aIndex].Name);
@@ -7151,7 +7176,7 @@ void CGPShopReqBuyList(PMSG_REQ_BUYLIST_FROM_PSHOP * lpMsg, int aSourceIndex)
 		return;
 	}
 
-	if ( gOpenDelay > lpObj->gOpenDelayTick )
+	if (gOpenDelay > lpObj->gOpenDelayTick)
 	{
 		int Delay = gOpenDelay - lpObj->gOpenDelayTick;
 		char Text[100];
@@ -7162,12 +7187,17 @@ void CGPShopReqBuyList(PMSG_REQ_BUYLIST_FROM_PSHOP * lpMsg, int aSourceIndex)
 	}
 	else
 	{
-		LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]",	gObj[aSourceIndex].AccountID, gObj[aSourceIndex].Name, lpObj->AccountID, lpObj->Name);
-
-		gObj[aSourceIndex].m_bPShopWantDeal = true;		gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
-		memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
-		::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
+	LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]", gObj[aSourceIndex].AccountID, gObj[aSourceIndex].Name, lpObj->AccountID, lpObj->Name);
+	gObj[aSourceIndex].m_bPShopWantDeal = true;		
+	gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
+	memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
+	::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
 	}
+
+	gObj[aSourceIndex].m_bPShopWantDeal = true;
+	gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
+	memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
+	::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
 }
 
 struct PMSG_BUYLIST_FROM_PSHOP
@@ -11037,10 +11067,11 @@ void CGMagicAttack(PMSG_MAGICATTACK* lpMsg, int aIndex)
 	int usernumber = MAKE_NUMBERW(lpMsg->NumberH, lpMsg->NumberL); //loc3
 	CMagicInf * lpMagic; //loc4
 	WORD MagicNumber = MAKE_NUMBERW(lpMsg->MagicNumberH, lpMsg->MagicNumberL); //loc5
-	if(usernumber == OBJMAX && (MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563))
-	{
+
+	if (usernumber == OBJMAX && (MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563))
+		{
 		return;
-	}
+		}
 
 	if ( usernumber < 0 || usernumber > OBJMAX-1 )
 	{
@@ -12111,7 +12142,7 @@ void CGBeattackRecv(BYTE* lpRecv, int aIndex, int magic_send)
 		{
 			if ( lpObj->DurMagicKeyChecker.IsValidDurationTime(lpMsg->MagicKey) == FALSE )
 			{
-				LogAddC(0, "â˜…â˜…â˜…â˜… InValid DurationTime Key = %d ( Time : %d) [%d][%d]", 
+				LogAddC(0, "¡Ú¡Ú¡Ú¡Ú InValid DurationTime Key = %d ( Time : %d) [%d][%d]", 
 					lpMsg->MagicKey, 
 					lpObj->DurMagicKeyChecker.GetValidDurationTime(lpMsg->MagicKey),
 					lpObj->AccountID, 
@@ -12122,7 +12153,7 @@ void CGBeattackRecv(BYTE* lpRecv, int aIndex, int magic_send)
 
 			if ( lpObj->DurMagicKeyChecker.IsValidCount(lpMsg->MagicKey) == FALSE )
 			{
-				LogAddC(0, "â˜…â˜…â˜…â˜… InValid VailidCount = %d ( Count : %d) [%d][%d]", 
+				LogAddC(0, "¡Ú¡Ú¡Ú¡Ú InValid VailidCount = %d ( Count : %d) [%d][%d]", 
 					lpMsg->MagicKey, 
 					lpObj->DurMagicKeyChecker.GetValidCount(lpMsg->MagicKey), 
 					lpObj->AccountID, 
@@ -14158,7 +14189,7 @@ void GCGetMutoNumRecv(PMSG_GETMUTONUMBER* lpMsg, int aIndex)
 	if ( gObj[aIndex].MutoNumber != 0 )
 	{
 		char msg[255];
-		wsprintf(msg, "ì´ë¯¸ ë£¨ê°€ë“œì˜ ìˆ«ìžê°€ ìžˆìŠµë‹ˆë‹¤");
+		wsprintf(msg, "ÀÌ¹Ì ·ç°¡µåÀÇ ¼ýÀÚ°¡ ÀÖ½À´Ï´Ù");
 		GCServerMsgStringSend(msg, aIndex, 1);
 		return;
 	}
@@ -14972,7 +15003,7 @@ void CGReqMoveOtherServer(PMSG_REQ_MOVE_OTHERSERVER * lpMsg, int aIndex)
 		lpObj->m_MoveOtherServer = false;
 
 		LogAddTD("[CharTrasfer] Fail (JoominNumber) [%s][%s]", lpObj->AccountID, lpObj->Name);
-		GCServerMsgStringSend("ë¬¸ì œ ë°œìƒì‹œ change@webzen.co.krë¡œ ë¬¸ì˜í•´ ì£¼ì‹œê¸°ë°”ëžë‹ˆë‹¤", lpObj->m_Index, 1);
+		GCServerMsgStringSend("¹®Á¦ ¹ß»ý½Ã change@webzen.co.kr·Î ¹®ÀÇÇØ ÁÖ½Ã±â¹Ù¶ø´Ï´Ù", lpObj->m_Index, 1);
 		return;
 	}
 
@@ -15340,7 +15371,7 @@ void GCGuildViewportInfo(PMSG_REQ_GUILDVIEWPORT * aRecv, int aIndex)
 	}
 	else
 	{
-		LogAddTD("â˜…â˜…â˜† ê¸¸ë“œ ì •ë³´ ì°¾ì„ìˆ˜ ì—†ìŒ. ì´ë¦„ : [%s] ë²ˆí˜¸ : %d", lpObj->Name, dwGuildNumber);
+		LogAddTD("¡Ú¡Ú¡Ù ±æµå Á¤º¸ Ã£À»¼ö ¾øÀ½. ÀÌ¸§ : [%s] ¹øÈ£ : %d", lpObj->Name, dwGuildNumber);
 	}
 }
 
@@ -15877,14 +15908,14 @@ void CGRelationShipReqKickOutUnionMember(PMSG_KICKOUT_UNIONMEMBER_REQ* aRecv, in
 	if ( gObjIsConnected(&gObj[aIndex]) == FALSE )
 	{
 		GCResultSend(aIndex, 0x51, 3);
-		MsgOutput(aIndex, "â˜… Terminated User.");
+		MsgOutput(aIndex, "¡Ú Terminated User.");
 		return;
 	}
 
 	if ( lpObj->lpGuild == NULL )
 	{
 		GCResultSend(aIndex, 0x51, 3);
-		MsgOutput(aIndex, "â˜† Terminated Guild.");
+		MsgOutput(aIndex, "¡Ù Terminated Guild.");
 		return;
 	}
 
@@ -19423,26 +19454,28 @@ void GCMonkMagicAttack(PMSG_MAGICATTACK * lpMsg, int aIndex)
 
 	WORD MagicNumber = MAKE_NUMBERW(lpMsg->MagicNumberH, lpMsg->MagicNumberL);
 
-if( MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563)
+	if (MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563) 
 	{
 		lpObj = &gObj[aIndex];
-		if ( lpObj->Type == OBJ_USER )
-		{
+		if (lpObj->Type == OBJ_USER)
+			 {
 			lpMagic = gObjGetMagicSearch(lpObj, MagicNumber);
-		}else{
+			}
+		else{
 			lpMagic = gObjGetMagic(lpObj, MagicNumber);
+			
 		}
-		if ( lpMagic == NULL )
-		{
+		if (lpMagic == NULL)
+			 {
 			return;
-		}
-		int usemana = gObjUseSkill.GetUseMana(aIndex,lpMagic);
-		if(usemana >= 0)
-		{
+			}
+		int usemana = gObjUseSkill.GetUseMana(aIndex, lpMagic);
+		if (usemana >= 0)
+			 {
 			lpObj->Mana = usemana;
-			GCManaSend(aIndex,lpObj->Mana,0xFF,0,lpObj->BP);
-			GCMonkMagicAttackNumberSend(&gObj[aIndex],MagicNumber,gObj[aIndex].m_wDarkSideTargetList[0],TRUE);
-		}
+			GCManaSend(aIndex, lpObj->Mana, 0xFF, 0, lpObj->BP);
+			GCMonkMagicAttackNumberSend(&gObj[aIndex], MagicNumber, gObj[aIndex].m_wDarkSideTargetList[0], TRUE);
+			}
 		return;
 	}
 

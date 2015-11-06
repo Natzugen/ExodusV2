@@ -967,11 +967,11 @@ void gObjMonsterStateProc(LPOBJ lpObj, int aMsgCode, int aIndex, int aMsgSubCode
 								}
 							}
 						}
-						else if( wall == 0x02 ) // Ã„Â³Â¸Â¯Ã…ÃÂ°Â¡ Â¾Ã•Â¿Â¡ Ã€Ã–Ã€Â¸Â¸Ã©..
+						else if( wall == 0x02 ) // Ä³¸¯ÅÍ°¡ ¾Õ¿¡ ÀÖÀ¸¸é..
 						{
 						}
-						else {	// ÂºÂ®Ã€ÃŒÂ°Ã…Â³Âª ÃÃŸÂ°Â£Â¿Â¡ Â¸Â·Ã‡Ã´ Ã€Ã–Â´Ã™Â¸Ã©..
-							//lpObj->TargetNumber = aIndex;	// Â°Ã¸Â°ÃÂ»Ã³Â´Ã«Â·ÃŽ ÃÃ¶ÃÂ¤Ã‡ÃÂ°Ã­	
+						else {	// º®ÀÌ°Å³ª Áß°£¿¡ ¸·Çô ÀÖ´Ù¸é..
+							//lpObj->TargetNumber = aIndex;	// °ø°Ý»ó´ë·Î ÁöÁ¤ÇÏ°í	
 						}
 					}
 				}
@@ -2198,7 +2198,7 @@ void gObjMonsterBaseAct(LPOBJ lpObj)
 				lpObj->m_ActState.Attack = 0;
 				lpObj->TargetNumber = -1;
 				lpObj->NextActionTime = 500;
-				//if( lpObj->m_Attribute == 100 )	LogAdd("Â°?Â°??? ???????? ??Â±? ?Â®??.");
+				//if( lpObj->m_Attribute == 100 )	LogAdd("°?°??? ???????? ??±? ?®??.");
 			}
 
 			int actcode1 = (rand()%2);
@@ -2210,7 +2210,7 @@ void gObjMonsterBaseAct(LPOBJ lpObj)
 
 			if ( actcode1 == 0 )
 			{
-				//if( lpObj->m_Attribute == 100 )	LogAdd("??Â±? ?Â®??.");
+				//if( lpObj->m_Attribute == 100 )	LogAdd("??±? ?®??.");
 				lpObj->m_ActState.Rest = 1;
 				lpObj->NextActionTime = 500;
 				//lpObj->NextActionTime = 1;
@@ -2290,7 +2290,7 @@ void gObjMonsterBaseAct(LPOBJ lpObj)
 
 					if( lpObj->m_Attribute == 100 )	
 					{
-						//if( lpObj->TargetNumber>=0) LogAdd("???Â» ???? ??Âµ?????.");
+						//if( lpObj->TargetNumber>=0) LogAdd("???» ???? ??µ?????.");
 					}
 				}
 				else 
@@ -3229,10 +3229,10 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTargetObj)
 
 	if ( lpObj->Class == 275 ) 
 	{
-		LogAddTD("[Â¡ÃšÂ¡ÃšKundun EVENT] Kundun die, Killer [%s][%s]",
+		LogAddTD("[¡Ú¡ÚKundun EVENT] Kundun die, Killer [%s][%s]",
 			lpTargetObj->AccountID, lpTargetObj->Name);
 
-		KUNDUN_EVENT_LOG.Output("[Â¡ÃšÂ¡ÃšKundun EVENT] Kundun die, Killer [%s][%s]",
+		KUNDUN_EVENT_LOG.Output("[¡Ú¡ÚKundun EVENT] Kundun die, Killer [%s][%s]",
 			lpTargetObj->AccountID, lpTargetObj->Name);
 
 		int MaxHitUser = gObjMonsterTopHitDamageUser(lpObj);
@@ -3247,18 +3247,18 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTargetObj)
 			if ( CHECK_LIMIT(MaxHitUser, OBJMAX) )
 			{
 
-				LogAddTD("[Â¡ÃšKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
+				LogAddTD("[¡ÚKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
 					i, gObj[MaxHitUser].AccountID, gObj[MaxHitUser].Name);
 
-				KUNDUN_EVENT_LOG.Output("[Â¡ÃšKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
+				KUNDUN_EVENT_LOG.Output("[¡ÚKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
 					i, gObj[MaxHitUser].AccountID, gObj[MaxHitUser].Name);
 			}
 			else
 			{
-				LogAddTD("[Â¡ÃšKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
+				LogAddTD("[¡ÚKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
 					i, lpTargetObj->AccountID, lpTargetObj->Name);
 
-				KUNDUN_EVENT_LOG.Output("[Â¡ÃšKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
+				KUNDUN_EVENT_LOG.Output("[¡ÚKundun EVENT] In KALIMA(7), ItemDrop MaxHitUser [%d][%s][%s]",
 					i, lpTargetObj->AccountID, lpTargetObj->Name);
 			}
 
@@ -3270,16 +3270,16 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTargetObj)
 
 			if ( OBJMAX_RANGE(MaxHitUser ))
 			{
-				LogAddTD("[Â¡Ã›Kundun EVENT] Drop Item [%d][%s][%s]",
+				LogAddTD("[¡ÛKundun EVENT] Drop Item [%d][%s][%s]",
 					i, gObj[MaxHitUser].AccountID, gObj[MaxHitUser].Name);
-				KUNDUN_EVENT_LOG.Output("[Â¡Ã›Kundun EVENT] Drop Item [%d][%s][%s]",
+				KUNDUN_EVENT_LOG.Output("[¡ÛKundun EVENT] Drop Item [%d][%s][%s]",
 					i, gObj[MaxHitUser].AccountID, gObj[MaxHitUser].Name);
 			}
 			else
 			{
-				LogAddTD("[Â¡Ã›Kundun EVENT] Drop Item [%d][%s][%s]",
+				LogAddTD("[¡ÛKundun EVENT] Drop Item [%d][%s][%s]",
 					i, lpTargetObj->AccountID, lpTargetObj->Name);
-				KUNDUN_EVENT_LOG.Output("[Â¡Ã›Kundun EVENT] Drop Item [%d][%s][%s]",
+				KUNDUN_EVENT_LOG.Output("[¡ÛKundun EVENT] Drop Item [%d][%s][%s]",
 					i, lpTargetObj->AccountID, lpTargetObj->Name);
 			}
 
@@ -3300,8 +3300,8 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTargetObj)
 			{
 				MakeRewardSetItem(MaxHitUser, cDropX, cDropY, 1, lpObj->MapNumber);
 
-				LogAddTD("[Â¡Ã›Kundun EVENT] Drop SetItem ");
-				KUNDUN_EVENT_LOG.Output("[Â¡Ã›Kundun EVENT] Drop SetItem ");
+				LogAddTD("[¡ÛKundun EVENT] Drop SetItem ");
+				KUNDUN_EVENT_LOG.Output("[¡ÛKundun EVENT] Drop SetItem ");
 				continue;
 			}
 		}
@@ -3898,7 +3898,7 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTargetObj)
 		}
 		else
 		{
-			option1rand=gItemSkillDropPer; //test for skill
+			option1rand = gItemSkillDropPer;//tet skill drop //6;
 			option2rand= gItemLuckyDropPer; //lucky
 			option3rand=rand()%100;
 			optionc=rand()%3; //opt jol

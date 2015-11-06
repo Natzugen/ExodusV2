@@ -9,7 +9,7 @@
 // -------------------------------------------------------------------------------
 
 #define WIN32_LEAN_AND_MEAN
-#define _WIN32_WINNT			0x500
+#define _WIN32_WINNT			0x501
 // -------------------------------------------------------------------------------
 
 //#define LICENSE
@@ -171,3 +171,4 @@
 #define PROTOCOL_ATTACK			0x11
 #define PROTOCOL_BEATTACK		0xDB//0xD7
 // -------------------------------------------------------------------------------
+#define __CustomTitle "Salvation"

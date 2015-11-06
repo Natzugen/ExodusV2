@@ -1174,7 +1174,7 @@ void CCastleSiege::Run() //Identical
 				LogAddC(4, "[CastleSiege] LEFT-TIME : CASTLESIEGE_LEFTTIME_ENDSIEGE");
 				break;
 			case CASTLESIEGE_LEFTTIME_NOTRUNNING:
-			//	LogAddC(4, "[CastleSiege] LEFT-TIME : CASTLESIEGE_LEFTTIME_NOTRUNNING");
+				//LogAddC(4, "[CastleSiege] LEFT-TIME : CASTLESIEGE_LEFTTIME_NOTRUNNING");
 				break;
 			}
 		}
@@ -1196,17 +1196,16 @@ void CCastleSiege::SetState_IDLE_1(BOOL bSetRemainMsec)
 		time_t ttETime;
 		tm tmETime;
 		double dResultSecond;
-		
-		memset(&tmETime,0x00,sizeof(tmETime));
+
+		memset(&tmETime, 0x00, sizeof(tmETime));
 
 		tmETime.tm_year = m_tmStartDate.wYear - 1900;
 		tmETime.tm_mon = m_tmStartDate.wMonth - 1;
 		tmETime.tm_mday = m_tmStartDate.wDay;
 
-		
 		ttETime = mktime(&tmETime);
 		time(&ttSTime);
-	
+
 		dResultSecond = difftime(ttETime,ttSTime);
 		this->m_iCS_REMAIN_MSEC = dResultSecond * (double)1000.0;
 	}
@@ -1403,14 +1402,14 @@ void CCastleSiege::SetState_ENDSIEGE(BOOL bSetRemainMsec)
 		tm tmETime;
 		double dResultSecond;
 
-		memset(&tmETime,0,sizeof(tmETime));
+		memset(&tmETime, 0x00, sizeof(tmETime));
 
 		tmETime.tm_year = m_tmEndDate.wYear - 1900;
 		tmETime.tm_mon = m_tmEndDate.wMonth - 1;
 		tmETime.tm_mday = m_tmEndDate.wDay;
 
-		ttETime = mktime(&tmETime);
 		time(&ttSTime);
+		ttETime = mktime(&tmETime);
 
 		dResultSecond = difftime(ttETime,ttSTime);
 		this->m_iCS_REMAIN_MSEC = dResultSecond * (double)1000.0;
@@ -1467,7 +1466,7 @@ void CCastleSiege::ProcState_IDLE_1()
 	{
 		this->m_iCS_REMAIN_MSEC -= iTICK_MSEC;
 		this->m_iCS_TICK_COUNT = GetTickCount();
-	//	LogAddC(3, "RUN ProcState_IDLE_1()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_IDLE_1()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1490,7 +1489,7 @@ void CCastleSiege::ProcState_REGSIEGE()
 			this->SendAllUserAnyMsg(lMsg.Get(1614), 1);
 			this->m_dwEVENT_MSG_TICK_COUNT = GetTickCount();
 		}
-	//	LogAddC(3, "RUN ProcState_REGSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_REGSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1507,7 +1506,7 @@ void CCastleSiege::ProcState_IDLE_2()
 	{
 		this->m_iCS_REMAIN_MSEC -= iTICK_MSEC;
 		this->m_iCS_TICK_COUNT = GetTickCount();
-	//	LogAddC(3, "RUN ProcState_IDLE_2()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_IDLE_2()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1530,7 +1529,7 @@ void CCastleSiege::ProcState_REGMARK()
 			this->SendAllUserAnyMsg(lMsg.Get(1615), 1);
 			this->m_dwEVENT_MSG_TICK_COUNT = GetTickCount();
 		}
-	//	LogAddC(3, "RUN ProcState_REGMARK()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_REGMARK()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1554,7 +1553,7 @@ void CCastleSiege::ProcState_IDLE_3()
 			this->m_dwEVENT_MSG_TICK_COUNT = GetTickCount();
 		}
 
-	//	LogAddC(3, "RUN ProcState_IDLE_3()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_IDLE_3()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1577,7 +1576,7 @@ void CCastleSiege::ProcState_NOTIFY()
 			this->SendAllUserAnyMsg(lMsg.Get(1617), 1);
 			this->m_dwEVENT_MSG_TICK_COUNT = GetTickCount();
 		}
-	//	LogAddC(3, "RUN ProcState_NOTIFY()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_NOTIFY()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1610,7 +1609,7 @@ void CCastleSiege::ProcState_READYSIEGE()
 				this->m_dwCS_STARTTIME_TICK_COUNT = GetTickCount();
 			}
 		}
-	//	LogAddC(3, "RUN ProcState_READYSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_READYSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1676,7 +1675,7 @@ void CCastleSiege::ProcState_STARTSIEGE()
 			this->m_dwEVENT_MSG_TICK_COUNT = GetTickCount();
 		}
 
-	//	LogAddC(3, "RUN ProcState_STARTSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_STARTSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 	
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1713,7 +1712,7 @@ void CCastleSiege::ProcState_ENDSIEGE()
 		this->m_iCS_REMAIN_MSEC -= iTICK_MSEC;
 		this->m_iCS_TICK_COUNT = GetTickCount();
 
-	//	LogAddC(3, "RUN ProcState_ENDSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_ENDSIEGE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -1731,7 +1730,7 @@ void CCastleSiege::ProcState_ENDCYCLE()
 		this->m_iCS_REMAIN_MSEC -= iTICK_MSEC;
 		this->m_iCS_TICK_COUNT = GetTickCount();
 
-	//	LogAddC(3, "RUN ProcState_ENDCYCLE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
+		//LogAddC(3, "RUN ProcState_ENDCYCLE()\tLEFT-MSEC:%d", this->m_iCS_REMAIN_MSEC);
 	}
 
 	if( this->m_iCS_REMAIN_MSEC <= 0 )
@@ -2015,7 +2014,7 @@ int CCastleSiege::CheckSync()
 			 time_t ttETime;
 			 tm tmETime;
 			 double dResultSecond;
-			 memset(&tmETime,0x00,sizeof(tmETime));
+			 memset(&tmETime, 0x00, sizeof(tmETime));
 
 			 tmETime.tm_year = this->m_tmFixCastleStateStartDate.wYear - 1900;
 			 tmETime.tm_mon = this->m_tmFixCastleStateStartDate.wMonth - 1;
@@ -2098,8 +2097,8 @@ int CCastleSiege::CheckSync()
 
 		 _SYSTEMTIME tmSchduleDate;
 	
-		time_t ttSTime;
-		time_t ttETime;
+		 time_t ttSTime;
+		 time_t ttETime;
 		struct tm tmETime;
 		double dResultSecond;
 
@@ -2114,7 +2113,7 @@ int CCastleSiege::CheckSync()
 		tmSchduleDate.wHour = pScheData_RR.m_iADD_HOUR;
 		tmSchduleDate.wMinute = pScheData_RR.m_iADD_MIN;
 
-		memset(&tmETime,0x00,sizeof(tmETime));
+		memset(&tmETime, 0x00, sizeof(tmETime));
 
 		tmETime.tm_year = tmSchduleDate.wYear - 1900;
 		tmETime.tm_mon = tmSchduleDate.wMonth - 1;

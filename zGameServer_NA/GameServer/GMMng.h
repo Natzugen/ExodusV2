@@ -203,6 +203,7 @@ public:
 	void MsgYellow(int aIndex,char* szMsg,...);
 	void CmdAbility(LPOBJ lpObj,char *szName);
 	void CmdParty(LPOBJ lpObj,char *szName);
+	void CmdSkin(LPOBJ lpObj, char *szMonsterName);
 	void CmdSummonMonster(LPOBJ lpObj,char *szMonsterName,int MonsterCount);
 	void CmdClearMonster(LPOBJ lpObj,int Dis);
 	void CmdClearItem(LPOBJ lpObj,int Dis);

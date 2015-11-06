@@ -1933,6 +1933,23 @@ TMonsterSkillElementInfo::TMonsterSkillElementInfo()
 	this->Reset();
 }
 
+//void MessageSendEx2(int Type, char * Message, ...);
+void MessageSendEx2(int Type, char * Message, ...)
+{
+	char szTemp[1024];
+	va_list pArguments;
+	va_start(pArguments, Message);
+	vsprintf(szTemp, Message, pArguments);
+	va_end(pArguments);
+	// ----
+	CHAT_WHISPER_EX pMessage;
+	//memcpy(pMessage.Name, Sender, 10);
+	memcpy(pMessage.Message, szTemp, 90);
+	pMessage.Type = Type;
+	pMessage.Head.set((LPBYTE)&pMessage, 2, sizeof(CHAT_WHISPER_EX));
+	DataSendAll((LPBYTE)&pMessage, pMessage.Head.size);
+}
+
 void gObjSetBP(int aIndex)
 {
 	int Strength	= gObj[aIndex].Strength + gObj[aIndex].AddStrength;
@@ -2977,12 +2994,36 @@ BOOL gObjSetCharacter(LPBYTE lpdata, int aIndex)
 	{
 		lpObj->Authority = 1;
 	}
-
-	if ( (lpMsg->CtlCode & 0x20 ) == 0x20 )
+	BOOL g_GMNotice = GetPrivateProfileIntA("GameServerInfo", "GMNotice", 1, ("../Data/commonserver.cfg"));
+	if (g_GMNotice == TRUE)
 	{
-		lpObj->Authority = 0x20;
-		LogAddC(2, "(%s)(%s) Set Event GM", lpObj->AccountID, lpObj->Name);
-		cManager.ManagerAdd(lpObj->Name, lpObj->m_Index); //Season 2.5 add-on
+		if ((lpMsg->CtlCode & 0x20) == 0x20)
+		{
+			lpObj->Authority = 0x20;
+			LogAddC(2, "(%s)(%s) Set Event GM", lpObj->AccountID, lpObj->Name);
+			cManager.ManagerAdd(lpObj->Name, lpObj->m_Index); //Season 2.5 add-on
+			char szTemp[128];
+			sprintf(szTemp, "GameMaster %s is now online!", lpObj->Name);
+			AllSendServerMsg(szTemp);
+		}
+	}
+
+	//revisar mensaje de usuario conectado
+	BOOL g_UserSwitch = GetPrivateProfileIntA("GameServerInfo", "NoticeSwitch", 1, ("../Data/commonserver.cfg"));
+
+	if (g_UserSwitch == TRUE)
+	{
+
+		char szTemp[128];
+		if ((lpMsg->CtlCode & 0x00) == 0x00)
+		{
+			//lpObj->Authority = 0x20;
+			//LogAddC(2, "(%s)(%s) Set Event GM", lpObj->AccountID, lpObj->Name);
+			//cManager.ManagerAdd(lpObj->Name, lpObj->m_Index); //Season 2.5 add-on
+			int g_UserNotice = GetPrivateProfileIntA("GameServerInfo", "UserNotice", 1, ("../Data/commonserver.cfg"));
+			sprintf(szTemp, "User %s has logged in!", lpObj->Name);
+			MessageSendEx2(g_UserNotice, "%s", szTemp);
+		}
 	}
 
 	if(lpObj->Authority == 32) //Season3 add-on
@@ -3642,7 +3683,7 @@ BOOL gObjSetMonster(int aIndex, int MonsterClass)
 		{
 			if ( gObjSetMonster(iSL, 76) == FALSE )
 			{
-				MsgBox("?ÂµÂ°??????? ???Â¤ ????");
+				MsgBox("?µ°??????? ???¤ ????");
 				return false;
 			}
 
@@ -3651,7 +3692,7 @@ BOOL gObjSetMonster(int aIndex, int MonsterClass)
 		}
 		else
 		{
-			MsgBox("?ÂµÂ°??????? ???Â¤ ????");
+			MsgBox("?µ°??????? ???¤ ????");
 			return false;
 		}
 	}
@@ -6171,7 +6212,7 @@ void gObjGiveItemSearch(LPOBJ lpObj, int maxlevel)
 					}
 					else if( result > maxlevel ) result = maxlevel;
 
-					if( (type == 4 && index == 7) || (type == 4 && index == 15) )	// ?Â®Â±?,?Â­Â»? ???? ????
+					if( (type == 4 && index == 7) || (type == 4 && index == 15) )	// ?®±?,?­»? ???? ????
 					{
 						result = 0;
 					}
@@ -6310,7 +6351,7 @@ void gObjGiveItemWarehouseSearch(LPOBJ lpObj, int maxlevel)
 					}
 					else if( result > maxlevel ) result = maxlevel;
 
-					if( (type == 4 && index == 7) || (type == 4 && index == 15) )	// ?Â®Â±?,?Â­Â»? ???? ????
+					if( (type == 4 && index == 7) || (type == 4 && index == 15) )	// ?®±?,?­»? ???? ????
 					{
 						result = 0;
 					}
@@ -8084,7 +8125,7 @@ void gObjSpriteDamage(LPOBJ lpObj, int damage)
 					CDarkSpirit::SendLevelmsg(lpObj->m_Index, 8, 1, (BYTE)-1);
 				}
 
-				LogAddTD("[%s][%s] ???Â©??????Â»? Item is Broken because durability is exhausted [%u]", lpObj->AccountID,lpObj->Name,lpObj->pInventory[8].m_Number);
+				LogAddTD("[%s][%s] ???©??????»? Item is Broken because durability is exhausted [%u]", lpObj->AccountID,lpObj->Name,lpObj->pInventory[8].m_Number);
 			}
 
 			GCItemDurSend(lpObj->m_Index, 8, sprite->m_Durability, 0);
@@ -9158,7 +9199,7 @@ void gObjWingDurProc(LPOBJ lpObj)
 {
 	BYTE send_dur=0;
 
-	// ???? ???????Â­?? ?Â»Â±?Â·? ?? ??Â°?..
+	// ???? ???????­?? ?»±?·? ?? ??°?..
 	return;
 
 	if( lpObj->pInventory[7].IsItem() == TRUE )
@@ -9180,7 +9221,7 @@ void gObjWingDurProc(LPOBJ lpObj)
 				GCInventoryItemDeleteSend(lpObj->m_Index, 7, 0);
 			}
 		}
-		//LogAdd("??Â°? ?Â»Â±?Â·? %f",lpObj->pInventory[7].m_Durability);
+		//LogAdd("??°? ?»±?·? %f",lpObj->pInventory[7].m_Durability);
 		return;
 	}
 }
@@ -15172,12 +15213,12 @@ BYTE gObjInventoryTradeMove(LPOBJ lpObj, BYTE source, BYTE target)
 	return -1;
 }
 
-// ?Â®Â·???Âµ????Â­ ?Â®Â·???Âµ?Â·? ??Âµ?
+// ?®·???µ????­ ?®·???µ?·? ??µ?
 BYTE gObjTradeTradeMove(LPOBJ lpObj, BYTE source, BYTE target)
 {
 	int h,w;
 	int iwidth,iheight;
-	BYTE TempTradeMap[TRADE_BOX_MAP_SIZE];				// Â±????? ???Â©?? ????
+	BYTE TempTradeMap[TRADE_BOX_MAP_SIZE];				// ±????? ???©?? ????
 	int blank;
 
 	if(source > TRADE_BOX_SIZE)
@@ -15195,19 +15236,19 @@ BYTE gObjTradeTradeMove(LPOBJ lpObj, BYTE source, BYTE target)
 		return -1;
 	}
 
-	// ??Â±?Â·??? ???????? ????????Â°??
+	// ??±?·??? ???????? ????????°??
 	if(lpObj->Trade[target].IsItem() == 1)
 	{
 		return -1;
 	}
 
-	// ??Â±?Â·??? Â°??? ???????? ????????Â°??
+	// ??±?·??? °??? ???????? ????????°??
 	if(lpObj->TargetNumber < 0)
 	{
 		return -1;
 	}
 
-	// Â°?Â·?Â°? ????Âµ?Â°??? Â°?Â·????? ????Â¶??? ???????Â» ??Â±??? ????.
+	// °?·?°? ????µ?°??? °?·????? ????¶??? ???????» ??±??? ????.
 	if(lpObj->m_IfState.use == 0 || lpObj->m_IfState.type != 1)
 	{
 		return -1;
@@ -15220,8 +15261,8 @@ BYTE gObjTradeTradeMove(LPOBJ lpObj, BYTE source, BYTE target)
 
 	gObjTradeItemBoxSet(lpObj->m_Index,source,iwidth,iheight,255);
 
-	// ?????????? ?Â®Â·???Âµ??? ??????????.
-	// ?Â®Â·???Âµ??? ?Â§??Â°? ?????????? ???Â©????.
+	// ?????????? ?®·???µ??? ??????????.
+	// ?®·???µ??? ?§??°? ?????????? ???©????.
 
 	w = target % 8;
 	h = target / 8;
@@ -15232,7 +15273,7 @@ BYTE gObjTradeTradeMove(LPOBJ lpObj, BYTE source, BYTE target)
 		return -1;
 	}
 
-	// ?????????? ???Â©
+	// ?????????? ???©
 	if(*(BYTE*)(lpObj->TradeMap + h * 8 + w) == 255)
 	{
 		blank = gObjTradeRectCheck(lpObj->m_Index,w,h,iwidth,iheight);
@@ -15242,11 +15283,11 @@ BYTE gObjTradeTradeMove(LPOBJ lpObj, BYTE source, BYTE target)
 			memcpy(lpObj->TradeMap,TempTradeMap,TRADE_BOX_MAP_SIZE);
 			return -1;
 		}
-		else	// ???????Â®?? ???Â®Â°? ??????
+		else	// ???????®?? ???®°? ??????
 		{
 			lpObj->Trade[blank] = lpObj->Trade[source];
 
-			// ???????Â®?? ?Â¤???? ??????.
+			// ???????®?? ?¤???? ??????.
 			lpObj->Trade[source].Clear();
 			GCTradeOtherDel(lpObj->TargetNumber,source);
 			gObjTradeItemBoxSet(lpObj->m_Index,blank,iwidth,iheight,lpObj->Trade[blank].m_Type);
@@ -15483,7 +15524,7 @@ BOOL TradeitemInventoryPut(int aIndex)
 			}
 			else
 			{
-				LogAdd("error : ??Â°? ?Â«????????!!");
+				LogAdd("error : ??°? ?«????????!!");
 				return false;
 			}
 		}
@@ -16695,15 +16736,15 @@ static int FrustrumX[4];
 static int FrustrumY[4];
 
 //----------------------------------------------------------------------------
-// x,y ??????Â·? Frustrum?Â» Â»???????.
+// x,y ??????·? Frustrum?» »???????.
 void InitFrustrum()
 {
 
-	float CameraViewFar    = 2400.f;	// ?Â§?? ??
-	float CameraViewNear   = CameraViewFar*0.19f;// ??Â·? ??
-	float CameraViewTarget = CameraViewFar*0.53f;// ???????? ???? ?Â§??
-	float WidthFar  = 1190.f;// ?Â§???? Â°?Â·? ??
-	float WidthNear = 550.f;// ??Â·????? Â°?Â·? ??
+	float CameraViewFar    = 2400.f;	// ?§?? ??
+	float CameraViewNear   = CameraViewFar*0.19f;// ??·? ??
+	float CameraViewTarget = CameraViewFar*0.53f;// ???????? ???? ?§??
+	float WidthFar  = 1190.f;// ?§???? °?·? ??
+	float WidthNear = 550.f;// ??·????? °?·? ??
 
 	vec3_t p[4];
 	Vector(-WidthFar ,CameraViewFar -CameraViewTarget,0.f,p[0]);
@@ -18772,21 +18813,18 @@ void gObjSecondProc()
 		if(lpObj->Connected > PLAYER_LOGGED &&	lpObj->Type == OBJ_USER)
 		{
 #ifdef OFFEXP
-			if ( lpObj->OffExp == 1 )
-            {
-               OffExp.TickTimes(n);
-            }//OffExp.TickTimes(n);+
+			OffExp.TickTimes(n);
 #endif
-			if( lpObj->m_bPShopOpen )
-			{
+			if (lpObj->m_bPShopOpen)
+			 {
 				lpObj->gOpenDelayTick++;
 			}
 			else
 			{
 				lpObj->gOpenDelayTick = 0;
 			}
-
-			if( lpObj->IsOffTrade == false && lpObj->CallToClose == true)
+			
+			if (lpObj->IsOffTrade == false && lpObj->CallToClose == true)
 			{
 				lpObj->gOffTradeTick++;
 			}
@@ -19324,7 +19362,7 @@ int  gObjCurMoveMake(BYTE * const path , LPOBJ lpObj) //Original Source Obtained
 	//	memset(path, 0, 8);
 
 	path[0] = (lpObj->Dir<<4);			// ????
-	path[0] |= (BYTE)((total-cur)&0x0f);		// ?????? ?Â§?? ???? Â°???
+	path[0] |= (BYTE)((total-cur)&0x0f);		// ?????? ?§?? ???? °???
 
 	if( (total-cur) < 0 ) {
 		MsgBox("error : %s %d",__FILE__, __LINE__);
@@ -19334,11 +19372,11 @@ int  gObjCurMoveMake(BYTE * const path , LPOBJ lpObj) //Original Source Obtained
 
 	if( total == 0 ) {
 		path[0] &= 0xF0;
-		return sendbyte;	// ??Âµ??Â» ????????
+		return sendbyte;	// ??µ??» ????????
 	}
 	if( total == cur ) {
 		path[0] &= 0xF0;
-		return sendbyte;	// ??Âµ??? ???Âµ????
+		return sendbyte;	// ??µ??? ???µ????
 	}
 
 	for( int n=cur, i=1; n<total; n++, i++)
@@ -22199,7 +22237,7 @@ BOOL gObjItemRandomOption3Up(LPOBJ lpObj, int source, int target)
 	if(lpObj->pInventory[target].m_Option3 < 4)
 #endif
 	{
-		if( _r > gLifeSuccessRate ) // gLifeAdd, T_T Ã¯Ã¨Ã§Ã¤Ã¥Ã¶ Ã¯Ã°Ã®Ã±Ã²Ã® Ã  Ã­Ã¥ Ã±Ã¨Ã±Ã²Ã¥Ã¬Ã 
+		if( _r > gLifeSuccessRate ) // gLifeAdd, T_T ïèçäåö ïðîñòî à íå ñèñòåìà
 		{
 			lpObj->pInventory[target].m_Option3 = 0;
 		}
