@@ -1722,13 +1722,13 @@ void PChatProc(PMSG_CHATDATA * lpChat, short aIndex)
 	case '/':	// Command
 		if ( slen > 2 )
 		{
-			if(strcmp(&lpChat->chatmsg[1], "이동 칼리마") == 0) //season4 all changed
+			if(strcmp(&lpChat->chatmsg[1], "?? ???") == 0) //season4 all changed
 			{
 				if(IsOKPCBangBenefitAll(lpObj) != FALSE) //season4 add-on :)
 				{
 					if(gMoveCommand.MoveFree2Kalima(lpObj) != FALSE)
 					{
-						LogAddTD("[%s][%s] Use [/이동 칼리마] PCBANG",lpObj->AccountID, lpObj->Name);
+						LogAddTD("[%s][%s] Use [/?? ???] PCBANG",lpObj->AccountID, lpObj->Name);
 						return;
 					}
 				}
@@ -2261,7 +2261,7 @@ void CSPJoinIdPassRequestTEST(PMSG_IDPASS * lpMsg, int aIndex)
 	PHeadSetB((LPBYTE)&spMsg, 0x11, sizeof(spMsg));
 	spMsg.Number = aIndex;
 
-	wsprintf(szId, "슛돌이%d", logincounttest);
+	wsprintf(szId, "???%d", logincounttest);
 	wsprintf(szPass, "m321", rand()%9);
 	LogAdd("login send : %s %s", szId, szPass);
 
@@ -2419,7 +2419,7 @@ void CGPCharacterCreate( PMSG_CHARCREATE * lpMsg, int aIndex)
 
 	if ( !gCreateCharacter )
 	{
-		GCServerMsgStringSend("서버분할 기간에는 캐릭터를 생성할수 없습니다", aIndex, 1);
+		GCServerMsgStringSend("???? ???? ???? ???? ????", aIndex, 1);
 		JGCharacterCreateFailSend(aIndex, lpMsg->Name);
 
 		return;
@@ -14222,7 +14222,7 @@ void GCGetMutoNumRecv(PMSG_GETMUTONUMBER* lpMsg, int aIndex)
 	if ( gObj[aIndex].MutoNumber != 0 )
 	{
 		char msg[255];
-		wsprintf(msg, "이미 루가드의 숫자가 있습니다");
+		wsprintf(msg, "?? ???? ??? ????");
 		GCServerMsgStringSend(msg, aIndex, 1);
 		return;
 	}
@@ -15036,7 +15036,7 @@ void CGReqMoveOtherServer(PMSG_REQ_MOVE_OTHERSERVER * lpMsg, int aIndex)
 		lpObj->m_MoveOtherServer = false;
 
 		LogAddTD("[CharTrasfer] Fail (JoominNumber) [%s][%s]", lpObj->AccountID, lpObj->Name);
-		GCServerMsgStringSend("문제 발생시 change@webzen.co.kr로 문의해 주시기바랍니다", lpObj->m_Index, 1);
+		GCServerMsgStringSend("?? ??? change@webzen.co.kr? ??? ???????", lpObj->m_Index, 1);
 		return;
 	}
 
