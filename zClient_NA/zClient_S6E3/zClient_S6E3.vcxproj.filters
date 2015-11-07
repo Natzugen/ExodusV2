@@ -198,6 +198,9 @@
     <ClInclude Include="CRC.h">
       <Filter>Source Files\CRC</Filter>
     </ClInclude>
+    <ClInclude Include="UserDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

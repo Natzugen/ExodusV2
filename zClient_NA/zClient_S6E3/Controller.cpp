@@ -7,7 +7,7 @@
 #include "NewsBoard.h"
 #include "TrayMode.h"
 #include "TDebugLog.h"
-#include "Defines.h"
+#include "User.h"
 // ----------------------------------------------------------------------------------------------
 
 Controller	gController;
@@ -55,12 +55,13 @@ LRESULT Controller::Mouse(int Code, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP:
 	case WM_LBUTTONDOWN:
 		{
-#ifdef __NOVUS__
+//#ifdef __NOVUS__
 			gInterface.EventCraftWindow_Main(wParam);
-#endif
+//#endif
 			gInterface.EventCameraUI(wParam);
 			gInterface.EventResetWindow_Main(wParam);
 			gInterface.EventNewsWindow_Main(wParam);
+			gInterface.EventOffExpSwitch(wParam);
 		}
 		break;
 	}
@@ -94,6 +95,23 @@ LRESULT Controller::Keyboard(int Code, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 #endif
+			case VK_F4:
+			{
+				if( GetForegroundWindow() == pGameWindow )
+				{
+					if (gObjUser.showHPBar)
+					{
+						gObjUser.showHPBar = false;
+						gInterface.DrawMessage(1, "Lifebars disabled");
+					}
+					else
+					{
+						gInterface.DrawMessage(1, "Lifebars enabled");
+						gObjUser.showHPBar = true;
+					}
+				}
+			}
+			break;
 		case VK_F6:
 			{
 				if( GetForegroundWindow() == pGameWindow )
@@ -103,25 +121,27 @@ LRESULT Controller::Keyboard(int Code, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 			// --
-	 case VK_N:
-            {
-                if ( gInterface.WinKeyChecks() )
-                {
-                    return false;
-                }
-                if( GetForegroundWindow() == pGameWindow )
-                {
-                    if( gInterface.CheckNewsWindow() )
-                    {
-                        gInterface.CloseNewsWindow();
-                    }
-                    else
-                    {
-                        gNewsBoard.ReqOpenMain();
-                    }
-                }
-            }
-            break;
+		case VK_F7:
+			{
+				if( GetForegroundWindow() == pGameWindow )
+				{
+					if( gInterface.CheckNewsWindow() )
+					{
+						gInterface.CloseNewsWindow();
+					}
+					else
+					{
+						gNewsBoard.ReqOpenMain();
+					}
+				}
+			}
+			break;
+			// --
+		case VK_F8:
+		{
+			gInterface.DrawMessage(1, "Tron Glow on / off");
+		}
+			break;
 			// --
 		case VK_F12:
 			{

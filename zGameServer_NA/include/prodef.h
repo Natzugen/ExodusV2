@@ -10,8 +10,8 @@
 #endif // _MSC_VER > 1000
 
 #ifndef MAX_ACCOUNT_LEN
-#define MAX_ACCOUNT_LEN	10
-#define MAX_GUILD_LEN	8
+	#define MAX_ACCOUNT_LEN	10
+	#define MAX_GUILD_LEN	8
 #endif
 
 // PACKET HEAD DEFINITIONS
@@ -36,13 +36,16 @@
 #define MAKE_NUMBERW(x,y)  ( (WORD)(((BYTE)((y)&0xFF)) |   ((BYTE)((x)&0xFF)<<8 ))  )
 #define MAKE_NUMBERQW(x,y) ( (unsigned __int64)(((DWORD)((y)&0xFFFFFFFF)) | ((DWORD)((x)&0xFFFFFFFF)<<32))  )
 
+#ifndef _QWORD_DEFINED 
+#define _QWORD_DEFINED 
+typedef __int64 QWORD, *LPQWORD; 
+#endif
 
 #define MAKE_NUMBERDW(x,y) ( (DWORD)(((WORD)((y)&0xFFFF)) | ((WORD)((x)&0xFFFF)<<16))  )
 
-//fixme
 #ifndef _QWORD_DEFINED 
 #define _QWORD_DEFINED 
-//typedef __int64 QWORD, *LPQWORD; 
+typedef __int64 QWORD, *LPQWORD; 
 #endif
 
 #define MAKEQWORD(a, b)      ((__int64)(((DWORD)((__int64)(a) & 0xffffffff)) | ((__int64)((DWORD)((__int64)(b) & 0xffffffff))) << 32))  
@@ -50,10 +53,10 @@
 #define HIDWORD(h)           ((DWORD)(__int64(h) >> __int64(32)))
 
 /* ------------------------------------------------*
-* ::::::::::::::::::::::::::::::::::::::::::::::::*
-* :::::::::::Packet Head Definitions::::::::::::::*
-* ::::::::::::::::::::::::::::::::::::::::::::::::*
-* ------------------------------------------------*/
+ * ::::::::::::::::::::::::::::::::::::::::::::::::*
+ * :::::::::::Packet Head Definitions::::::::::::::*
+ * ::::::::::::::::::::::::::::::::::::::::::::::::*
+ * ------------------------------------------------*/
 
 
 // PRIMITIVE HEADS
@@ -63,7 +66,7 @@ typedef struct _PHEADB	// Packet Head Byte Normal / Extended [C1:C3]
 	unsigned char uSize;
 	unsigned char uHead;
 
-} PHEADB, PHEADBE, *LPHEADB, *LPHEADBE;
+} PHEADB, PHEADBE, *LPHEADB, *LPHEADBE; 
 
 
 typedef struct _PHEADSUBB	// Packet Sub Head Byte [C1:C3]
@@ -73,7 +76,7 @@ typedef struct _PHEADSUBB	// Packet Sub Head Byte [C1:C3]
 	unsigned char uHead;
 	unsigned char uSubHead;
 
-} PHEADSUBB, *LPPHEADSUBB;
+} PHEADSUBB, * LPPHEADSUBB;
 
 
 
@@ -83,7 +86,7 @@ typedef struct _PHEADW	// Packet Head Word / Extend [C2:C4]
 	unsigned char uSize[2];
 	unsigned char uHead;
 
-} PHEADW, *LPPHEADW;
+} PHEADW, * LPPHEADW;
 
 
 typedef struct _PHEADSUBW	// Packed Sub Head Word [C2:C4]
@@ -101,14 +104,14 @@ typedef struct _PHEADSUBW	// Packed Sub Head Word [C2:C4]
 struct PBMSG_HEAD	// Packet - Byte Type
 {
 public:
-	void set(LPBYTE lpBuf, BYTE head, BYTE size)	// line : 18
+	void set ( LPBYTE lpBuf, BYTE head, BYTE size)	// line : 18
 	{
 		lpBuf[0] = 0xC1;
 		lpBuf[1] = size;
 		lpBuf[2] = head;
 	};	// line : 22
 
-	void setE(LPBYTE lpBuf, BYTE head, BYTE size)	// line : 25
+	void setE ( LPBYTE lpBuf, BYTE head, BYTE size)	// line : 25
 	{
 		lpBuf[0] = 0xC3;
 		lpBuf[1] = size;
@@ -126,7 +129,7 @@ struct PWMSG_HEAD	// Packet - Word Type
 {
 public:
 
-	void set(LPBYTE lpBuf, BYTE head, int size)
+	void set( LPBYTE lpBuf, BYTE head, int size)
 	{
 		lpBuf[0] = 0xC2;
 		lpBuf[1] = SET_NUMBERH(size);
@@ -134,7 +137,7 @@ public:
 		lpBuf[3] = head;
 	};
 
-	void setE(LPBYTE lpBuf, BYTE head, int size)	// line : 49
+	void setE( LPBYTE lpBuf, BYTE head, int size)	// line : 49
 	{
 		lpBuf[0] = 0xC4;
 		lpBuf[1] = SET_NUMBERH(size);
@@ -155,7 +158,7 @@ struct PBMSG_HEAD2	// Packet - Byte Type
 
 public:
 
-	void set(LPBYTE lpBuf, BYTE head, BYTE sub, BYTE size)
+	void set( LPBYTE lpBuf, BYTE head, BYTE sub, BYTE size)
 	{
 		lpBuf[0] = 0xC1;
 		lpBuf[1] = size;
@@ -221,14 +224,14 @@ struct PMSG_DEFRESULT
 	BYTE result;	// 3
 };
 
-/* * * * * * * * * * * * * * * * * * * * *
-*	Mu JoinServer Login
-*	Direction : GameServer -> JoinServer
-*				GameServer -> DataServer
-*				GameServer -> ExDataServer
-*  Code : 0xC1
-*	HeadCode : 0x00
-*/
+/* * * * * * * * * * * * * * * * * * * * * 
+ *	Mu JoinServer Login
+ *	Direction : GameServer -> JoinServer
+ *				GameServer -> DataServer
+ *				GameServer -> ExDataServer
+ *  Code : 0xC1
+ *	HeadCode : 0x00
+ */
 struct SDHP_SERVERINFO
 {
 	struct PBMSG_HEAD h;
@@ -241,26 +244,26 @@ struct SDHP_SERVERINFO
 
 
 /* ------------------------------------------------*
-* ::::::::::::::::::::::::::::::::::::::::::::::::*
-* :::::::GameServer Protocol Packets::::::::::::::*
-* ::::::::::::::::::::::::::::::::::::::::::::::::*
-* ------------------------------------------------*/
+ * ::::::::::::::::::::::::::::::::::::::::::::::::*
+ * :::::::GameServer Protocol Packets::::::::::::::*
+ * ::::::::::::::::::::::::::::::::::::::::::::::::*
+ * ------------------------------------------------*/
 
 
 
 
 /*
-*	Mu Server Login Result
-*	Result of Login of JoinServer, DataServer, ExDb
-*	ItemCount Only Used on DataServer
-*	Direction : XXServer -> GameServer
-*  Code : 0xC1
-*	HeadCode : 0x00
-*
-*	Recv - 16:30:45[DATA_SERVER][8] : (0xc1 0x08 0x00 0x01 0xbb 0x0b 0x00 0x00 )
-*	Recv - 14:19:51[ExDATASERVER][8]: (0xc1 0x08 0x00 0x01 0x64 0x02 0x00 0x00 )
-*	Recv - 14:19:51[JOINSERVER][8]	: (0xc1 0x08 0x00 0x01 0x34 0xc0 0x34 0x0d )
-*/
+ *	Mu Server Login Result
+ *	Result of Login of JoinServer, DataServer, ExDb
+ *	ItemCount Only Used on DataServer
+ *	Direction : XXServer -> GameServer
+ *  Code : 0xC1
+ *	HeadCode : 0x00
+ *
+ *	Recv - 16:30:45[DATA_SERVER][8] : (0xc1 0x08 0x00 0x01 0xbb 0x0b 0x00 0x00 )
+ *	Recv - 14:19:51[ExDATASERVER][8]: (0xc1 0x08 0x00 0x01 0x64 0x02 0x00 0x00 )
+ *	Recv - 14:19:51[JOINSERVER][8]	: (0xc1 0x08 0x00 0x01 0x34 0xc0 0x34 0x0d )
+ */
 struct SDHP_RESULT
 {
 	struct PBMSG_HEAD h;

@@ -240,3 +240,9 @@ void CGReqAttDefPowerInc(PMSG_REQ_ATTDEF_POWER_INC *pMsg, int aIndex)
 
     NpcShadowPhantom(aIndex);
 }
+
+void CGReqItemUseQuest(PMSG_REQ_ITEM_USE_QUEST *pMsg, int aIndex)
+{
+	lua_State* L = g_MuLuaQuestExp.GetLua();
+	g_Generic_Call(L, "ItemUseQuest", "ii>", aIndex, 20); //addition
+}

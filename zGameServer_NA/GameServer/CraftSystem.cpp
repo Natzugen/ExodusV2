@@ -412,6 +412,7 @@ void CraftSystem::SendCraftData(LPOBJ lpUser, bool ByDialog)
 	lpUser->m_CraftLevel	= GetPrivateProfileIntA(lpUser->Name, "cLevel", 0, gDirPath.GetNewPath("Custom\\CraftData.ini"));
 	lpUser->m_CraftStage	= GetPrivateProfileIntA(lpUser->Name, "cStage", 0, gDirPath.GetNewPath("Custom\\CraftData.ini"));
 	lpUser->m_CraftQuest	= GetPrivateProfileIntA(lpUser->Name, "cQuest", 0, gDirPath.GetNewPath("Custom\\CraftData.ini"));
+	
 	// ----
 	pSend.ByDialog		= ByDialog;
 	pSend.CraftLevel	= lpUser->m_CraftLevel;
@@ -480,6 +481,7 @@ void CraftSystem::FinishQuestReq(LPOBJ lpUser)
 	sprintf(szTemp, "%d", lpUser->m_CraftLevel); WritePrivateProfileStringA(lpUser->Name, "cLevel", szTemp, gDirPath.GetNewPath("Custom\\CraftData.ini"));
 	sprintf(szTemp, "%d", lpUser->m_CraftStage); WritePrivateProfileStringA(lpUser->Name, "cStage", szTemp, gDirPath.GetNewPath("Custom\\CraftData.ini"));
 	sprintf(szTemp, "%d", lpUser->m_CraftQuest); WritePrivateProfileStringA(lpUser->Name, "cQuest", szTemp, gDirPath.GetNewPath("Custom\\CraftData.ini"));
+	
 	DataSend(lpUser->m_Index, (LPBYTE)&ServerCmd, sizeof(ServerCmd));
 	// ----
 	this->SendCraftData(lpUser, false);

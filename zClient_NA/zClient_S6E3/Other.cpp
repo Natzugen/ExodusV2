@@ -12,7 +12,7 @@ DWORD	dwAllowTabSwitchLoginJMP = 0x0040B16F;
 Other	gOther;
 DWORD	GuildAssistEx_Buff;
 // ----------------------------------------------------------------------------------------------
-
+#define __CustomTitle "Exodus"
 Naked(GuildAssistEx)
 {
 	_asm
@@ -20,12 +20,12 @@ Naked(GuildAssistEx)
 		mov GuildAssistEx_Buff, ecx
 	}
 	// ----
-	if( GuildAssistEx_Buff == 128 || GuildAssistEx_Buff == 64 )
+	if (GuildAssistEx_Buff == 128 || GuildAssistEx_Buff == 64)
 	{
 		_asm
 		{
 			mov GuildAssistEx_Buff, 0x0078F4AD
-			jmp GuildAssistEx_Buff
+				jmp GuildAssistEx_Buff
 		}
 	}
 	else
@@ -33,7 +33,7 @@ Naked(GuildAssistEx)
 		_asm
 		{
 			mov GuildAssistEx_Buff, 0x0078F42A
-			jmp GuildAssistEx_Buff
+				jmp GuildAssistEx_Buff
 		}
 	}
 }
@@ -43,34 +43,34 @@ Naked(AllowTabSwitchLogin)
 	_asm
 	{
 		PUSH 0
-		MOV EAX, DWORD PTR SS : [EBP - 0x38]
-		MOV ECX, DWORD PTR DS : [EAX + 0x350]
-		MOV EDX, DWORD PTR SS : [EBP - 0x38]
-		MOV EAX, DWORD PTR DS : [EDX + 0x350]
-		MOV EDX, DWORD PTR DS : [EAX]
-		CALL DWORD PTR DS : [EDX + 0x30]
-		// ----
-		MOV EAX, DWORD PTR SS : [EBP-0x38]
-		MOV ECX, DWORD PTR DS : [EAX+0x354]
-		PUSH ECX
-		MOV EDX, DWORD PTR SS : [EBP - 0x38]
-		MOV ECX, DWORD PTR DS : [EDX + 0x350]
-		MOV EAX, DWORD PTR SS : [EBP - 0x38]
-		MOV EDX, DWORD PTR DS : [EAX + 0x350]
-		MOV EAX, DWORD PTR DS : [EDX]
-		CALL DWORD PTR DS : [EAX + 0x58]
-		// ----
-		MOV ECX, DWORD PTR SS : [EBP - 0x38]
-		MOV EDX, DWORD PTR DS : [ECX + 0x350]
-		PUSH EDX
-		MOV EAX, DWORD PTR SS : [EBP - 0x38]
-		MOV ECX, DWORD PTR DS : [EAX + 0x354]
-		MOV EDX, DWORD PTR SS : [EBP - 0x38]
-		MOV EAX, DWORD PTR DS : [EDX + 0x354]
-		MOV EDX, DWORD PTR DS : [EAX]
-		CALL DWORD PTR DS : [EDX + 0x58]
-		// ----
-		JMP dwAllowTabSwitchLoginJMP
+			MOV EAX, DWORD PTR SS : [EBP - 0x38]
+			MOV ECX, DWORD PTR DS : [EAX + 0x350]
+			MOV EDX, DWORD PTR SS : [EBP - 0x38]
+			MOV EAX, DWORD PTR DS : [EDX + 0x350]
+			MOV EDX, DWORD PTR DS : [EAX]
+			CALL DWORD PTR DS : [EDX + 0x30]
+			// ----
+			MOV EAX, DWORD PTR SS : [EBP - 0x38]
+			MOV ECX, DWORD PTR DS : [EAX + 0x354]
+			PUSH ECX
+			MOV EDX, DWORD PTR SS : [EBP - 0x38]
+			MOV ECX, DWORD PTR DS : [EDX + 0x350]
+			MOV EAX, DWORD PTR SS : [EBP - 0x38]
+			MOV EDX, DWORD PTR DS : [EAX + 0x350]
+			MOV EAX, DWORD PTR DS : [EDX]
+			CALL DWORD PTR DS : [EAX + 0x58]
+			// ----
+			MOV ECX, DWORD PTR SS : [EBP - 0x38]
+			MOV EDX, DWORD PTR DS : [ECX + 0x350]
+			PUSH EDX
+			MOV EAX, DWORD PTR SS : [EBP - 0x38]
+			MOV ECX, DWORD PTR DS : [EAX + 0x354]
+			MOV EDX, DWORD PTR SS : [EBP - 0x38]
+			MOV EAX, DWORD PTR DS : [EDX + 0x354]
+			MOV EDX, DWORD PTR DS : [EAX]
+			CALL DWORD PTR DS : [EDX + 0x58]
+			// ----
+			JMP dwAllowTabSwitchLoginJMP
 	}
 }
 
@@ -122,7 +122,7 @@ void Other::Crack()
 void Other::Changer()
 {
 	//FIX CTRL FREEZY  | 0052101A  |.  6A 0D         PUSH 0D                                  ; |HookType = 13.
-	SetByte((PVOID)(0x0052101A+1), 0x02);
+	SetByte((PVOID)(0x0052101A + 1), 0x02);
 
 	// ----
 #ifdef __ROOT__
@@ -131,15 +131,27 @@ void Other::Changer()
 #endif
 	// ----
 	char IP[20];
+
+
+
+
+
+
 	// ----
-	if( !g_ScriptEncode.ReadScript("Data\\Custom\\Common.z") )
+	if (!g_ScriptEncode.ReadScript("Data\\Custom\\Common.z"))
+
+
 	{
 		MessageBoxA(NULL, "file not found", "[Common]", ERROR);
 		return;
 	}
 	// ----
+
+
+
+
 	g_ScriptEncode.GetToken();
-	memcpy(IP, g_ScriptEncode.GetString(), sizeof(IP)-1);
+	memcpy(IP, g_ScriptEncode.GetString(), sizeof(IP) - 1);
 	// ----
 	WriteMemory((LPVOID)0x00E611B2, IP, sizeof(IP));
 	//char ii[] = "192.168.0.100";	//DeBug
@@ -158,77 +170,80 @@ void Other::Changer()
 	//-> Siege minimap fix
 	SetRange((PVOID)0x006505FB, 4, ASM::NOP);
 	//-> Character delete level
-	SetDword((PVOID)(0x00405B7A+2), 401); // Delete rule
-	SetDword((PVOID)(0x0040CC3F+1), 401); // Error message
+	SetDword((PVOID)(0x00405B7A + 2), 401); // Delete rule
+	SetDword((PVOID)(0x0040CC3F + 1), 401); // Error message
 	// ----
-	static char* LogName	= "Logs\\Error.log";
-	static char* LogName2	= "Logs\\Error_%d.log";
-	static char* DumpName	= "Logs\\Error.dmp";
-	static char* ScreenName	= "Images\\Screen(%02d_%02d-%02d_%02d)-%04d.jpg";
+	static char* LogName = "Logs\\Error.log";
+	static char* LogName2 = "Logs\\Error_%d.log";
+	static char* DumpName = "Logs\\Error.dmp";
+	static char* ScreenName = "Images\\Screen(%02d_%02d-%02d_%02d)-%04d.jpg";
 	// ----
-	SetDword((PVOID)(0x0096A8C8+1), (DWORD)LogName);
-	SetDword((PVOID)(0x0096A94F+1), (DWORD)LogName);
-	SetDword((PVOID)(0x0096A9DB+1), (DWORD)LogName2);
-	SetDword((PVOID)(0x004D1D0B+1), (DWORD)DumpName);
-	SetDword((PVOID)(0x004D9F54+1), (DWORD)ScreenName);
+	SetDword((PVOID)(0x004D9F54 + 1), (DWORD)ScreenName);
+	SetDword((PVOID)(0x0096A8C8 + 1), (DWORD)LogName);
+	SetDword((PVOID)(0x0096A94F + 1), (DWORD)LogName);
+	SetDword((PVOID)(0x0096A9DB + 1), (DWORD)LogName2);
+	SetDword((PVOID)(0x004D1D0B + 1), (DWORD)DumpName);
+	SetDword((PVOID)(0x004D9F54 + 1), (DWORD)ScreenName);
+	WriteMemory((LPVOID)0x00D26BA0, __CustomTitle, sizeof(__CustomTitle));
 	// ----
+
 }
 // ----------------------------------------------------------------------------------------------
 
 int Other::GameLoad()
 {
-#if defined __BEREZNUK__ || __ALIEN__
+	//#if defined __BEREZNUK__ || __ALIEN__
 	pGameLoad();
 	// ----
-	switch(pGameResolutionMode)
+	switch (pGameResolutionMode)
 	{
 	case 5:
-		pWinWidth		= 1280;
-		pWinHeight		= 720;
+		pWinWidth = 1280;
+		pWinHeight = 720;
 		break;
 		// --
 	case 6:
-		pWinWidth		= 1280;
-		pWinHeight		= 800;
+		pWinWidth = 1280;
+		pWinHeight = 800;
 		break;
 		// --
 	case 7:
-		pWinWidth		= 1366;
-		pWinHeight		= 768;
+		pWinWidth = 1366;
+		pWinHeight = 768;
 		break;
 		// --
 	case 8:
-		pWinWidth		= 1440;
-		pWinHeight		= 900;
+		pWinWidth = 1440;
+		pWinHeight = 900;
 		break;
 		// --
 	case 9:
-		pWinWidth		= 1680;
-		pWinHeight		= 1050;
+		pWinWidth = 1680;
+		pWinHeight = 1050;
 		break;
 		// --
 	case 10:
-		pWinWidth		= 1920;
-		pWinHeight		= 1080;
+		pWinWidth = 1920;
+		pWinHeight = 1080;
 		break;
 		// --
 	case 11:
-		pWinWidth		= 1920;
-		pWinHeight		= 1200;
+		pWinWidth = 1920;
+		pWinHeight = 1200;
 		break;
 		// --
 	}
 	// ----
-	pWinFontHeight	= 15;
-	pWinWidthReal	= (float)pWinWidth / MAX_WIN_WIDTH;
-	pWinHeightReal	= (float)pWinHeight / MAX_WIN_HEIGHT;
+	pWinFontHeight = 15;
+	pWinWidthReal = (float)pWinWidth / MAX_WIN_WIDTH;
+	pWinHeightReal = (float)pWinHeight / MAX_WIN_HEIGHT;
 	SetDouble((LPVOID)oCam_ClipX, gCamera.Default.ClipX + 500);
 	SetFloat((LPVOID)oCam_ClipGL, gCamera.Default.ClipGL + 200);
 	// ----
 	return 1;
-#else
-	return pGameLoad();
-#endif
+	//#else
+	//return pGameLoad();
+	//#endif
 }
 // ----------------------------------------------------------------------------------------------
 

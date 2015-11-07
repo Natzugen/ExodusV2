@@ -32,40 +32,41 @@ void Protocol::DataRecv(DWORD Case, LPBYTE Data, int Len, int aIndex)
 {
 	BYTE ProtocolType = Data[0];
 	// ----
-	if( ProtocolType == 0xC1 )
+
+	if (ProtocolType == 0xC1)
 	{
-		switch(BYTE(Case))
+		switch (BYTE(Case))
 		{
 		case 0x11:
-			{
-				gVisualFix.RecvDamage((PMSG_ATTACKRESULT*) Data);
-			}
+		{
+			gVisualFix.RecvDamage((PMSG_ATTACKRESULT*)Data);
+		}
 			break;
 		case 0x17:
-			{
-				gVisualFix.RecvKilledObject((PMSG_DIEPLAYER*)Data);
-			}
+		{
+			gVisualFix.RecvKilledObject((PMSG_DIEPLAYER*)Data);
+		}
 			break;
 		case 0x26:
-			{
-				gVisualFix.RecvHPSD((PMSG_REFILL*)Data);
-			}
+		{
+			gVisualFix.RecvHPSD((PMSG_REFILL*)Data);
+		}
 			break;
 		case 0x27:
-			{
-				gVisualFix.RecvMPAG((PMSG_MANASEND*)Data);
-			}
+		{
+			gVisualFix.RecvMPAG((PMSG_MANASEND*)Data);
+		}
 			break;
 		case 0x76:
-			{
-				gCheatGuard.Check((CHEATGUARD_REQ_CHECK*)Data);
-			}
+		{
+			gCheatGuard.Check((CHEATGUARD_REQ_CHECK*)Data);
+		}
 			break;
 			// --
 		case 0xF1:
 			{
 				PMSG_DEFAULT2 * lpDef = (PMSG_DEFAULT2*)Data;
-				switch(lpDef->subcode)
+				switch (lpDef->subcode)
 				{
 				case 0x00:
 					{
@@ -110,9 +111,9 @@ void Protocol::DataRecv(DWORD Case, LPBYTE Data, int Len, int aIndex)
 			{
 				PMSG_DEFAULT2 * lpDef = (PMSG_DEFAULT2*)Data;
 				// ----
-				switch(lpDef->subcode)
+				switch (lpDef->subcode)
 				{
-#ifdef __NOVUS__
+					//#ifdef __NOVUS__
 				case 0:
 					{
 						gCraftSystem.SetData((CRAFT_ANS_USERDATA*)Data);
@@ -125,7 +126,7 @@ void Protocol::DataRecv(DWORD Case, LPBYTE Data, int Len, int aIndex)
 					}
 					break;
 					// --
-#endif
+					//#endif
 				case 5:
 					{
 						gResetSystem.SetData((RESET_ANS_USERDATA*)Data);
@@ -136,61 +137,61 @@ void Protocol::DataRecv(DWORD Case, LPBYTE Data, int Len, int aIndex)
 					{
 						gResetSystem.GetResetResult();
 					}
-					break;
-					// --
-				case 7:
-					{
-						gObjUser.SetTargetData((PMSG_TARGETDATA_ANS*)Data);
-					}
-					break;
-					// --
-				case 8:
-					{
-						gObjUser.UpdateCharInfo((CHAR_UPDATEINFO*)Data);
-					}
-					break;
-					// --
-				case 0xC:
-					{
-						gConnectEx.m_ConnectState = ConnectExType::OnForceDisconnect;
-					}
-					break;
-				}
+				break;
+				// --
+			case 7:
+			{
+				gObjUser.SetTargetData((PMSG_TARGETDATA_ANS*)Data);
 			}
+				break;
+				// --
+			case 8:
+			{
+				gObjUser.UpdateCharInfo((CHAR_UPDATEINFO*)Data);
+			}
+				break;
+				// --
+			case 0xC:
+			{
+				gConnectEx.m_ConnectState = ConnectExType::OnForceDisconnect;
+			}
+				break;
+			}
+		}
 			break;
 			// --
 		case 0xFC:
-			{
-				gObjUser.SetBattleMapData((PMSG_BATTLE_LIST*)Data);
-			}
+		{
+			gObjUser.SetBattleMapData((PMSG_BATTLE_LIST*)Data);
+		}
 			break;
 		}
 	}
-	else if( ProtocolType == 0xC2 )
+	else if (ProtocolType == 0xC2)
 	{
-		switch(BYTE(Case))
+		switch (BYTE(Case))
 		{
 		case 0x3F:
-			{
-				gOffTrade.RecvPShop((PMSG_ANS_BUYLIST_FROM_PSHOP *)Data);
-			}break;
+		{
+			gOffTrade.RecvPShop((PMSG_ANS_BUYLIST_FROM_PSHOP *)Data);
+		}break;
 		case 0xFD:
-			{
-				gNewsBoard.OpenMain((NEWS_ANS_TITLES*)Data);
-			}
+		{
+			gNewsBoard.OpenMain((NEWS_ANS_TITLES*)Data);
+		}
 			break;
 			// --
 		case 0xFE:
-			{
-				gNewsBoard.OpenItem((NEWS_ANS_NEWS*)Data);
-			}
-			break;	
+		{
+			gNewsBoard.OpenItem((NEWS_ANS_NEWS*)Data);
+		}
+			break;
 		case 0xFF:
-			{
-				MIN_LEVEL_MUHELPER * lpMsg = (MIN_LEVEL_MUHELPER*)Data;
-				SetByte((PVOID)(0x0095CD6D+2), lpMsg->lvl); //Min level Req to use Helper
-				SetByte((PVOID)(0x0095CD93+1), lpMsg->lvl); //MuHelper Box error
-			}break;
+		{
+			MIN_LEVEL_MUHELPER * lpMsg = (MIN_LEVEL_MUHELPER*)Data;
+			SetByte((PVOID)(0x0095CD6D + 2), lpMsg->lvl); //Min level Req to use Helper
+			SetByte((PVOID)(0x0095CD93 + 1), lpMsg->lvl); //MuHelper Box error
+		}break;
 		}
 	}
 	// ----
@@ -202,18 +203,18 @@ void Protocol::DataSend(LPBYTE Data, int Size)
 {
 	int StartPos = 0;
 	// ----
-	if( Data[0] == 0xC1 || Data[0] == 0xC3 )
+	if (Data[0] == 0xC1 || Data[0] == 0xC3)
 	{
 		StartPos = 3;
 	}
-	else if( Data[0] == 0xC2 || Data[0] == 0xC4 )
+	else if (Data[0] == 0xC2 || Data[0] == 0xC4)
 	{
 		StartPos = 4;
 	}
 	// ----
-	for( int i = StartPos; i < Size; i++ )
+	for (int i = StartPos; i < Size; i++)
 	{
-		Data[i] ^= Data[i - 1] ^ gCheatGuard.XOR[i%32];
+		Data[i] ^= Data[i - 1] ^ gCheatGuard.XOR[i % 32];
 	}
 	// ----
 	send(pActiveSocket, (char*)Data, Size, 0);

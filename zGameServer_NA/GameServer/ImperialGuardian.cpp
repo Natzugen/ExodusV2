@@ -1396,7 +1396,8 @@ bool CImperialGuardian::GCNotifyAllZoneClear(int nZoneIndex)	//OK
 
 		if ( IsEventMap(gObj[nResult].MapNumber) )
 		{
-#if defined __REEDLAN__ || __BEREZNUK__
+//#if defined __REEDLAN__ || __BEREZNUK__
+#if defined __CUSTOMS__
 			g_ShopPointEx.AddEventBonus(nResult, ShopPointExEvent::IG);
 #endif
 			pMsg.RewardExp = m_RewardExpInfo.GetRewardExp(nResult);

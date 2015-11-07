@@ -21,24 +21,25 @@ void User::Load()
 	ZeroMemory(this->m_BattleZoneList, sizeof(this->m_BattleZoneList));
 	ZeroMemory(this->m_ResetItemCheck, sizeof(this->m_ResetItemCheck));
 	// ----
-	this->m_TargetUpdateTick	= 0;
-	this->m_TargetType			= false;
-	this->m_CursorX				= -1;
-	this->m_CursorY				= -1;
-	this->m_MapNumber			= -1;
-	this->m_MasterLevel			= 0;
-	this->m_MasterPoint			= 0;
-	this->m_MasterExp			= 0;
-	this->m_MasterNextExp		= 0;
-	this->m_Reset				= 0;
-	this->m_GrandReset			= 0;
-#ifdef __NOVUS__
-	this->m_TargetLifePercent	= 0.0f;
-	this->m_CraftLevel			= 0;
-	this->m_CraftStage			= 0;
-	this->m_CraftQuest			= 0;
+	this->m_TargetUpdateTick = 0;
+	this->m_TargetType = false;
+	this->showHPBar             = true;
+	this->m_CursorX = -1;
+	this->m_CursorY = -1;
+	this->m_MapNumber = -1;
+	this->m_MasterLevel = 0;
+	this->m_MasterPoint = 0;
+	this->m_MasterExp = 0;
+	this->m_MasterNextExp = 0;
+	this->m_Reset = 0;
+	this->m_GrandReset = 0;
+	//#ifdef __NOVUS__
+	//this->m_TargetLifePercent	= 0.0f;
+	this->m_CraftLevel = 0;
+	this->m_CraftStage = 0;
+	this->m_CraftQuest = 0;
 	ZeroMemory(this->m_CraftItemCheck, sizeof(this->m_CraftItemCheck));
-#endif
+	//#endif
 	// ----
 	SetOp((LPVOID)oIsBattleServer_Call1, (LPVOID)this->IsBattleServer, ASM::CALL);
 	SetOp((LPVOID)oIsBattleServer_Call2, (LPVOID)this->IsBattleServer, ASM::CALL);
@@ -68,29 +69,31 @@ void User::Load()
 	SetOp((LPVOID)0x008105CB, (LPVOID)this->IsMasterClass, ASM::CALL);
 	SetOp((LPVOID)0x0081064B, (LPVOID)this->IsMasterClass, ASM::CALL);
 	// ----
-	SetOp((LPVOID)0x005B96E8, (LPVOID)this->DrawPartyHP, ASM::CALL);
+//	SetOp((LPVOID)0x005B96E8, (LPVOID)this->DrawPartyHP, ASM::CALL);
 	// ----
-#ifdef __NOVUS__
+	//#ifdef __NOVUS__
 	SetOp((LPVOID)0x00588511, (LPVOID)this->SetEventEffect, ASM::CALL);
-#endif
+	SetOp((LPVOID)0x005B96E8, (LPVOID)this->DrawHP, ASM::CALL);
+	//#endif
 }
 // ----------------------------------------------------------------------------------------------
 
 void User::Refresh()
 {
-	this->lpPlayer			= &*(ObjectCharacter*)oUserObjectStruct;
-	this->lpViewPlayer		= &*(ObjectPreview*)oUserPreviewStruct;
+	this->lpPlayer = &*(ObjectCharacter*)oUserObjectStruct;
+	this->lpViewPlayer = &*(ObjectPreview*)oUserPreviewStruct;
+
 	this->GetTarget();
 	// ----
-	this->m_CursorX			= pCursorX;
-	this->m_CursorY			= pCursorY;
-	this->m_MapNumber		= pMapNumber;
-	this->m_MasterLevel		= pMasterLevel;
-	this->m_MasterPoint		= pMasterPoint;
-	this->m_MasterExp		= pMasterExp;
-	this->m_MasterNextExp	= pMasterNextExp;
+	this->m_CursorX = pCursorX;
+	this->m_CursorY = pCursorY;
+	this->m_MapNumber = pMapNumber;
+	this->m_MasterLevel = pMasterLevel;
+	this->m_MasterPoint = pMasterPoint;
+	this->m_MasterExp = pMasterExp;
+	this->m_MasterNextExp = pMasterNextExp;
 	// ----
-	if( (gObjUser.lpPlayer->Class & 7) != 6 )
+	if ((gObjUser.lpPlayer->Class & 7) != 6)
 	{
 		SetByte((PVOID)(0x00556C32 + 6), 2);
 	}
@@ -99,9 +102,9 @@ void User::Refresh()
 		SetByte((PVOID)(0x00556C32 + 6), 15);
 	}
 	// ----
-	if( gTrayMode.InTray )
+	if (gTrayMode.InTray)
 	{
-		if( !this->lpViewPlayer->m_Model.Unknown4 && gConnectEx.m_ConnectState == 0 )
+		if (!this->lpViewPlayer->m_Model.Unknown4 && gConnectEx.m_ConnectState == 0)
 		{
 			gTrayMode.ShowMessage(NIIF_WARNING, "MU Online", "Your character has been killed");
 		}
@@ -111,20 +114,20 @@ void User::Refresh()
 
 bool User::GetTarget()
 {
-	if( pViewNPCTargetID != -1 )
+	if (pViewNPCTargetID != -1)
 	{
-		this->lpViewTarget	= &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), pViewNPCTargetID);
-		this->m_TargetType	= 1;
+		this->lpViewTarget = &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), pViewNPCTargetID);
+		this->m_TargetType = 1;
 		return true;
 	}
-	else if( pViewAttackTargetID != -1 )
+	else if (pViewAttackTargetID != -1)
 	{
-		this->lpViewTarget	= &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), pViewAttackTargetID);
-		this->m_TargetType	= 2;
+		this->lpViewTarget = &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), pViewAttackTargetID);
+		this->m_TargetType = 2;
 		return true;
 	}
 	// ----
-	if( this->lpViewTarget != 0 )
+	if (this->lpViewTarget != 0)
 	{
 		ZeroMemory(&this->lpViewTarget, sizeof(this->lpViewTarget));
 	}
@@ -142,13 +145,13 @@ int User::GetActiveSkill()
 
 void User::UpdateCharInfo(CHAR_UPDATEINFO * aRecv)
 {
-	this->lpPlayer->Strength		= aRecv->Strength;
-	this->lpPlayer->Dexterity		= aRecv->Dexterity;
-	this->lpPlayer->Vitality		= aRecv->Vitality;
-	this->lpPlayer->Energy			= aRecv->Energy;
-	this->lpPlayer->Leadership		= aRecv->Leadership;
-	this->lpPlayer->LevelPoint		= aRecv->LevelUpPoint;
-	gVisualFix.UpPoint				= aRecv->LevelUpPoint;
+	this->lpPlayer->Strength = aRecv->Strength;
+	this->lpPlayer->Dexterity = aRecv->Dexterity;
+	this->lpPlayer->Vitality = aRecv->Vitality;
+	this->lpPlayer->Energy = aRecv->Energy;
+	this->lpPlayer->Leadership = aRecv->Leadership;
+	this->lpPlayer->LevelPoint = aRecv->LevelUpPoint;
+	gVisualFix.UpPoint = aRecv->LevelUpPoint;
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -156,12 +159,12 @@ void User::SetBattleMapData(PMSG_BATTLE_LIST * aRecv)
 {
 	SetByte((PVOID)pMaxBattleZoneCount, MAX_BATTLE_LIST);
 	// ----
-	for( int i = 0; i < MAX_BATTLE_LIST; i++ )
+	for (int i = 0; i < MAX_BATTLE_LIST; i++)
 	{
 		SetByte((PVOID)((oBattleMapStart + 7 * i) + 3), aRecv->BattleMapList[i]);
 	}
 	// ----
-	for( int i = 0; i < MAX_BATTLE_LIST; i++ )
+	for (int i = 0; i < MAX_BATTLE_LIST; i++)
 	{
 		this->m_BattleZoneList[i] = aRecv->BattleZoneList[i];
 	}
@@ -170,11 +173,11 @@ void User::SetBattleMapData(PMSG_BATTLE_LIST * aRecv)
 
 bool User::IsBattleZone(int MapNumber)
 {
-	if( gObjUser.IsBattleServer() )
+	if (gObjUser.IsBattleServer())
 	{
-		for( int i = 0; i < MAX_BATTLE_LIST; i++ )
+		for (int i = 0; i < MAX_BATTLE_LIST; i++)
 		{
-			if( gObjUser.m_BattleZoneList[i] == MapNumber )
+			if (gObjUser.m_BattleZoneList[i] == MapNumber)
 			{
 				return true;
 			}
@@ -187,9 +190,24 @@ bool User::IsBattleZone(int MapNumber)
 
 void User::SetTargetData(PMSG_TARGETDATA_ANS * aRecv)
 {
-	this->m_TargetLifePercent	= 0.0f;
-	this->m_TargetLifePercent	= aRecv->TargetLifePercent;
-	this->m_TargetUpdateTick	= GetTickCount();
+	int Index, HpPers, allvalue, level, level2, Index2;
+	// ----
+	this->m_TargetLifePercent = 0.0f;
+	this->m_TargetLevel = 0;
+	allvalue = aRecv->cdata.TargetLifePercent;
+	level = aRecv->cdata.TargetLevel;
+	// ----
+	Index = int(allvalue / 1000);
+	Index2 = int(level / 1000);
+	HpPers = allvalue - Index * 1000;
+	level2 = level - Index2 * 1000;
+	this->m_TargetLifePercent = HpPers;
+	this->m_TargetLevel = level2;
+	// ----
+	this->m_TargetUpdateTick = GetTickCount();
+	// ----
+	monlife[Index] = HpPers;
+	monlevel[Index] = level2;
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -199,50 +217,61 @@ void User::SetEventEffect(int PreviewStruct)
 	// ----
 	lpViewObj lpPreview = &*(ObjectPreview*)PreviewStruct;
 	// ----
-	if( lpPreview->CtlCode == 32 )
+	if (lpPreview->CtlCode == 32)
 	{
-		if( *(DWORD*)(PreviewStruct + 672) && lpPreview->Unknown23 != 5 )
+		if (*(DWORD*)(PreviewStruct + 672) && lpPreview->Unknown23 != 5)
 		{
 			pInitEventStatus(PreviewStruct);
 		}
 		// ----
 		lpPreview->Unknown23 = 5;
 	}
+
+	if (lpPreview->CtlCode == 16)
+	{
+		if (*(DWORD*)(PreviewStruct + 672) && lpPreview->Unknown23 != 5)
+		{
+			pInitEventStatus(PreviewStruct);
+		}
+		// ----
+		lpPreview->Unknown23 = 5;
+	}
+
 	// ----
-	if( *(DWORD*)(PreviewStruct + 672) != 0 || !lpPreview->Unknown23 )
+	if (*(DWORD*)(PreviewStruct + 672) != 0 || !lpPreview->Unknown23)
 	{
 		return;
 	}
 	// ----
-	switch(lpPreview->Unknown23)
+	switch (lpPreview->Unknown23)
 	{
 	case 5:	//-> GM
+	{
+		if (pEventEffectThis(668))
 		{
-			if( pEventEffectThis(668) )
+			DWORD ModelID = 349;
+			// ----
+			if (!strncmp(lpPreview->Name, "[GM]", 4))
 			{
-				DWORD ModelID = 349;
-				// ----
-				if( !strncmp(lpPreview->Name, "[GM]", 4) )
-				{
-					ModelID = 406;
-				}
-				else if( !strncmp(lpPreview->Name, "[EM]", 4) )
-				{
-					ModelID = 407;
-				}
-				else if( !strcmp(lpPreview->Name, "Admin") )
-				{
-					ModelID = 408;
-				}
-				// ----
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect(pEventEffectThis(668), ModelID, 20, 1, 70.0, -5.0, 0.0, 0.0, 0.0, 45.0);
+				ModelID = 406;
 			}
+			else if (!strncmp(lpPreview->Name, "[EM]", 4))
+			{
+				ModelID = 407;
+			}
+			else if (!strcmp(lpPreview->Name, "Admin"))
+			{
+				ModelID = 408;
+			}
+			// ----
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect(pEventEffectThis(668), ModelID, 20, 1, 70.0, -5.0, 0.0, 0.0, 0.0, 45.0);
 		}
+	}
 		break;
 		// --
 	case 6:
 		{
-			if( pEventEffectThis(668) )
+			if (pEventEffectThis(668))
 			{
 				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 0, 20, 120.0, 0.0, 0.0);
 			}
@@ -251,71 +280,71 @@ void User::SetEventEffect(int PreviewStruct)
 		// --
 	case 7:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 1, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 1, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	case 8:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 2, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 2, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	case 9:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 3, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 3, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	case 10:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 4, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 4, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	case 11:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 5, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 5, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	case 12:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 6, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 6, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	case 13:
 		{
-			if( pEventEffectThis(668) )
-			{
-				*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 7, 20, 120.0, 0.0, 0.0);
-			}
+		if (pEventEffectThis(668))
+		{
+			*(LPVOID*)(PreviewStruct + 672) = pAddEventEffect2(pEventEffectThis(668), 32241, 7, 20, 120.0, 0.0, 0.0);
 		}
+	}
 		break;
 		// --
 	default:
-		{
-			lpPreview->Unknown23 = 0;
-		}
+	{
+		lpPreview->Unknown23 = 0;
+	}
 		break;
 	}
 }
@@ -325,7 +354,7 @@ bool User::IsMasterClass(BYTE Class)
 {
 	gObjUser.Refresh();
 	// ----
-	if( pIsMaster(Class) && gObjUser.lpPlayer->Level == 400 )
+	if (pIsMaster(Class) && gObjUser.lpPlayer->Level == 400)
 	{
 		return true;
 	}
@@ -336,7 +365,7 @@ bool User::IsMasterClass(BYTE Class)
 
 void User::DrawPartyHP()
 {
-	if( pPartyMemberCount <= 0 )
+	if (pPartyMemberCount <= 0)
 	{
 		return;
 	}
@@ -346,12 +375,12 @@ void User::DrawPartyHP()
 	VAngle Angle;
 	int PosX, PosY, LifeProgress;
 	// ----
-	for( int PartySlot = 0; PartySlot < pPartyMemberCount; PartySlot++ )
+	for (int PartySlot = 0; PartySlot < pPartyMemberCount; PartySlot++)
 	{
-		PartyList PartyMember	= *(PartyList*)((char*)&pPartyListStruct + sizeof(PartyList) * PartySlot);
-		lpViewObj lpPartyObj	= &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), PartyMember.ViewportID);
+		PartyList PartyMember = *(PartyList*)((char*)&pPartyListStruct + sizeof(PartyList) * PartySlot);
+		lpViewObj lpPartyObj = &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), PartyMember.ViewportID);
 		// ----
-		if( !lpPartyObj )
+		if (!lpPartyObj)
 		{
 			continue;
 		}
@@ -363,10 +392,10 @@ void User::DrawPartyHP()
 		pGetPosFromAngle(&Angle, &PosX, &PosY);
 		PosX -= (int)floor(LifeBarWidth / (double)2.0);	//T_T
 		// ----
-		if(		pCursorX >= PosX
-			&&	(float)pCursorX <= (float)PosX + LifeBarWidth
-			&&	pCursorY >= PosY - 2 
-			&&	pCursorY < PosY + 6 )
+		if (pCursorX >= PosX
+			&& (float)pCursorX <= (float)PosX + LifeBarWidth
+			&&	pCursorY >= PosY - 2
+			&& pCursorY < PosY + 6)
 		{
 			sprintf(LifeDisplay, "HP : %d0%%", PartyMember.LifePercent);
 			pSetTextColor(pTextThis(), 0xFF, 0xE6, 0xD2, 0xFF);
@@ -385,7 +414,7 @@ void User::DrawPartyHP()
 		glColor3f(0.19607843, 0.039215688, 0.0);
 		pDrawBarForm((float)(PosX + 2), (float)(PosY + 2), LifeBarWidth, 1.0, 0.0, 0);
 		//-> Very strange method, maybe will be cool LifePercent / 10? :D
-		if( PartyMember.LifePercent > 10 )	
+		if (PartyMember.LifePercent > 10)
 		{
 			LifeProgress = 10;
 		}
@@ -396,72 +425,98 @@ void User::DrawPartyHP()
 		// ----
 		glColor3f(0.98039216, 0.039215688, 0.0);
 		// ----
-		for( int i = 0; i < LifeProgress; i++ )
-        {
+		for (int i = 0; i < LifeProgress; i++)
+		{
 			pDrawBarForm((float)(i * 4 + PosX + 2), (float)(PosY + 2), 3.0, 2.0, 0.0, 0);
-        }
+		}
 		// ----
 		pGLSwitch();
 	}
 	// ----
 	pGLSwitch();
-    glColor3f(1.0, 1.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
 }
 // ----------------------------------------------------------------------------------------------
 
-void User::DrawSome()
+void User::DrawHP()
 {
-	char LifeDisplay[20];
 	VAngle Angle;
 	int PosX, PosY, LifeProgress;
 	// ----
-	float LifeBarWidth	= 38.0f;
-	lpViewObj lpObj		= gObjUser.lpViewTarget;
-	// ----
-	if( !lpObj || lpObj->m_Model.ObjectType != emMonster || !lpObj->m_Model.Unknown4 )
+	if (!gObjUser.showHPBar)
 	{
 		return;
 	}
-	// ----
-	Angle.X = lpObj->m_Model.VecPosX;
-	Angle.Y = lpObj->m_Model.VecPosY;
-	Angle.Z = lpObj->m_Model.VecPosZ + lpObj->m_Model.Unknown216.Z + 100.0;
-	// ----
-	pGetPosFromAngle(&Angle, &PosX, &PosY);
-	PosX -= (int)floor(LifeBarWidth / (double)2.0);
-	// ---- MOB NAME
-	sprintf(LifeDisplay, "%s", lpObj->Name);
-	pSetTextColor(pTextThis(), 0xFF, 0xE6, 0xD2, 0xFF);
-	pDrawText(pTextThis(), PosX + 2, PosY - 6, LifeDisplay, 0, 0, (LPINT)1, 0);
-	// ---- END MOB NAME
-	pSetBlend(true);
-	glColor4f(0.0, 0.0, 0.0, 0.5);
-	pDrawBarForm((float)(PosX + 1), (float)(PosY + 1), LifeBarWidth + 4.0, 5.0, 0.0, 0);
-	pGLSwitchBlend();
-	// ----
-	glColor3f(0.2, 0.0, 0.0);
-	pDrawBarForm((float)PosX, (float)PosY, LifeBarWidth + 4.0, 5.0, 0.0, 0);
-	// ----
-	glColor3f(0.19607843, 0.039215688, 0.0);
-	pDrawBarForm((float)(PosX + 2), (float)(PosY + 2), LifeBarWidth, 1.0, 0.0, 0);
-	// ----
-	if( (int)(gObjUser.m_TargetLifePercent / 10) > 10 )
+
+	for (int MonsterViewPort = 0; MonsterViewPort < 30; MonsterViewPort++)
 	{
-		LifeProgress = 10;
+		lpViewObj lpObj = &*(ObjectPreview*)pGetPreviewStruct(pPreviewThis(), MonsterViewPort);
+		DWORD CurrentTick = GetTickCount();
+		DWORD Delay = (CurrentTick - gObjUser.m_TargetUpdateTick);
+		// ----
+		if (!lpObj || lpObj->m_Model.ObjectType != emMonster || !lpObj->m_Model.Unknown4)
+		{
+			continue;
+		}
+		// ----
+		PMSG_TARGETDATA_REQ pRequest;
+		pRequest.h.set((LPBYTE)&pRequest, 0xFB, 7, sizeof(pRequest));
+		pRequest.aIndex = lpObj->aIndex;
+        //---//
+		//50-100ms should be enough
+		if (Delay >= 75)
+		{
+			gProtocol.DataSend((LPBYTE)&pRequest, pRequest.h.size);
+		}
+			// ----
+			Angle.X = lpObj->m_Model.VecPosX;
+			Angle.Y = lpObj->m_Model.VecPosY;
+			Angle.Z = lpObj->m_Model.VecPosZ + lpObj->m_Model.Unknown216.Z + 100.0;
+			// ----
+			float BarWidth = (65.1f / 100.0f) *monlife[lpObj->aIndex]; //65.1
+			float LifeBarWidth = (51.0f / 100.0f) *monlife[lpObj->aIndex];
+			// ----
+			pGetPosFromAngle(&Angle, &PosX, &PosY);
+			PosX -= (int)floor(LifeBarWidth / (double)2.0);
+			// ----
+			if (monlife[lpObj->aIndex] <= 0.1f)
+			{
+				continue;
+			}
+			//pDrawGUI(0x7B3F, (float)PosX - 1.2, (float)PosY - 1.5, 66.95, 6);
+			//pDrawGUI(0x7B40, (float)PosX, (float)PosY, BarWidth, 3);
+			//pDrawText(pTextThis(), PosX - 1, PosY - 11, " ", 67, 0, (LPINT)0, 0);
+			if (lpObj->m_Model.ObjectType != emPlayer)
+			{
+				char Text[256];
+				sprintf(Text, "%s [LvL: %d]", lpObj->Name, monlevel[lpObj->aIndex]);
+				pDrawColorText(Text, PosX - 2, PosY - 8, 80, 1, eWhite, 9, 3);
+				pSetBlend(true);
+		
+				// ----
+				glColor4f(0.0, 0.0, 0.0, 0.7);
+				pDrawBarForm((float)(PosX + 1), (float)(PosY + 1), 53, 4.4, 0.0, 0);
+				pGLSwitchBlend();
+				// ----
+				glColor3f(1.0, 0.2, 0.0);
+				pDrawBarForm((float)(PosX + 2), (float)(PosY + 2), LifeBarWidth, 2.1, 0.0, 0);
+			}
+			// ----
+			if ((int)(monlife[lpObj->aIndex] / 10) > 10)
+			{
+				LifeProgress = 10;
+			}
+			else
+			{
+				LifeProgress = (int)(monlife[lpObj->aIndex] / 10);
+			}
+			// ----
+			pGLSwitch();
 	}
-	else
-	{
-		LifeProgress = (int)(gObjUser.m_TargetLifePercent / 10);
-	}
-	// ----
-	glColor3f(0.98039216, 0.039215688, 0.0);
-	// ----
-	for( int i = 0; i < LifeProgress; i++ )
-	{
-		pDrawBarForm((float)(i * 4 + PosX + 2), (float)(PosY + 2), 3.0, 2.0, 0.0, 0);
-	}
-	// ----
 	pGLSwitch();
-    glColor3f(1.0, 1.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
 }
+
+
+
 // ----------------------------------------------------------------------------------------------

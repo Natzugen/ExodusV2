@@ -24,17 +24,10 @@ void gObjCalCharacter(int aIndex)
 	int Vitality = 0;
 	int Energy = 0;
 	CItem * Right = &lpObj->pInventory[0];
-	CItem * Left = &lpObj->pInventory[1];
-	CItem * Helm = &lpObj->pInventory[2];
-	CItem * Armor = &lpObj->pInventory[3];
-	CItem * Pants = &lpObj->pInventory[4];
+	CItem * Left  = &lpObj->pInventory[1];
 	CItem * Gloves = &lpObj->pInventory[5];
-	CItem * Boots = &lpObj->pInventory[6];
-	CItem * Wings = &lpObj->pInventory[7];
-	CItem * Helper = &lpObj->pInventory[8];
 	CItem * Amulet = &lpObj->pInventory[9];
-	CItem * LeftRing = &lpObj->pInventory[10];
-	CItem * RightRing = &lpObj->pInventory[11];
+	CItem * Helper = &lpObj->pInventory[8];
 	lpObj->HaveWeaponInHand = true;
 	// ----
 	if ( Right->IsItem() == FALSE && Left->IsItem() == FALSE )
@@ -1146,44 +1139,6 @@ void gObjCalCharacter(int aIndex)
 	GObjExtItemApply(lpObj);
 	gObjSetItemApply(lpObj);
 	gObjNextExpCal(lpObj);
-	// rings
-	if (LeftRing->m_Type == ITEMGET(13, 109) || RightRing->m_Type == ITEMGET(13, 109))	//-> Sapphire ring 
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f);
-		lpObj->AddMana += (WORD)(lpObj->MaxMana * 0.04f);
-	}
-	if (LeftRing->m_Type == ITEMGET(13, 110) || RightRing->m_Type == ITEMGET(13, 110))	//-> ruby ring
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f); // test?
-		lpObj->AddLife += (WORD)(lpObj->MaxLife * 0.04f);
-	}
-	if (LeftRing->m_Type == ITEMGET(13, 111) || RightRing->m_Type == ITEMGET(13, 111))	//-> Topaz ring
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f); // test?
-		lpObj->m_MoneyRate += (WORD)(lpObj->m_MoneyRate * 0.03f);
-	}
-	if (LeftRing->m_Type == ITEMGET(13, 112) || RightRing->m_Type == ITEMGET(13, 112))	//-> Amethyst ring
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f); // test?
-		lpObj->DamageMinus += (WORD)(lpObj->DamageMinus * 0.04f);
-	}
-
-	// amulets
-	if (Amulet->m_Type == ITEMGET(13, 113))	//-> Ruby Necklace
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f);
-		lpObj->m_ExcelentDamage += (WORD)(lpObj->m_ExcelentDamage * 0.04f);
-	}
-	if (Amulet->m_Type == ITEMGET(13, 114))	//-> Emerald Necklace
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f);
-		lpObj->m_AttackSpeed += 7;
-	}
-	if (Amulet->m_Type == ITEMGET(13, 115))	//-> Sapphire Necklace
-	{
-		lpObj->RegenTime += (WORD)(lpObj->MaxRegenTime * 0.03f);
-		lpObj->MonsterDieGetMana += (WORD)(lpObj->MaxMana / 8);
-	}
 
 	if ( (Left->m_Type >= ITEMGET(4,0) && Left->m_Type < ITEMGET(4,7) ) || Left->m_Type == ITEMGET(4,17) || Left->m_Type == ITEMGET(4,20) || Left->m_Type == ITEMGET(4,21) || Left->m_Type == ITEMGET(4,22) ||
 		Left->m_Type == ITEMGET(4,23) || Left->m_Type == ITEMGET(4,24) ) //season4 add-on

@@ -1137,6 +1137,51 @@ int CMasterLevelSkillTreeSystem::RunningSkill_MLS(LPOBJ lpObj,int aTargetIndex,C
 
 	LPOBJ lpTargetObj = &gObj[aTargetIndex];
 
+	DWORD MagicNumber = lpMagic->m_Skill;//start
+
+	if( lpObj->m_btDarkSideTargetNum )
+	{
+		if( MagicNumber != AT_SKILL_RAGEFIGHTER_DARKSIDE && MagicNumber != 559 && MagicNumber != 563 )
+		{
+			for(int i = 0; i < 5; i++)
+			{
+				lpObj->m_wDarkSideTargetList[i] = OBJMAX;//10000
+			}
+			lpObj->m_btDarkSideTargetNum = 0;
+			return false;
+		}
+
+		int bFindMatchIndex = FALSE;
+
+		for(int i = 0; i < 5; i++)
+		{
+			if( lpObj->m_wDarkSideTargetList[i] == aTargetIndex )
+			{
+				lpObj->m_wDarkSideTargetList[i] = OBJMAX;//10000
+				--lpObj->m_btDarkSideTargetNum;
+				bFindMatchIndex = TRUE;
+				break;
+			}
+		}
+
+		if( bFindMatchIndex == 0 )
+		{
+			for(int i = 0; i < 5; i++)
+			{
+				lpObj->m_wDarkSideTargetList[i] = OBJMAX;//10000
+			}
+			lpObj->m_btDarkSideTargetNum = 0;
+			return false;
+		}
+	}
+	else
+	{
+		if( MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563 )
+		{
+			return true;
+		}
+	}//end
+
 	int iBaseMLS = this->GetBaseMasterLevelSkill(lpMagic->m_Skill);
 
 	switch( iBaseMLS )
@@ -1294,8 +1339,8 @@ int CMasterLevelSkillTreeSystem::RunningSkill_MLS(LPOBJ lpObj,int aTargetIndex,C
 		this->MLS_SkillMonkBarrageJustOneTargetMastery(lpObj->m_Index,lpMagic,aTargetIndex);
 		break;
 	case 559:
-		/*gObjUseSkill.SkillDarkSide(lpObj->m_Index, aTargetIndex, lpMagic);*/
-			{PMSG_MONK_DARKSIDE_RECV pMsg = {0};
+		{
+			PMSG_MONK_DARKSIDE_RECV pMsg = {0};
 			pMsg.TargetNumberH = SET_NUMBERH(aTargetIndex);
 			pMsg.TargetNumberL = SET_NUMBERL(aTargetIndex);
 
@@ -2306,7 +2351,7 @@ void CMasterLevelSkillTreeSystem::MLS_SkillStrengthenPoison(LPOBJ lpObj,CMagicIn
 
 	LPOBJ lpTargetObj = &gObj[aTargetIndex];
 	GCMagicAttackNumberSend(lpObj,lpMagic->m_Skill,lpObj->m_Index,TRUE);
-	gObjAttack(lpObj,lpTargetObj,lpMagic,TRUE,0,0,0,0,0);
+	gObjAttack(lpObj,lpTargetObj,lpMagic,1,0,0,0,0,0);//originally : true instead of '1'
 }
 
 void CMasterLevelSkillTreeSystem::MLS_SkillMeteorit(LPOBJ lpObj,int aTargetIndex,CMagicInf* lpMagic)
@@ -5610,11 +5655,11 @@ void CMasterLevelSkillTreeSystem::MLS_SkillMonkBarrageJustOneTarget(int aIndex,C
 					}
 					else if( lpMagic->m_Skill == 552 )
 					{
-						nMaxBarrageCount = 3;
+						nMaxBarrageCount = 5;
 					}
 					else if( lpMagic->m_Skill == 558 )
 					{
-						nMaxBarrageCount = 5;
+						nMaxBarrageCount = 5 + rand() % 4 ;//change to 4-8
 					}
 					else if( lpMagic->m_Skill == 559 )
 					{
@@ -5738,7 +5783,7 @@ void CMasterLevelSkillTreeSystem::MLS_SkillMonkBarrageJustOneTargetMastery(int a
 					}
 					else if( lpMagic->m_Skill == 555 )
 					{
-						nMaxBarrageCount = 3;
+						nMaxBarrageCount = 5;
 					}
 					else
 					{

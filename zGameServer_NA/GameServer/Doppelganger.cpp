@@ -573,6 +573,7 @@ void CDoppelganger::SetDoppelgangerStateReady()
     this->monster_goal_count_ = 0;
     this->ukn314 = 0;
     this->mission_result_ = 1;
+	this->ice_walker_dead = 0;//addition
     this->ukn2c8 = 0;
     this->ukn2cc = 0;
     this->ukn2d0 = 0;
@@ -1014,7 +1015,7 @@ bool CDoppelganger::EnterDoppelgangerEvent(int user_index, BYTE item_pos)
 	{
 		return false;
 	}
-    if( /*gFreeServer == 1 &&*/ lpObj->Level < 150 )
+    if( /*gFreeServer == 1 &&*/ lpObj->Level < 12 )
     {
         result_msg.result = 5;
         DataSend(user_index, (LPBYTE)&result_msg, result_msg.h.size);
@@ -1431,11 +1432,11 @@ void CDoppelganger::PlatformLugardAct(OBJECTSTRUCT *lpNpc, OBJECTSTRUCT *lpObj)
             rest_time = this->end_time_ + this->ready_time_ + this->play_time_ + 1;
         }
     }
-
+	rest_time = 0; //addition
     PMSG_TALKRESULT talk_result_msg;
 
     talk_result_msg.h.c = 0xC3;
-    talk_result_msg.h.headcode = 0x30; //30
+    talk_result_msg.h.headcode = 48; //0x30; //30
     talk_result_msg.h.size = sizeof(talk_result_msg); //A0
     talk_result_msg.result = 35;
     talk_result_msg.level1 = rest_time;
@@ -1828,7 +1829,7 @@ void CDoppelganger::SetIceWorkerRegen(BYTE pos_info)
 
     PHeadSubSetB((LPBYTE)&state_msg, 0xBFu, 0x11u, sizeof(state_msg));
 
-    this->ukn370 = 0;
+    this->ice_walker_dead = 0;//this->ukn370 = 0;
     state_msg.state = 0;
     state_msg.pos_info = pos_info;
     for(int i = 0; i < MAX_PARTYUSER; ++i )
@@ -1843,7 +1844,7 @@ void CDoppelganger::SetIceWorkerRegen(BYTE pos_info)
         }
     }
 
-    this->ukn36c = GetTickCount();
+    this->ice_walker_spawn_time = GetTickCount();//this->ukn36c = GetTickCount();
 }
 
 void CDoppelganger::AddIceWorkerIndex(int monster_index)
@@ -1883,7 +1884,7 @@ bool CDoppelganger::CheckIceWorker()
             return false;
     }
 
-    this->ukn370 = 1;
+    this->ice_walker_dead = 1;//this->ukn370 = 1;
     this->mission_result_ = 1;
 
     char pMsgNotice[256];
@@ -2273,7 +2274,7 @@ void CDoppelganger::SendDoppelgangerResultAll()
         {
             if( gObj[this->user_info_[i].object_index].Connected == 3 )
             {
-#if defined __REEDLAN__ || __BEREZNUK__
+#if defined __CUSTOMS__
 				g_ShopPointEx.AddEventBonus(this->user_info_[i].object_index, ShopPointExEvent::DG);
 #endif
 			// ----
@@ -2305,9 +2306,9 @@ void CDoppelganger::ArrangeMonsterHerd()
 
     char msg_notice[256];
 
-    if( !this->ukn370 )
+    if( this->ice_walker_dead = 0 )//if( !this->ukn370 )
     {
-        if( GetTickCount() - this->ukn36c > 60000 )
+        if( GetTickCount() - this->ice_walker_spawn_time > 60000 )//this->ukn36c > 60000 )
         {
             this->mission_result_ = 0;
 
@@ -2325,7 +2326,7 @@ void CDoppelganger::ArrangeMonsterHerd()
                 }
             }
 
-            this->ukn370 = 1;
+            this->ice_walker_dead = 1;//this->ukn370 = 1;
             PHeadSubSetB((LPBYTE)&state_msg, 0xBF, 0x11, sizeof(state_msg));
             state_msg.state = 1;
             state_msg.pos_info = 0;
@@ -2512,6 +2513,8 @@ bool CDoppelganger::GetRandomLocation(BYTE& pos_x, BYTE& pos_y, int seed)
         dir[6][1] = 2;
         dir[7][0] = -2;
         dir[7][1] = 0;
+		pos_x += dir[seed][0];
+		pos_y += dir[seed][1];
 
         BYTE map_attribute = MapC[this->map_number_].GetAttr(pos_x, pos_y);
 

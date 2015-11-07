@@ -592,8 +592,10 @@ bool gObjClearBuffEffect(LPOBJ lpObj,enum eBuffClearType ClearType)
 				case AT_CSHOP_MASTER_SEAL_OF_ASCENSION:
 				case AT_CSHOP_MASTER_SEAL_OF_WEALTH:
 				case 112:
-				case 113:
-				case 114:
+//				case 113:
+//				case 114:
+				case AT_CSHOP_AG_AURA:
+				case AT_CSHOP_SD_AURA:
 				case 119:
 				case 120:
 				case 121:

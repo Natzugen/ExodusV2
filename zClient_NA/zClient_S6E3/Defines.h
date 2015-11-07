@@ -1,7 +1,6 @@
 #pragma once
 // ----------------------------------------------------------------------------------------------
-// Virtual Key Codes
-#define    VK_N                        0x4E
+
 #define ITEM_INTER					1171
 #define ITEM(x, y)					((x * 512) + y)
 #define ITEM2(x, y)					((x * 512) + y + ITEM_INTER)
@@ -93,7 +92,7 @@ enum ObjWindow // -> Season 6.3
 	FriendList		= 1,
 	MoveList		= 2,
 	Party			= 3,
-	Quest   		= 4,
+	Quest			= 4,
 	Guild			= 6,
 	Trade			= 7,
 	Warehouse		= 8,
@@ -117,9 +116,11 @@ enum ObjWindow // -> Season 6.3
 	NPC_Dialog		= 73,
 	GensInfo		= 74,
 	NPC_Julia		= 75,
-	ExpandInventory		= 77,
-	ExpandWarehouse		= 78,
-	MuHelper                = 79,
+	ExpandInventory	= 77,
+	//ExpandWarehouse	= 78,
+	//ExpandInventory = 77,
+	ExpandWarehouse = 78,
+	MuHelper = 79,
 };
 // ----------------------------------------------------------------------------------------------
 
@@ -189,10 +190,10 @@ namespace eItemOption
 		ReturnAttack	= 106,		//-> Return's the enemy's attack power in <N>%
 		CompleteLife	= 107,		//-> Complete recovery of life in <N>% rate
 		CompleteMana	= 108,		//-> Complete recovery of Mana in <N>% rate
-		//================
 		IncreaseWizardryDmg = 97,    //-> Increase Wizardry Dmg +2%
-		LifePerMob        = 99,        //-> Increases acquisition rate of Life after hunting monsters +life/8
-		ManaPerMob        = 100,        //-> Increases acquisition rate of Mana after hunting monsters +Mana/8
+		LifePerMob = 99,        //-> Increases acquisition rate of Life after hunting monsters +life/8
+		ManaPerMob = 100,        //-> Increases acquisition rate of Mana after hunting monsters +Mana/8
+
 	};
 };
 // ----------------------------------------------------------------------------------------------

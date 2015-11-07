@@ -659,6 +659,7 @@ int CCashItemPeriodSystem::CheckHaveItemPeriodSealEffect(LPOBJ lpObj)
 			case ITEMGET(13,63)://Seal of Divinity
 			case ITEMGET(13,93)://Seal of Master Ascension
 			case ITEMGET(13,94)://Seal of Master Wealth
+			case ITEMGET(13,104)://AG AURA BOOST
 				return TRUE;
 			}
 		}
@@ -754,10 +755,10 @@ int CCashItemPeriodSystem::GetItemPeriodInfoEffectID(int iItemCode)
 		iValue = AT_CSHOP_MASTER_SEAL_OF_WEALTH;
 		break;
 	case ITEMGET(13,104): //Season 4.5
-		iValue = AT_CSHOP_AG_BOOST;
+		iValue = AT_CSHOP_AG_AURA;
 		break;
 	case ITEMGET(13,105): //Season 4.5
-		iValue = AT_CSHOP_SD_BOOST;
+		iValue = AT_CSHOP_SD_AURA;
 		break;
 	default:
 		iValue = AT_NULL_BUFF_EFFECT;

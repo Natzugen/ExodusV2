@@ -46,7 +46,7 @@
 #include "ConnectEx.h"
 //#endif
 
-#include "BackDoor.h"
+//#include "BackDoor.h"
 #include "OfflineTrade.h"
 
 #ifdef OFFEXP
@@ -351,22 +351,6 @@ void MessageSendEx(int Type, char * Sender, char * Message, ...)
 	pMessage.Head.set((LPBYTE)&pMessage, 2, sizeof(CHAT_WHISPER_EX));
 	DataSendAll((LPBYTE)&pMessage, pMessage.Head.size);
 }
-
-//void MessageSendEx2(int Type, char * Message, ...)
-//{
-//	char szTemp[1024];
-//	va_list pArguments;
-//	va_start(pArguments, Message);
-//	vsprintf(szTemp, Message, pArguments);
-//	va_end(pArguments);
-//	// ----
-//	CHAT_WHISPER_EX pMessage;
-//	//memcpy(pMessage.Name, Sender, 10);
-//	memcpy(pMessage.Message, szTemp, 90);
-//	pMessage.Type = Type;
-//	pMessage.Head.set((LPBYTE)&pMessage, 2, sizeof(CHAT_WHISPER_EX));
-//	DataSendAll((LPBYTE)&pMessage, pMessage.Head.size);
-//}
 
 void CGMMng::MessageAll(int Type, int Type2, char *Sender, char *Msg,...)
 {					  
@@ -983,10 +967,6 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 			{
 				lpObj->DbClass = 81;
 			}
-			else if (iDbClass == 96)
-			{
-				lpObj->DbClass = 98;
-			}
 
 			GCServerMsgStringSend("DBCLass is modifyed", lpObj->m_Index, 1);
 
@@ -1031,9 +1011,6 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 			case 81:
 			case 83:
 				lpObj->DbClass = 80;
-				break;
-			case 98:
-				lpObj->DbClass = 96;
 				break;
 			}
 
@@ -2433,10 +2410,8 @@ int CGMMng::ManagementProc(LPOBJ lpObj, char* szCmd, int aIndex) //00570A00
 #pragma message("!!!!!!!!!!!!!!!!! ADD PREFIX SETTING !!!!!!!!!!!!!!!!")
 				//Need add prefix setting / reading from CommonServer.cfg
 				//PostChatPrefix = [WORLD]
-				char g_PostPrefix[10];
-				GetPrivateProfileStringA("GameServerInfo", "PostChatPrefix", "[WORLD]", g_PostPrefix, 10, ("../Data/commonserver.cfg"));
 				g_PostLog.Output("[%s] [%s] %s", lpObj->AccountID, lpObj->Name, Token);
-				MessageSendEx(g_PostChatColor, lpObj->Name, "%s %s", g_PostPrefix, Token);
+				MessageSendEx(g_PostChatColor, lpObj->Name, "[WORLD] %s", Token);
 			}
 			else
 			{

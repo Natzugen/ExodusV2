@@ -1259,11 +1259,11 @@ void QuestExpProgMng::ChkMonsterKillPartyPlay(DWORD quest_index_id,
 void QuestExpProgMng::ChkUserQuestTypeMonsterKill(OBJECTSTRUCT *lpObj, 
 												  OBJECTSTRUCT *lpMonsterObj)
 {
-	/*if ( lpObj->PartyNumber == -1 )
+	if ( lpObj->PartyNumber == -1 )
 	{
 		ChkUserQuestType(1, lpObj, lpMonsterObj, 0);
 		return;
-	}*/
+	}
 
 	int party_number = lpObj->PartyNumber;
 	int killer_obj_index = lpObj->m_Index;

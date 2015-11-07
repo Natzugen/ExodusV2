@@ -3898,7 +3898,7 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTargetObj)
 		}
 		else
 		{
-			option1rand = gItemSkillDropPer;//tet skill drop //6;
+			option1rand=gItemSkillDropPer;
 			option2rand= gItemLuckyDropPer; //lucky
 			option3rand=rand()%100;
 			optionc=rand()%3; //opt jol

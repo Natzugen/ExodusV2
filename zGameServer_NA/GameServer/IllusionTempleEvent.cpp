@@ -111,7 +111,8 @@ BOOL CIllusionTempleEvent::LoadIllusionTempleScript(char *filename)
 				__ILLUSION_TEMPLE_STARTTIME startTime;
 
 				startTime.nHour = TokenNumber;
-				Token = GetToken();	startTime.nMin = TokenNumber;
+				Token = GetToken();
+				startTime.nMin = TokenNumber;
 
 				m_lstIllusionTempleStartTime.push_back(startTime);
 			}
@@ -212,7 +213,7 @@ BOOL CIllusionTempleEvent::EnterIllusionTemple(int aIndex, BYTE btTempleIndex, B
 	{
 		return FALSE;
 	}
-
+//revisar illution
 	if( lpObj->m_IfState.use != 0 && lpObj->m_IfState.type != 12 )
 	{
 		return FALSE;

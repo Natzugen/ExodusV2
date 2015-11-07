@@ -1000,7 +1000,7 @@ void GensSystem::CalcContributePoint(LPOBJ lpObj, LPOBJ lpTargetObj)
 								char Text[100];
 								sprintf(Text, "%d contribution point(s) would be lost", iAddValue);
 								// ----
-								GCServerMsgStringSend(Text, lpTargetObj->m_Index, 1);
+								GCServerMsgStringSend(Text, lpObj->m_Index, 1);
 							}
 
 							LogAddTD("[GensSystem] [%s][%s] Sub ContributePoint[%d] - Result : Lv [%d] GensName [%s] / Lv [%d] GensName [%s]",
