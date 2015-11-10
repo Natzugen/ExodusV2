@@ -14,7 +14,7 @@ void cDropEvent::LoadConfigs()
 {
 	Enable = GetPrivateProfileInt("Common","Enable",1,gDirPath.GetNewPath(DROP_EVENT_DIR));
 
-	for(int i = 0;i < DROP_EVENT_MAX; i++)
+	for(int i(0);i < DROP_EVENT_MAX; i++)
 	{
 		Item[i].Index = 0;
 		Item[i].Type  = 0;
@@ -26,7 +26,7 @@ void cDropEvent::LoadConfigs()
 		Item[i].Anc   = 0;
 	}
 
-	for(int j = 0;j < DROP_EVENT_MAX; j++)
+	for(int j(0);j < DROP_EVENT_MAX; j++)
 	{
 		Time[j].Hour  = 0;
 		Time[j].Min   = 0;

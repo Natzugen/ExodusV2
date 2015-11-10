@@ -13,25 +13,22 @@
 #include "ChatExpanded.h"
 #include "ConnectEx.h"
 #include "TDebugLog.h"
-//#ifdef __NOVUS__
+#ifdef __NOVUS__
 #include "CraftSystem.h"
-//#endif
+#endif
 #include "VisualFix.h"
 #include "OffTrade.h"
 #include "ItemRank.h"
 #include "ItemModel.h"
 #include "SocketItem.h"
-
-
 #include <string>
 #include "CRC.h"
 // ----------------------------------------------------------------------------------------------
-
 std::vector<std::string> GetArguments()
 {
 	std::vector<std::string> list;
 	LPSTR arguments = GetCommandLineA();
-	if (!arguments)
+	if(!arguments)
 	{
 		return list;
 	}
@@ -40,11 +37,11 @@ std::vector<std::string> GetArguments()
 	bool it = false;
 	std::string argument = "";
 	std::string commandline = arguments;
-	while (i < commandline.length())
+	while(i < commandline.length())
 	{
-		if (quote)
+		if(quote)
 		{
-			if (commandline.at(i) == '\"')
+			if(commandline.at(i) == '\"')
 			{
 				quote = false;
 			}
@@ -56,16 +53,16 @@ std::vector<std::string> GetArguments()
 		}
 		else
 		{
-			switch (commandline.at(i))
+			switch(commandline.at(i))
 			{
 			case '\"':
 				quote = true;
 				break;
-			case ' ':
+			case ' ': 
 			case '\t':
 			case '\r':
 			case '\n':
-				if (it)
+				if(it)
 				{
 					list.push_back(argument);
 					argument = "";
@@ -80,7 +77,7 @@ std::vector<std::string> GetArguments()
 		}
 		i++;
 	}
-	if (argument != "")
+	if(argument != "")
 	{
 		list.push_back(argument);
 	}
@@ -90,9 +87,9 @@ std::vector<std::string> GetArguments()
 void CheckArguments()
 {
 	std::vector<std::string> argumentos = GetArguments();
-	if (argumentos.size() == 2)
+	if(argumentos.size() == 2)
 	{
-		if (argumentos[1] == "season6globalextreme")
+		if(argumentos[1] == "season6globalextreme")
 		{
 			return;
 		}
@@ -101,16 +98,18 @@ void CheckArguments()
 	ExitProcess(0);
 }
 
-
 extern "C" __declspec(dllexport)void Init()
 {
+	 DWORD OldProtect;
+    	// ----
+    	if(VirtualProtect(LPVOID(0x401000),0xD21FFF,PAGE_EXECUTE_READWRITE,&OldProtect))
 	// ----
 #ifdef __MUANGEL__
-	if (pMUIsLoaded == 1)
+	if( pMUIsLoaded == 1 )
 	{
 		CreateMutex(0, 1, "MuOnline");
 		// ----
-		if (GetLastError() == 183)
+		if( GetLastError() == 183 )
 		{
 			ExitProcess(0);
 		}
@@ -119,11 +118,10 @@ extern "C" __declspec(dllexport)void Init()
 	// ----
 #if defined  __MIX__ || __WHITE__ || __MUANGEL__
 #ifndef __ROOT__
-	char **	Command = 0;
+	char **	Command	= 0;
 	CommandLineToArg(GetCommandLine(), &Command);
-	if (strcmp("Updater", Command[1]))
+	if( strcmp("Updater", Command[1]) )
 	{
-
 		MessageBoxA(0, "Please start game from Launcher", "Start Error", ERROR);
 		ExitProcess(0);
 	}
@@ -131,14 +129,12 @@ extern "C" __declspec(dllexport)void Init()
 #endif
 	// ----
 	// ----
-
-
 #ifdef __NOVUS__
 	gCraftSystem.Load();
 #endif
-	////#if defined __BEREZNUK__ || __MIX__ || __REEDLAN__ || __MUANGEL__ || __WHITE__ || __MEGAMU__ || __VIRNET__
+	//#if defined __BEREZNUK__ || __MIX__ || __REEDLAN__ || __MUANGEL__ || __WHITE__ || __MEGAMU__ || __VIRNET__
 	gConnectEx.Load();
-	////#endif
+	//#endif
 	gController.Load();
 	gChatExpanded.Load();
 	gItemPrice.Load();
@@ -155,40 +151,34 @@ extern "C" __declspec(dllexport)void Init()
 	gOffTrade.Init();
 	//#endif
 #ifdef __RMOS__
-	g_ItemRank.Load();
+	g_ItemRank.Load(); 
 #endif
 	// ----
-	LoadLibrary("ttlci.dll");
+	LoadLibrary("ttlci.dll");	
 #ifdef MUNEWAGE
 	CheckArguments();
-
-
+	
 #endif
-
-
+	
 	// ----
 	//gSocketItem.Load();
 }
 // ----------------------------------------------------------------------------------------------
 
-
-
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 {
-
-
-	switch (dwReason)
+	switch(dwReason)
 	{
 	case DLL_PROCESS_DETACH:
-	{
+		{
 
-	}
+		}
 		break;
 		// --
 	case DLL_PROCESS_ATTACH:
-	{
-		gController.Instance = hModule;
-	}
+		{
+			gController.Instance = hModule;
+		}
 		break;
 	}
 	// ----

@@ -66,13 +66,6 @@ enum ObjectID
 	eQUEST_FOOTER,
 	eQUEST_DIV,
 	eQUEST_CLOSE,
-	//----------/
-	eTOP_MAIN,
-	eTOP_CLOSE,
-	eTOP_SEPARATOR,
-	eTOP_NEXT,
-	eTOP_PREV,
-	//-----------//
 };
 // ----------------------------------------------------------------------------------------------
 
@@ -179,11 +172,7 @@ public:
 	int			DrawFormat(DWORD Color, int PosX, int PosY, int Width, int Align, LPCSTR Text, ...);
 	void		DrawFormatEx(DWORD Color, int PosX, int PosY, int Width, int Align, LPCSTR Text, ...);
 	void		DrawGUI(short ObjectID, float X, float Y);
-	void		DrawSizedGUI(short ObjectID, float X, float Y, int Count);
 	float		DrawRepeatGUI(short ObjectID, float X, float Y, int Count);
-	float       DrawSizeRepeatedGUI(short MonsterID, float X, float Y, int Width, int Height, int Count);
-	void        DrawResizeGUI(short ObjectID, float PosX, float PosY, int Width, int Height);
-	void        DrawPictureAlpha(char Path[64], float X, float Y, float Width, float Height, int U1, int U2, float ScaleX, float ScaleY, int HL);
 	void		DrawColoredGUI(short ObjectID, float X, float Y, DWORD Color);
 	int			DrawToolTip(int X, int Y, LPCSTR Text, ...);
 	int			DrawToolTipEx(int X, int Y, LPCSTR Text, ...);
@@ -193,6 +182,8 @@ public:
 	bool		IsWorkZone(float X, float Y, float MaxX, float MaxY);
 	float		GetResizeX(short ObjectID);
 	// ----
+	void        DrawPictureAlpha(char Path[64], float X, float Y, float Width, float Height, int U1, int U2, float ScaleX, float ScaleY, int HL);
+	bool WinKeyChecks();
 private:
 	InterfaceObject Data[MAX_OBJECT];
 	// ----

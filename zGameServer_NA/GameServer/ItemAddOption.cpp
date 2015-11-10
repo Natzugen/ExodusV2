@@ -537,15 +537,6 @@ bool CItemAddOption::_SetItemEffect(LPOBJ lpObj, int iEffectType, int iEffectVal
 		case ADD_OPTION_MOBILITY:
 			break;
 
-		case ADD_OPTION_LEVEL_BP:
-			lpObj->BP += (iEffectValue * lpObj->Level);
-			break;
-
-		case ADD_OPTION_LEVEL_SD:
-			lpObj->iShield += (iEffectValue * lpObj->Level);
-			break;
-
-
 		default:
 			return false;
 	}
@@ -635,14 +626,6 @@ bool CItemAddOption::_ClearItemEffect(LPOBJ lpObj, int iEffectOption, int iOptio
 			break;
 
 		case ADD_OPTION_MOBILITY:
-			break;
-
-		case ADD_OPTION_LEVEL_BP:
-			lpObj->BP -= (iEffectValue * lpObj->Level);
-			break;
-
-		case ADD_OPTION_LEVEL_SD:
-			lpObj->iShield -= (iEffectValue * lpObj->Level);
 			break;
 
 		default:

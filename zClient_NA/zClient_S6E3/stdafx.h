@@ -17,7 +17,6 @@
 #define __ALIEN__		16
 //#define __VIRNET__		19
 #define _SOCKET_CONFIG_
-//#define _NEW_ITEMS_
 // ----------------------------------------------------------------------------------------------
 
 #if defined __MEGAMU__ || __VIRNET__
@@ -30,7 +29,6 @@
 #include "targetver.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <list>
 #include <math.h>
 #include <malloc.h>
 #include <memory.h>

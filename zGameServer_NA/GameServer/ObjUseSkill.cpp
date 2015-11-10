@@ -824,7 +824,7 @@ void CObjUseSkill::UseSkill(int aIndex, CMagicInf * lpMagic, BYTE x, BYTE y, BYT
 			// --
 			case AT_SKILL_RAGEFIGHTER_DARKSIDE://1.01.06
 				{
-					this->SkillDarkSide( aIndex, aTargetIndex, lpMagic);
+					this->SkillDarkSide(aIndex, aTargetIndex, lpMagic);
 				}
 				break;
 			// --
@@ -938,43 +938,43 @@ void CObjUseSkill::UseSkill(int aIndex, int aTargetIndex, CMagicInf * lpMagic) /
 }
 
 void CObjUseSkill::SkillDarkSide(int aIndex, int iTargetIndex, CMagicInf *lpMagic)
-{
+ {
 	int iTargetCount; // [sp+1Ch] [bp-10h]@1
 	WORD wTargetList[5]; // [sp+20h] [bp-Ch]@3
-
-	iTargetCount = 0;
-
-	for ( int i = 0; i < 5; ++i )
-	{
-		wTargetList[i] = OBJMAX-1;
-	}
-
-	if( gObj[aIndex].CloseCount >= 0 )
-	{
+	
+		iTargetCount = 0;
+	
+		for (int i = 0; i < 5; ++i)
+		 {
+		wTargetList[i] = OBJMAX - 1;
+		}
+	
+		if (gObj[aIndex].CloseCount >= 0)
+		 {
 		return;
-	}
-
-	if( !gObjUseSkill.SkillMonkDarkSideGetTargetIndex(aIndex, iTargetIndex, lpMagic, &wTargetList[0]) )
-	{
+		}
+	
+		if (!gObjUseSkill.SkillMonkDarkSideGetTargetIndex(aIndex, iTargetIndex, lpMagic, &wTargetList[0]))
+		 {
 		return;
-	}
-
-	PMSG_MONK_DARKSIDE_SEND pDarkSideTargetList;
-
-	memset(&pDarkSideTargetList, 0, sizeof(pDarkSideTargetList));
+		}
+	
+		PMSG_MONK_DARKSIDE_SEND pDarkSideTargetList;
+	
+		memset(&pDarkSideTargetList, 0, sizeof(pDarkSideTargetList));
 	PHeadSetB((LPBYTE)&pDarkSideTargetList, 0x4B, sizeof(pDarkSideTargetList));
 	memcpy(pDarkSideTargetList.wTargetList, wTargetList, sizeof(wTargetList));
 	pDarkSideTargetList.MagicNumber = LOWORD(lpMagic->m_Skill);
 	gObj[aIndex].m_btDarkSideTargetNum = 0;
-
-	for ( int j = 0; j < 5; ++j )
-	{
-		if ( wTargetList[j] != OBJMAX )
+	
+		for (int j = 0; j < 5; ++j)
 		{
-			++gObj[aIndex].m_btDarkSideTargetNum;
-			gObjAddAttackProcMsgSendDelay(&gObj[aIndex], 61,aIndex,150 * iTargetCount++ + 150,lpMagic->m_Skill,wTargetList[j]);
+			if (wTargetList[j] != OBJMAX)
+				{
+					++gObj[aIndex].m_btDarkSideTargetNum;
+					gObjAddAttackProcMsgSendDelay(&gObj[aIndex], 61, aIndex, 150 * iTargetCount++ + 150, lpMagic->m_Skill, wTargetList[j]);
+				}
 		}
-	}
 	memcpy(gObj[aIndex].m_wDarkSideTargetList, wTargetList, sizeof(wTargetList));
 	DataSend(aIndex, (LPBYTE)&pDarkSideTargetList, pDarkSideTargetList.h.size);
 }
@@ -995,7 +995,7 @@ BOOL CObjUseSkill::RunningSkill(int aIndex, int aTargetIndex, CMagicInf * lpMagi
 	if(g_MasterSkillSystem.CheckMasterLevelSkill(lpMagic->m_Skill) != FALSE) //Season3 add-on
 	{
 		g_MasterSkillSystem.RunningSkill_MLS(lpObj, aTargetIndex, lpMagic, bCombo, 0, 0, 0, 0);
-		//return true;
+		return true;
 	}
 
 	if( lpObj->m_btDarkSideTargetNum )
@@ -1004,7 +1004,7 @@ BOOL CObjUseSkill::RunningSkill(int aIndex, int aTargetIndex, CMagicInf * lpMagi
 		{
 			for(int i = 0; i < 5; i++)
 			{
-				lpObj->m_wDarkSideTargetList[i] =OBJMAX;//10000
+				lpObj->m_wDarkSideTargetList[i] = 10000;
 			}
 			lpObj->m_btDarkSideTargetNum = 0;
 			return false;
@@ -1016,8 +1016,8 @@ BOOL CObjUseSkill::RunningSkill(int aIndex, int aTargetIndex, CMagicInf * lpMagi
 		{
 			if( lpObj->m_wDarkSideTargetList[i] == aTargetIndex )
 			{
-				lpObj->m_wDarkSideTargetList[i] = OBJMAX;//10000
-				--lpObj->m_btDarkSideTargetNum;
+				//lpObj->m_wDarkSideTargetList[i] = 10000;
+				//--lpObj->m_btDarkSideTargetNum;
 				bFindMatchIndex = TRUE;
 				break;
 			}
@@ -1027,10 +1027,10 @@ BOOL CObjUseSkill::RunningSkill(int aIndex, int aTargetIndex, CMagicInf * lpMagi
 		{
 			for(int i = 0; i < 5; i++)
 			{
-				lpObj->m_wDarkSideTargetList[i] = OBJMAX;//10000
+				lpObj->m_wDarkSideTargetList[i] = 10000;
 			}
 			lpObj->m_btDarkSideTargetNum = 0;
-			return false;
+			//return false;
 		}
 	}
 	else
@@ -2505,11 +2505,11 @@ BOOL CObjUseSkill::SkillKnightBlow(int aIndex, int aTargetIndex, CMagicInf* lpMa
 	int StartDis = 1;
 	int tObjNum;
 
-	//float GetSkillDistance = MagicDamageC.GetSkillDistance(lpMagic->m_Skill) + 1.0f; //loc6
+	float GetSkillDistance = MagicDamageC.GetSkillDistance(lpMagic->m_Skill) + 1.0f; //loc6
 
 	float fangle = this->GetAngle(lpObj->X,lpObj->Y,gObj[aTargetIndex].X,gObj[aTargetIndex].Y);
 
-	this->SkillFrustrum(aIndex,fangle,1.5f,3.0f);
+	this->SkillFrustrum(aIndex,fangle,1.5f,GetSkillDistance);
 
 	int count = 0;
 	int loopcount = 0;
@@ -5541,19 +5541,6 @@ int CObjUseSkill::SkillAreaMonsterAttack(int aIndex, CMagicInf* lpMagic, BYTE x,
 		maxhit = 8;
 		loc10 = 12;
 	}
-	
-	int nMaxBarrageCount = 0;//start
-
-	if(lpMagic->m_Skill == 264)
-	{
-		nMaxBarrageCount = 5;
-	}
-	else if(lpMagic->m_Skill == 270)
-	{
-		nMaxBarrageCount = 5;
-	}
-	else
-		nMaxBarrageCount = 0;//end
 
 	int iSkillDistance = MagicDamageC.GetSkillDistance(lpMagic->m_Skill); //loc11
 
@@ -5628,43 +5615,14 @@ int CObjUseSkill::SkillAreaMonsterAttack(int aIndex, CMagicInf* lpMagic, BYTE x,
 							{
 								if(Delay == FALSE)
 								{
-									if(lpMagic->m_Skill == 264)//start
-									{
-										for(int i = 1; i < nMaxBarrageCount; i++)
-										{
-											if( i%(nMaxBarrageCount-1) == TRUE  )
-											{
-												gObjAttack(lpObj,&gObj[tObjNum],lpMagic,TRUE,TRUE,0,0,i,0);
-											}
-											else
-											{
-												gObjAttack(lpObj,&gObj[tObjNum],lpMagic,FALSE,TRUE,0,0,i,0);
-											}
-										}
-									}//end
-									else if(lpMagic->m_Skill == 270)//start
-									{
-										for(int i = 1; i < nMaxBarrageCount; i++)
-										{
-											if( i%(nMaxBarrageCount-1) == TRUE  )
-											{
-												gObjAttack(lpObj,&gObj[tObjNum],lpMagic,TRUE,TRUE,0,0,i,0);
-											}
-											else
-											{
-												gObjAttack(lpObj,&gObj[tObjNum],lpMagic,FALSE,TRUE,0,0,i,0);
-											}
-										}
-									}//end
-									else
-										gObjAttack(lpObj,&gObj[tObjNum],lpMagic,1,0,0,0,0,0);
+									gObjAttack(lpObj,&gObj[tObjNum],lpMagic,1,0,0,0,0,0);
 								}
 								else
 								{
 									gObjAddAttackProcMsgSendDelay(lpObj, 50, tObjNum, Delay, lpMagic->m_Skill, 0);
 								}
 							}
-						
+							
 							SkillResult = 1;
 						}
 					}

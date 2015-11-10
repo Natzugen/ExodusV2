@@ -35,7 +35,9 @@ public:
 	void		Switch();
 	void		Run(MOUSEHOOKSTRUCTEX * Mouse, WPARAM wParam);
 	void		Rotate();
+	void        	Position();
 	// ----
+	bool        	RestStop;
 	bool		IsActive;
 	float		ZoomPercent;
 	// ----

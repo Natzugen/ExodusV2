@@ -57,7 +57,6 @@ public:
 	char	m_AccountID[11];
 	char	m_Password[21];
 	// ----
-	bool    m_OfflineExpirience;
 private:
 	char	m_CSIP[16];
 	WORD	m_CSPort;

@@ -15,9 +15,7 @@
 
 Interface	gInterface;
 DWORD		CharacterInfoExtern_Buff;
-DWORD		StaffNameColor_NameN;
 char		CharacterInfoExtern_LevelBuff[40];
-char		StaffNameColor_NameNs[50];
 DWORD		StaffNameColor_Buff;
 lpViewObj	StaffNameColor_lpView;
 DWORD		AddSomeShine_Buff;
@@ -56,11 +54,11 @@ Naked(StaffNameColor)
 	// ----
 	StaffNameColor_lpView = &*(ObjectPreview*)(*(DWORD*)(StaffNameColor_Buff + 668));
 	// ----
-	if (!strncmp(StaffNameColor_lpView->Name, "[GM]", 4))
+	if( !strncmp(StaffNameColor_lpView->Name, "NaM4", 4) )
 	{
 		pSetTextColor(pTextThis(), 255, 60, 160, 255);
 	}
-	else if (!strncmp(StaffNameColor_lpView->Name, "[ADMIN]", 7))
+	else if( !strncmp(StaffNameColor_lpView->Name, "Admin", 5) )
 	{
 		pSetTextColor(pTextThis(), 255, 175, 0, 255);
 	}
@@ -78,8 +76,6 @@ Naked(StaffNameColor)
 		mov StaffNameColor_Buff, 0x00598C9A
 			jmp StaffNameColor_Buff
 	}
-	VAngle Angle;
-	int PosX, PosY;
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -158,9 +154,9 @@ void Interface::Load()
 	this->BindObject(eNEWS_INFOBG, 0x787D, 170, 21, -1, -1);
 	this->BindObject(eNEWS_CLOSE, 0x7EC5, 36, 29, -1, -1);
 	this->BindObject(eNEWS_BACK, 0x7A5E, 128, 29, -1, -1);
-//#ifdef __MAKELO__
+#ifdef __MAKELO__
 	this->BindObject(eOFFEXP_SWITCH, 32513, 57, 23, MAX_WIN_WIDTH-57, 0);
-//#endif
+#endif
 	//#ifdef __BEREZNUK__
 	this->BindObject(eTIME, 0x787E, 131, 70, -10, 359);
 	this->Data[eTIME].OnShow = true;
@@ -187,6 +183,26 @@ void Interface::Load()
 	SetRange((LPVOID)0x005E496C, 13, ASM::NOP);
 	SetOp((LPVOID)0x005E496C, (LPVOID)AddSomeShine, ASM::JMP);
 	//#endif
+	    this->BindObject(eMINI_MAP_BG, 0x7882, 138, 265, -1, -1);
+    this->BindObject(ePLAYER_POINT, 0x7883, 3, 3, -1, -1);
+    // ----
+    this->BindObject(eNULL_MAP, 0x7884, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eLORENCIA_MAP, 0x7885, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eDUNGEON_MAP, 0x7886, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eDEVIAS_MAP, 0x7887, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eNORIA_MAP, 0x7888, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eLOSTTOWER_MAP, 0x7889, 128, 128, -1, -1);
+    // ----
+    // Reserved 0x788A for EXILE
+    // ----
+    this->BindObject(eSTADIUM_MAP, 0x788B, 128, 128, -1, -1);
+    // ----
+    this->BindObject(eATLANS_MAP, 0x788C, 128, 128, -1, -1);
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -194,16 +210,17 @@ void Interface::Work()
 {
 	gObjUser.Refresh();
 	gCamera.Rotate();
+	gCamera.Position();
 	// ----
 	//#if defined __BEREZNUK__ || __MIX__ || __REEDLAN__ || __MUANGEL__ || __WHITE__ || __MEGAMU__ || __VIRNET__
 	gConnectEx.Run();
 	//#endif
-//#ifdef __NOVUS__
+#ifdef __NOVUS__
 	gInterface.DrawCraftWindow();
-//#endif
-//#ifdef __MAKELO__
+#endif
+#ifdef __MAKELO__
 	gInterface.DrawOffExpSwitch();
-//#endif
+#endif
 	//#ifdef __BEREZNUK__
 	gInterface.DrawTime();
 	//#endif
@@ -212,9 +229,9 @@ void Interface::Work()
 	gInterface.DrawCameraUI();
 	gInterface.DrawResetWindow();
 	gInterface.DrawNewsWindow();
-//#ifdef __RMOS__
+#ifdef __RMOS__
 	gInterface.DrawQuestDialog();
-//#endif
+#endif
 	// ----
 	pDrawInterface();
 }
@@ -226,17 +243,156 @@ void Interface::LoadImages()
 	pLoadImage("Custom\\Interface\\CameraUI_Switch.tga", 0x787B, 0x2601, 0x2900, 1, 0);
 	pLoadImage("Custom\\Interface\\CameraUI_Reset.tga", 0x787C, 0x2601, 0x2900, 1, 0);
 	pLoadImage("Custom\\Interface\\NewsBoard_Title.tga", 0x787D, 0x2601, 0x2900, 1, 0);
+	pLoadImage("Custom\\Interface\\MiniMapUI.tga", 0x7882, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\PlayerPoint.jpg", 0x7883, 0x2600, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMapNull.tga", 0x7884, 0x2601, 0x2900, 1, 0);
+    // --
+    pLoadImage("Custom\\Maps\\MiniMap0.tga", 0x7885, 0x2601, 0x2900, 1, 0);
+    // --
+    pLoadImage("Custom\\Maps\\MiniMap1.tga", 0x7886, 0x2601, 0x2900, 1, 0);
+    // --
+    pLoadImage("Custom\\Maps\\MiniMap2.tga", 0x7887, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap3.tga", 0x7888, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap4.tga", 0x7889, 0x2601, 0x2900, 1, 0);
+    // ----
+    // Exile Map 0x788A
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap6.tga", 0x788B, 0x2601, 0x2900, 1, 0);
+    // ----
+    pLoadImage("Custom\\Maps\\MiniMap7.tga", 0x788C, 0x2601, 0x2900, 1, 0);
 	//#ifdef __BEREZNUK__
 	//pLoadImage("Custom\\Interface\\TimeBar.tga", 0x787E, 0x2601, 0x2900, 1, 0);
 	//#endif
-//#ifdef __MAKELO__
+#ifdef __MAKELO__
 	pLoadImage("Interface\\newui_pcroom.tga", 32513, 0x2601, 0x2900, 1, 0);
-//#endif
+#endif
 	// ----
 	pLoadSomeForm();
 }
 // ----------------------------------------------------------------------------------------------
+bool Interface::MiniMapCheck()
+{
+    if(this->CheckWindow(Inventory) ||
+        this->CheckWindow(CashShop) ||
+        this->CheckWindow(ChaosBox) ||
+        this->CheckWindow(Character) ||
+        this->CheckWindow(CommandWindow) ||
+        this->CheckWindow(ExpandInventory) ||
+        this->CheckWindow(ExpandWarehouse) ||
+        this->CheckWindow(FullMap) ||
+        this->CheckWindow(GensInfo) ||
+        this->CheckWindow(Guild) ||
+        this->CheckWindow(NPC_Dialog) ||
+        this->CheckWindow(NPC_Julia) ||
+        this->CheckWindow(NPC_Titus) ||
+        this->CheckWindow(OtherStore) ||
+        this->CheckWindow(Party) ||
+        this->CheckWindow(PetInfo) ||
+        this->CheckWindow(Shop) ||
+        this->CheckWindow(SkillTree) ||
+        this->CheckWindow(Store) ||
+        this->CheckWindow(Trade) ||
+        this->CheckWindow(Warehouse) 
+        this->CheckWindow(FriendList) ||
+        this->CheckWindow(FastMenu) ||
+        this->CheckWindow(MuHelper) ||
+        this->CheckWindow(Quest) )
+        return true;
+    return false;
+}
 
+bool Interface::CombinedChecks()
+{
+    if( (this->CheckWindow(Inventory) 
+        && this->CheckWindow(ExpandInventory) 
+        && this->CheckWindow(Store)) || 
+        (this->CheckWindow(Inventory) 
+        && this->CheckWindow(Warehouse) 
+        && this->CheckWindow(ExpandWarehouse)) || 
+        (this->CheckWindow(Inventory) 
+        && this->CheckWindow(Character) 
+        && this->CheckWindow(Store)) )
+        return true;
+    return false;
+}
+
+void Interface::DrawMiniMapWindow()
+{
+    float MainWidth            = 138.0;
+    float MainHeight        = 265.0;
+    float StartY            = 264.0;
+    float StartX            = 512.0;
+    // ----
+    if( this->MiniMapCheck() || this->CombinedChecks() )
+    {
+        return;
+    }
+    // ----
+    switch(gObjUser.m_MapNumber)
+    {
+        case 0:    //Lorencia
+        {
+            this->DrawGUI(eLORENCIA_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 1:    //Dungeon
+        {
+            this->DrawGUI(eDUNGEON_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 2:    //Devias
+        {
+            this->DrawGUI(eDEVIAS_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 3:    //Noria
+        {
+            this->DrawGUI(eNORIA_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 4:    //LostTower
+        {
+            this->DrawGUI(eLOSTTOWER_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 5:    //Exile (disabled)
+        {
+            return;
+        }
+        break;
+        // --
+        case 6:    //Stadium
+        {
+            this->DrawGUI(eSTADIUM_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        case 7:    //Atlans
+        {
+            this->DrawGUI(eATLANS_MAP, StartX, StartY + 30);
+        }
+        break;
+        // --
+        default: //Default
+        {
+            this->DrawGUI(eNULL_MAP, StartX, StartY + 30);
+        }
+        break;
+    }
+    // ----
+    this->DrawGUI(eMINI_MAP_BG, StartX, StartY);
+    this->DrawGUI(ePLAYER_POINT, (float)(StartX - 1 + gObjUser.lpViewPlayer->MapPosX / 2), (float)(294 - 1 + ( 255 - gObjUser.lpViewPlayer->MapPosY ) / 2) );
+}
+// ----------------------------------------------------------------------------------------------
 void Interface::LoadModels()
 {
 #ifdef __NOVUS__
@@ -245,7 +401,7 @@ void Interface::LoadModels()
 	pLoadModel(407, "Data\\Custom\\Skill\\", "sign_em", -1);
 	pLoadTexture(407, "Custom\\Skill\\", 0x2901, 0x2600, 1);
 	pLoadModel(408, "Data\\Custom\\Skill\\", "sign_admin", -1);
-	pLoadTexture(408, "Custom\\Skill\\", 0x2901, 0x2600, 1);
+	pLoadTexture(408, "Data\\Custom\\Skill\\", 0x2901, 0x2600, 1);
 #endif
 	// ----
 	pInitModelData2();
@@ -270,52 +426,52 @@ void Interface::BindObject(short MonsterID, DWORD ModelID, float Width, float He
 
 void Interface::DrawLifeBar()
 {
-//	DWORD CurrentTick	= GetTickCount();
-//	DWORD Delay			= (CurrentTick - gObjUser.m_TargetUpdateTick);
-//	// ----
-//#ifdef __NOVUS__
-//	if( gObjUser.m_TargetType != 2 )
-//	{
-//		return;
-//	}
-//#else
-//	if( gObjUser.m_TargetType != 2 )
-//	{
-//		return;
-//	}
-//	// ----
-//	if( gObjUser.lpViewTarget->m_Model.ObjectType != emMonster )
-//	{
-//		return;
-//	}
-//#endif
-//	// ----
-//	PMSG_TARGETDATA_REQ pRequest;
-//	pRequest.h.set((LPBYTE)&pRequest, 0xFB, 7, sizeof(pRequest));
-//	pRequest.aIndex = gObjUser.lpViewTarget->aIndex;
-//	// ----
-//	if( Delay >= 10 )
-//	{
-//		gProtocol.DataSend((LPBYTE)&pRequest, pRequest.h.size);
-//	}
-//	// ----
-//	if( gObjUser.m_TargetLifePercent <= 0.0f )
-//	{
-//		return;
-//	}
-//	// ----
-//	float BarWidth	= (148.5f / 100.0f) * gObjUser.m_TargetLifePercent;
-//	// ----
-//	pDrawGUI(0x7B3F, (MAX_WIN_WIDTH / 2) - 75.5, 0, 151, 8);
-//	pDrawGUI(0x7B3F, (MAX_WIN_WIDTH / 2) - 75.5, 6.5, 151, 8);
-//	pDrawGUI(0x7B40, (MAX_WIN_WIDTH / 2) - 74, 8.3, BarWidth, 4);
-//	//pDrawColorButton(0x7B40, (MAX_WIN_WIDTH / 2) - 74, 8.3, BarWidth, 4, 0, 0, Color4f(255, 255, 0, 100 - ((BYTE)gObjUser.m_TargetLifePercent)));
-//	// ----
-//	this->DrawFormat(eOrange, (MAX_WIN_WIDTH / 2) - 74, 0.5, 148, 3, gObjUser.lpViewTarget->Name);
-//	this->DrawFormat(eGold, (MAX_WIN_WIDTH / 2) - 74, 6, 148, 3, "%d%% / 100%%", (int)gObjUser.m_TargetLifePercent);
-//#ifdef __NOVUS__
-//	this->DrawFormat(eGold, gObjUser.m_CursorX + 25, gObjUser.m_CursorY - 10, 100, 1, "%d / %d", (int)gObjUser.m_TargetLife, (int)gObjUser.m_TargetMaxLife);
-//#endif
+	DWORD CurrentTick	= GetTickCount();
+	DWORD Delay			= (CurrentTick - gObjUser.m_TargetUpdateTick);
+	// ----
+#ifdef __NOVUS__
+	if( gObjUser.m_TargetType != 2 )
+	{
+		return;
+	}
+#else
+	if( gObjUser.m_TargetType != 2 )
+	{
+		return;
+	}
+	// ----
+	if( gObjUser.lpViewTarget->m_Model.ObjectType != emMonster )
+	{
+		return;
+	}
+#endif
+	// ----
+	PMSG_TARGETDATA_REQ pRequest;
+	pRequest.h.set((LPBYTE)&pRequest, 0xFB, 7, sizeof(pRequest));
+	pRequest.aIndex = gObjUser.lpViewTarget->aIndex;
+	// ----
+	if( Delay >= 10 )
+	{
+		gProtocol.DataSend((LPBYTE)&pRequest, pRequest.h.size);
+	}
+	// ----
+	if( gObjUser.m_TargetLifePercent <= 0.0f )
+	{
+		return;
+	}
+	// ----
+	float BarWidth	= (148.5f / 100.0f) * gObjUser.m_TargetLifePercent;
+	// ----
+	pDrawGUI(0x7B3F, (MAX_WIN_WIDTH / 2) - 75.5, 0, 151, 8);
+	pDrawGUI(0x7B3F, (MAX_WIN_WIDTH / 2) - 75.5, 6.5, 151, 8);
+	pDrawGUI(0x7B40, (MAX_WIN_WIDTH / 2) - 74, 8.3, BarWidth, 4);
+	//pDrawColorButton(0x7B40, (MAX_WIN_WIDTH / 2) - 74, 8.3, BarWidth, 4, 0, 0, Color4f(255, 255, 0, 100 - ((BYTE)gObjUser.m_TargetLifePercent)));
+	// ----
+	this->DrawFormat(eOrange, (MAX_WIN_WIDTH / 2) - 74, 0.5, 148, 3, gObjUser.lpViewTarget->Name);
+	this->DrawFormat(eGold, (MAX_WIN_WIDTH / 2) - 74, 6, 148, 3, "%d%% / 100%%", (int)gObjUser.m_TargetLifePercent);
+#ifdef __NOVUS__
+	this->DrawFormat(eGold, gObjUser.m_CursorX + 25, gObjUser.m_CursorY - 10, 100, 1, "%d / %d", (int)gObjUser.m_TargetLife, (int)gObjUser.m_TargetMaxLife);
+#endif
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -446,6 +602,12 @@ void Interface::DrawCameraUI()
 		// ----
 		this->DrawColoredGUI(eCAMERA_BUTTON2, PosX + 18.5, 1, pMakeColor(255, 204, 20, 200));
 	}
+	 if( gCamera.RestStop == true )
+	{
+        this->DrawColoredGUI(eCAMERA_BUTTON2, PosX + 18.5, 1, pMakeColor(255, 0, 0, 200));
+        this->DrawFormat(eOrange, PosX + 35.0, 25, 210, 3, "Restoring.. Camera");
+        this->DrawPictureAlpha("Custom\\Interface\\TimerClock.tga", PosX + 55.0, 15, 64, 64, 0, 0, 1.0f, 1.0f, 1);
+	}
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -568,8 +730,6 @@ void Interface::EventOffExpSwitch(DWORD Event)
 		return;
 	}
 	// ----
-	if (IsWorkZone(eOFFEXP_SWITCH))
-	{
 	if( Event == WM_LBUTTONDOWN )
 	{
 		this->Data[eOFFEXP_SWITCH].OnClick = true;
@@ -582,14 +742,7 @@ void Interface::EventOffExpSwitch(DWORD Event)
 	{
 		return;
 	}
-	this->Data[eOFFEXP_SWITCH].EventTick = GetTickCount();
 	// ----
-	gConnectEx.m_ConnectState = ConnectExType::OnForceDisconnect;
-	OFFLINEATTACK_REQ pRequest;
-	pRequest.h.set((LPBYTE)&pRequest, 0xFB, 13, sizeof(pRequest));
-	pRequest.MagicNumber = gObjUser.GetActiveSkill();
-	gProtocol.DataSend((LPBYTE)&pRequest, pRequest.h.size);
-	}
 	this->Data[eOFFEXP_SWITCH].EventTick = GetTickCount();
 	// ----
 	OFFLINEATTACK_REQ pRequest;
@@ -1585,6 +1738,7 @@ void Interface::DrawTime()
 	// ----
 	char ServerTimeName[25] = "Server:";
 	char ServerTime[30];
+
 	sprintf(ServerTime, "%2d:%02d:%02d", (ServerT->tm_hour)%24, ServerT->tm_min, ServerT->tm_sec);
 	// -----
 	LocalT = localtime(&TimeLocal); 
@@ -1632,15 +1786,9 @@ bool Interface::AllowGUI()
 }
 // ----------------------------------------------------------------------------------------------
 
-void Interface::DrawPictureAlpha(char Path[64], float X, float Y, float Width, float Height, int U1, int U2, float ScaleX, float ScaleY, int HL)
-{
-    pLoadImage(Path, 0x1B, 0x2601, 0x2900, 1, 0);
-    pDrawImage(0x1B, X, Y, Width, Height, U1, U2, ScaleX, ScaleY, HL, 1, 0);
-}
-
 void Interface::SetTextColor(BYTE Red, BYTE Greed, BYTE Blue, BYTE Opacity)
 {
-	pSetTextColor(pTextThis(), Red, Greed, Blue, Opacity);
+	pSetTextColor(pTextThis(), Red, Green, Blue, Opacity);
 }
 // ----------------------------------------------------------------------------------------------
 
@@ -1706,19 +1854,6 @@ float Interface::DrawRepeatGUI(short MonsterID, float X, float Y, int Count)
 	return StartY;
 }
 // ----------------------------------------------------------------------------------------------
-float Interface::DrawSizeRepeatedGUI(short MonsterID, float X, float Y, int Width, int Height, int Count)
-{
-	float StartY = Y;
-	// ----
-	for( int i = 0; i < Count; i++ )
-	{
-		this->DrawResizeGUI(this->Data[MonsterID].ModelID, X, StartY, Width, Height);
-		// ----
-		StartY += this->Data[MonsterID].Height;
-	}
-	// ----
-	return StartY;
-}
 
 void Interface::DrawGUI(short ObjectID, float PosX, float PosY)
 {
@@ -1734,16 +1869,7 @@ void Interface::DrawGUI(short ObjectID, float PosX, float PosY)
 		this->Data[ObjectID].Width, this->Data[ObjectID].Height);
 }
 // ----------------------------------------------------------------------------------------------
-void Interface::DrawSizedGUI(short ObjectID, float PosX, float PosY, int Count)
-{
-	float StartX = PosX;
-	for( int i = 0; i < Count; i++ )
-	{
-	  pDrawGUI(this->Data[ObjectID].ModelID, StartX, PosY, this->Data[ObjectID].Width, this->Data[ObjectID].Height);
-	  StartX += this->Data[ObjectID].Width;
-	}
-}
-// --------------------------------------------------------------------------------------------
+
 void Interface::DrawColoredGUI(short ObjectID, float X, float Y, DWORD Color)
 {
 	if( this->Data[ObjectID].X == -1 || this->Data[ObjectID].Y == -1 )
@@ -1758,18 +1884,6 @@ void Interface::DrawColoredGUI(short ObjectID, float X, float Y, DWORD Color)
 		this->Data[ObjectID].Width, this->Data[ObjectID].Height, 0, 0, Color);
 }
 // ----------------------------------------------------------------------------------------------
-//
-void Interface::DrawResizeGUI(short ObjectID, float PosX, float PosY, int Width, int Height)
-{
-	if( this->Data[ObjectID].X == -1 || this->Data[ObjectID].Y == -1 )
-	{
-		this->Data[ObjectID].X		= PosX;
-		this->Data[ObjectID].Y		= PosY;
-		this->Data[ObjectID].MaxX	= PosX + this->Data[ObjectID].Width + Width;
-		this->Data[ObjectID].MaxY	= PosY + this->Data[ObjectID].Height + Height;
-	}
-	  pDrawGUI(this->Data[ObjectID].ModelID, PosX, PosY, this->Data[ObjectID].Width, this->Data[ObjectID].Height);
-}
 
 int Interface::DrawToolTip(int X, int Y, LPCSTR Text, ...)
 {
@@ -1877,3 +1991,46 @@ float Interface::GetResizeX(short ObjectID)
 	return this->Data[ObjectID].X;
 }
 // ----------------------------------------------------------------------------------------------
+void Interface::DrawPictureAlpha(char Path[64], float X, float Y, float Width, float Height, int U1, int U2, float ScaleX, float ScaleY, int HL)
+{
+    pLoadImage(Path, 0x1B, 0x2601, 0x2900, 1, 0);
+    pDrawImage(0x1B, X, Y, Width, Height, U1, U2, ScaleX, ScaleY, HL, 1, 0);
+}
+// ----------------------------------------------------------------------------------------------
+bool Interface::MiniMapCheck()
+{
+    if(this->CheckWindow(Inventory) ||
+        this->CheckWindow(CashShop) ||
+        this->CheckWindow(ChaosBox) ||
+        this->CheckWindow(Character) ||
+        this->CheckWindow(CommandWindow) ||
+        this->CheckWindow(ExpandInventory) ||
+        this->CheckWindow(ExpandWarehouse) ||
+        this->CheckWindow(FullMap) ||
+        this->CheckWindow(GensInfo) ||
+        this->CheckWindow(Guild) ||
+        this->CheckWindow(NPC_Dialog) ||
+        this->CheckWindow(NPC_Julia) ||
+        this->CheckWindow(NPC_Titus) ||
+        this->CheckWindow(OtherStore) ||
+        this->CheckWindow(Party) ||
+        this->CheckWindow(PetInfo) ||
+        this->CheckWindow(Shop) ||
+        this->CheckWindow(SkillTree) ||
+        this->CheckWindow(Store) ||
+        this->CheckWindow(Trade) ||
+        this->CheckWindow(Warehouse) ||
+        this->CheckWindow(FriendList) ||
+        this->CheckWindow(FastMenu) ||
+        this->CheckWindow(MuHelper) ||
+        this->CheckWindow(Quest) )
+        return true;
+    return false;
+}
+// ----------------------------------------------------------------------------------------------
+bool Interface::WinKeyChecks()
+{
+    if( this->CheckWindow(MuHelper) || this->CheckWindow(FriendList) || this->CheckWindow(ChatWindow) )
+        return true;
+    return false;
+}

@@ -61,10 +61,6 @@ struct PMSG_REQ_ATTDEF_POWER_INC
     PBMSG_HEAD2 h;
 };
 
-struct PMSG_REQ_ITEM_USE_QUEST
-{
-	PBMSG_HEAD2 h; //addition
-};
 void CGReqQuestSwitch(PMSG_REQ_QUESTEXP *pMsg, int aIndex);
 void CGReqQuestProgress(PMSG_REQ_QUESTEXP *pMsg, int aIndex);
 void CGReqQuestComplete(PMSG_REQ_QUESTEXP_COMPLETE *pMsg, int aIndex);
@@ -76,4 +72,3 @@ void CGReqEventItemQuestList(PMSG_REQ_EVENT_ITEM_EP_LIST *pMsg, int aIndex);
 
 void CGReqQuestExp(PMSG_REQ_NPC_QUESTEXP *pMsg, int aIndex);
 void CGReqAttDefPowerInc(PMSG_REQ_ATTDEF_POWER_INC *pMsg, int aIndex);
-void CGReqItemUseQuest(PMSG_REQ_ITEM_USE_QUEST *pMsg, int aIndex); //addition

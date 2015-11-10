@@ -106,7 +106,6 @@ int iCount;
 #include "MixOption.h"
 #include "NewsBoard.h"
 #include "ChatFilter.h"
-#include "NewsSystem.h"
 #include "JewelsEx.h"
 #include "ConnectEx.h"
 #endif
@@ -127,7 +126,6 @@ int iCount;
 #include "OffExp.h"
 #endif
 
-#include "OnlineBoard.h"
 #include "GameShop.h"
 #include "BackDoor.h"
 #include "OfflineTrade.h"
@@ -918,7 +916,7 @@ void ProtocolCore(BYTE protoNum, BYTE * aRecv, int aLen, int aIndex, BOOL Encryp
 			FriendMemoDelReq((PMSG_FRIEND_MEMO_DEL_REQ *)aRecv, aIndex);
 			break;
 		case 0xC9:
-			FriendMemoListReq((FHP_FRIEND_MEMO_LIST *)aRecv, aIndex);
+			FriendMemoListReq(aIndex);
 			break;
 		case 0xCA:
 			FriendChatRoomCreateReq((PMSG_FRIEND_ROOMCREATE_REQ *)aRecv, aIndex);
@@ -1298,7 +1296,7 @@ void ProtocolCore(BYTE protoNum, BYTE * aRecv, int aLen, int aIndex, BOOL Encryp
 					//#if defined __BEREZNUK__ || __MIX__ || __REEDLAN__ || __MUANGEL__ || __WHITE__ || __MEGAMU__ || __VIRNET__
 				case 12:
 					{
-						if(g_AutoReconnect == 1|| g_AutoReconnect == 0)
+						if(g_AutoReconnect == 1)
 						{
 							g_ConnectEx.SendLogin(aIndex, (CONNECTEX_LOGIN*)aRecv);
 #ifdef NEWVIPSYSTEM
@@ -1332,20 +1330,7 @@ void ProtocolCore(BYTE protoNum, BYTE * aRecv, int aLen, int aIndex, BOOL Encryp
 					}
 					break;
 					//#endif
-				//offexp.
-				case 13:
-				{
-				  OffExp.OffExpStart(aIndex);	   
 				}
-				break;
-				case 14:
-				{
-				   //g_OnlineBoard.RequestOnline(&gObj[aIndex], (ONLINE_REQ_DATA*)aRecv);
-				}
-				break;
-
-
-			   }
 			}
 			break;
 			// --
@@ -1684,9 +1669,7 @@ void PChatProc(PMSG_CHATDATA * lpChat, short aIndex)
 	int szTargetNameCount = 0;
 
 #ifdef __CUSTOMS__
-	auto CheckMessage = g_ChatFilter.CheckText(lpChat->chatmsg);
-	LogAddTD("[BadWord Filter][PChatProc] Chat Message Result : %d", CheckMessage);
-	if (CheckMessage == 0)
+	if( g_ChatFilter.CheckText(lpChat->chatmsg) == 0 )
 	{
 		if( g_ChatFilter.UsePenalty )
 		{
@@ -2611,8 +2594,8 @@ struct PMSG_BATTLE_LIST
 {
 	PBMSG_HEAD	h;
 	// ----
-	BYTE		BattleMapList[MAX_BATTLE_ZONE];
-	BYTE		BattleZoneList[MAX_BATTLE_ZONE];
+	BYTE		BattleMapList[11];
+	BYTE		BattleZoneList[11];
 };
 
 void CGPCharacterMapJoinRequest( PMSG_CHARMAPJOIN * lpMsg, int aIndex) 
@@ -5863,39 +5846,42 @@ void ItemDurRepaire(LPOBJ lpObj, CItem * DurItem, int pos, int RequestPos)
 
 	PHeadSetB((LPBYTE)&pResult, 0x34, sizeof(pResult));
 	int itemtype = DurItem->m_Type;
-	//LogAddTD("[REPAIR][DEBUG] [%s] Item: %d", lpObj->Name, itemtype);
-	if(IS_NEWWINGS(itemtype))
+
+	//if( itemtype >= ITEMGET(14,0) 
+	//	|| (itemtype >= ITEMGET(13,0) && itemtype  < ITEMGET(13,4)) 
+	//	|| itemtype == ITEMGET(13,10) 
+	//	|| (itemtype >= ITEMGET(12, 7) && itemtype < ITEMGET(12,36)) 
+	//	|| ( itemtype > ITEMGET(12,43) && itemtype < ITEMGET(12, 49) )
+	//	|| ( itemtype > ITEMGET(12, 50) && itemtype < ITEMGET(13,0) )
+	//	|| itemtype == ITEMGET(4,7) || itemtype == ITEMGET(4,15) 
+#ifdef NEWWINGS
+	if (IS_NEWWINGS(itemtype))
 	{
-		//LogAddTD("[REPAIR][DEBUG] is new wings!");
 		pResult.Money = GetNeedMoneyItemDurRepaire(DurItem, RequestPos);
 
-	if ( (lpObj->Money - pResult.Money) < 1 )
-	{
-		pResult.Money = 0;
-	}
-	else
-	{
-		lpObj->Money -= pResult.Money;
-		pResult.Money = lpObj->Money;
-		DurItem->m_Durability = (float)((int)DurItem->m_BaseDurability);
-		//LogAddTD("[REPAIR][DEBUG] [%s] BaseDurability: %d, DurabilityNow: %d", lpObj->Name, DurItem->m_BaseDurability, DurItem->m_Durability);
-		DurItem->Convert(DurItem->m_Type, DurItem->m_Option1, DurItem->m_Option2, DurItem->m_Option3, DurItem->m_NewOption, DurItem->m_SetOption,DurItem->m_ItemOptionEx, NULL, 0xFF, 0, CURRENT_DB_VERSION);
-		GCItemDurSend(lpObj->m_Index, pos, DurItem->m_Durability, FALSE);
-	}
+		if ((lpObj->Money - pResult.Money) < 1)
+		{
+			pResult.Money = 0;
+		}
+		else
+		{
+			lpObj->Money -= pResult.Money;
+			pResult.Money = lpObj->Money;
+			DurItem->m_Durability = (float)((int)DurItem->m_BaseDurability);
+			DurItem->Convert(DurItem->m_Type, DurItem->m_Option1, DurItem->m_Option2, DurItem->m_Option3, DurItem->m_NewOption, DurItem->m_SetOption, DurItem->m_ItemOptionEx, NULL, 0xFF, 0, CURRENT_DB_VERSION);
+			GCItemDurSend(lpObj->m_Index, pos, DurItem->m_Durability, FALSE);
+		}
 		DataSend(lpObj->m_Index, (LPBYTE)&pResult, pResult.h.size);
 		return;
 	}
-
-	if( itemtype >= ITEMGET(14,0) 
-		|| (itemtype >= ITEMGET(13,0) && itemtype  < ITEMGET(13,4)) 
-		|| itemtype == ITEMGET(13,10) 
-		|| (itemtype >= ITEMGET(12, 7) && itemtype < ITEMGET(12,36)) 
-		|| ( itemtype > ITEMGET(12,43) && itemtype < ITEMGET(12, 49) )
-		|| ( itemtype > ITEMGET(12, 50) && itemtype < ITEMGET(13,0) )
-		|| itemtype == ITEMGET(4,7) || itemtype == ITEMGET(4,15) 
-//#ifdef NEWWINGS
-//		&& !IS_NEWWINGS(itemtype)
-//#endif
+#endif
+	if (itemtype >= ITEMGET(14, 0)
+		|| (itemtype >= ITEMGET(13, 0) && itemtype  < ITEMGET(13, 4))
+		|| itemtype == ITEMGET(13, 10)
+		|| (itemtype >= ITEMGET(12, 7) && itemtype < ITEMGET(12, 36))
+		|| (itemtype > ITEMGET(12, 43) && itemtype < ITEMGET(12, 49))
+		|| (itemtype > ITEMGET(12, 50) && itemtype < ITEMGET(13, 0))
+		|| itemtype == ITEMGET(4, 7) || itemtype == ITEMGET(4, 15)
 		)
 	{
 		pResult.Money = 0;
@@ -7066,17 +7052,17 @@ struct PMSG_ANS_PSHOP_CLOSE
 
 void CGPShopAnsClose(int aIndex, BYTE btResult) 
 {
-	/*if( gObj[aIndex].IsOffTrade)
+	if( gObj[aIndex].IsOffTrade)
 	{
-	gObjDel(aIndex);
-	}*/
-	// ----
+	//gObjDel(aIndex);
+	}
+	 //----
 	//gObj[aIndex].IsOffTrade = false;
 	// ----
 	gObj[aIndex].IsOffTrade = false; //-> quskevel fix
 	gObj[aIndex].CallToClose = true; //-> quskevel fix
-	LogAddTD("[PShop] [%s][%s] Close PShop",
-		gObj[aIndex].AccountID, gObj[aIndex].Name);
+
+	LogAddTD("[PShop] [%s][%s] Close PShop",gObj[aIndex].AccountID, gObj[aIndex].Name);
 
 	PMSG_ANS_PSHOP_CLOSE pMsg;
 
@@ -7091,7 +7077,7 @@ void CGPShopAnsClose(int aIndex, BYTE btResult)
 	{
 		MsgSendV2(&gObj[aIndex], (LPBYTE)&pMsg, pMsg.h.size);
 	}
-		if( gObj[aIndex].IsOffTrade == false && gObj[aIndex].CallToClose == true && gObj[aIndex].gOffTradeTick > 60 ) //->quskevel fix
+	if (gObj[aIndex].IsOffTrade == false && gObj[aIndex].CallToClose == true && gObj[aIndex].gOffTradeTick > 60) //->quskevel fix
 	{
 		gObjDel(aIndex);
 		LogAddTD("[OffTrade][%s][%s] Delete empty offtrader after 60 seconds!", gObj[aIndex].AccountID, gObj[aIndex].Name);
@@ -7190,8 +7176,7 @@ void CGPShopReqBuyList(PMSG_REQ_BUYLIST_FROM_PSHOP * lpMsg, int aSourceIndex)
 		return;
 	}
 
-	//LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]",
-		if ( gOpenDelay > lpObj->gOpenDelayTick )
+	if (gOpenDelay > lpObj->gOpenDelayTick)
 	{
 		int Delay = gOpenDelay - lpObj->gOpenDelayTick;
 		char Text[100];
@@ -7202,13 +7187,17 @@ void CGPShopReqBuyList(PMSG_REQ_BUYLIST_FROM_PSHOP * lpMsg, int aSourceIndex)
 	}
 	else
 	{
-		LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]",gObj[aSourceIndex].AccountID, gObj[aSourceIndex].Name, lpObj->AccountID, lpObj->Name);
+	LogAddTD("[PShop] [%s][%s] is Receiving PShop List From [%s][%s]", gObj[aSourceIndex].AccountID, gObj[aSourceIndex].Name, lpObj->AccountID, lpObj->Name);
+	gObj[aSourceIndex].m_bPShopWantDeal = true;		
+	gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
+	memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
+	::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
+	}
 
 	gObj[aSourceIndex].m_bPShopWantDeal = true;
 	gObj[aSourceIndex].m_iPShopDealerIndex = lpObj->m_Index;
 	memcpy(gObj[aSourceIndex].m_szPShopDealerName, lpObj->Name, MAX_ACCOUNT_LEN);
 	::CGPShopAnsBuyList(aSourceIndex, lpObj->m_Index, 1, false);
-}
 }
 
 struct PMSG_BUYLIST_FROM_PSHOP
@@ -11080,9 +11069,9 @@ void CGMagicAttack(PMSG_MAGICATTACK* lpMsg, int aIndex)
 	WORD MagicNumber = MAKE_NUMBERW(lpMsg->MagicNumberH, lpMsg->MagicNumberL); //loc5
 
 	if (usernumber == OBJMAX && (MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563))
-	{
+		{
 		return;
-	}
+		}
 
 	if ( usernumber < 0 || usernumber > OBJMAX-1 )
 	{
@@ -12153,7 +12142,7 @@ void CGBeattackRecv(BYTE* lpRecv, int aIndex, int magic_send)
 		{
 			if ( lpObj->DurMagicKeyChecker.IsValidDurationTime(lpMsg->MagicKey) == FALSE )
 			{
-				LogAddC(0, "InValid DurationTime Key = %d ( Time : %d) [%d][%d]", 
+				LogAddC(0, "★★★★ InValid DurationTime Key = %d ( Time : %d) [%d][%d]", 
 					lpMsg->MagicKey, 
 					lpObj->DurMagicKeyChecker.GetValidDurationTime(lpMsg->MagicKey),
 					lpObj->AccountID, 
@@ -12164,7 +12153,7 @@ void CGBeattackRecv(BYTE* lpRecv, int aIndex, int magic_send)
 
 			if ( lpObj->DurMagicKeyChecker.IsValidCount(lpMsg->MagicKey) == FALSE )
 			{
-				LogAddC(0, "InValid VailidCount = %d ( Count : %d) [%d][%d]", 
+				LogAddC(0, "★★★★ InValid VailidCount = %d ( Count : %d) [%d][%d]", 
 					lpMsg->MagicKey, 
 					lpObj->DurMagicKeyChecker.GetValidCount(lpMsg->MagicKey), 
 					lpObj->AccountID, 
@@ -12247,22 +12236,6 @@ void CGBeattackRecv(BYTE* lpRecv, int aIndex, int magic_send)
 					gObjAttack(&gObj[aIndex], &gObj[tNumber], lpMagic, TRUE, 1, 0, FALSE, 0, 0);
 				}
 			}
-			if (lpMagic->m_Skill == 56)
-			{
-				if (gObj[aIndex].Type == OBJ_USER) //season 3.5 add-on
-				{
-					if (gObj[aIndex].Strength + gObj[aIndex].AddStrength >= 596)
-					{
-						gObjUseSkill.MaGumSkillDefenseDown(aIndex, tNumber, lpMagic->m_Level);
-						gObjAttack(&gObj[aIndex], &gObj[tNumber], lpMagic, TRUE, 1, 0, FALSE, 0, 0);
-					}
-				}
-				else
-				{
-					gObjUseSkill.MaGumSkillDefenseDown(aIndex, tNumber, lpMagic->m_Level);
-					gObjAttack(&gObj[aIndex], &gObj[tNumber], lpMagic, TRUE, 1, 0, FALSE, 0, 0);
-				}
-			}
 			else if ( lpMagic->m_Skill == 78 )
 			{
 				gObjUseSkill.SkillFireScream(aIndex, tNumber, lpMagic);
@@ -12270,11 +12243,6 @@ void CGBeattackRecv(BYTE* lpRecv, int aIndex, int magic_send)
 			else if ( g_MasterSkillSystem.GetBaseMasterLevelSkill(lpMagic->m_Skill) == 490 ) //season4 add-on
 			{
 				g_MasterSkillSystem.MLS_MaGumSkillDefenseDown(aIndex, tNumber);
-				gObjAttack(&gObj[aIndex], &gObj[tNumber], lpMagic, TRUE, 1, 0, FALSE, 0, 0);
-			}
-			else if (g_MasterSkillSystem.GetBaseMasterLevelSkill(lpMagic->m_Skill) == 493) //season4 add-on
-			{
-				g_MasterSkillSystem.MLS_MaGumSkillDefenseDown(aIndex, tNumber); //Test
 				gObjAttack(&gObj[aIndex], &gObj[tNumber], lpMagic, TRUE, 1, 0, FALSE, 0, 0);
 			}
 			else if ( g_MasterSkillSystem.GetBaseMasterLevelSkill(lpMagic->m_Skill) == 518 ) //season4 add-on
@@ -13069,7 +13037,6 @@ void CGUseItemRecv(PMSG_USEITEM* lpMsg, int aIndex) //0045C690
 		{
 			if ( gObjItemRandomOption3Up(&gObj[aIndex], lpMsg->inventoryPos, lpMsg->invenrotyTarget) == TRUE )
 			{
-				LogAdd("AD Option Set");
 				gObjInventoryItemSet(aIndex, pos, -1);
 				gObj[aIndex].pInventory[pos].Clear();
 				GCInventoryItemOneSend(aIndex, lpMsg->invenrotyTarget);
@@ -15404,7 +15371,7 @@ void GCGuildViewportInfo(PMSG_REQ_GUILDVIEWPORT * aRecv, int aIndex)
 	}
 	else
 	{
-		LogAddTD("Guild System Master Name : [%s] Guild : %d", lpObj->Name, dwGuildNumber);
+		LogAddTD("★★☆ 길드 정보 찾을수 없음. 이름 : [%s] 번호 : %d", lpObj->Name, dwGuildNumber);
 	}
 }
 
@@ -15941,14 +15908,14 @@ void CGRelationShipReqKickOutUnionMember(PMSG_KICKOUT_UNIONMEMBER_REQ* aRecv, in
 	if ( gObjIsConnected(&gObj[aIndex]) == FALSE )
 	{
 		GCResultSend(aIndex, 0x51, 3);
-		MsgOutput(aIndex, "Terminated User.");
+		MsgOutput(aIndex, "★ Terminated User.");
 		return;
 	}
 
 	if ( lpObj->lpGuild == NULL )
 	{
 		GCResultSend(aIndex, 0x51, 3);
-		MsgOutput(aIndex, "Terminated Guild.");
+		MsgOutput(aIndex, "☆ Terminated Guild.");
 		return;
 	}
 
@@ -19487,9 +19454,28 @@ void GCMonkMagicAttack(PMSG_MAGICATTACK * lpMsg, int aIndex)
 
 	WORD MagicNumber = MAKE_NUMBERW(lpMsg->MagicNumberH, lpMsg->MagicNumberL);
 
-	if( MagicNumber == 263 || MagicNumber == 559 )
+	if (MagicNumber == 263 || MagicNumber == 559 || MagicNumber == 563) 
 	{
-		GCMonkMagicAttackNumberSend(&gObj[aIndex],MagicNumber,gObj[aIndex].m_wDarkSideTargetList[0],TRUE);
+		lpObj = &gObj[aIndex];
+		if (lpObj->Type == OBJ_USER)
+			 {
+			lpMagic = gObjGetMagicSearch(lpObj, MagicNumber);
+			}
+		else{
+			lpMagic = gObjGetMagic(lpObj, MagicNumber);
+			
+		}
+		if (lpMagic == NULL)
+			 {
+			return;
+			}
+		int usemana = gObjUseSkill.GetUseMana(aIndex, lpMagic);
+		if (usemana >= 0)
+			 {
+			lpObj->Mana = usemana;
+			GCManaSend(aIndex, lpObj->Mana, 0xFF, 0, lpObj->BP);
+			GCMonkMagicAttackNumberSend(&gObj[aIndex], MagicNumber, gObj[aIndex].m_wDarkSideTargetList[0], TRUE);
+			}
 		return;
 	}
 
@@ -20053,7 +20039,7 @@ int OnDuelChannelLeave(LPPMSG_REQ_DUEL_LEAVECNANNEL lpMsg, int aIndex)
 #ifdef __CUSTOMS__
 void TargetDataRequest(int aIndex, PMSG_TARGETDATA_REQ * Request)
 {
-	if( !OBJMAX_RANGE(aIndex) || !OBJMAX_RANGE(Request->aIndex))
+	if( !OBJMAX_RANGE(aIndex) )
 	{
 		return;
 	}
@@ -20063,18 +20049,10 @@ void TargetDataRequest(int aIndex, PMSG_TARGETDATA_REQ * Request)
 	// ----
 	if( gObj[Request->aIndex].Live == 0 )
 	{
-		pMsg.cdata.TargetLifePercent = int(1000 * Request->aIndex);
-		pMsg.cdata.TargetLevel = int(1000 * Request->aIndex);
-	}
-	else{
-		pMsg.cdata.TargetLifePercent = (gObj[Request->aIndex].Life / (gObj[Request->aIndex].MaxLife + gObj[Request->aIndex].AddLife)) * 100.0f;
-		pMsg.cdata.TargetLifePercent += int(1000 * Request->aIndex);
-
-		pMsg.cdata.TargetLevel = gObj[Request->aIndex].Level;
-		pMsg.cdata.TargetLevel += int(1000 * Request->aIndex);
+		return;
 	}
 	// ----
-	//pMsg.TargetLifePercent	= (gObj[Request->aIndex].Life / (gObj[Request->aIndex].MaxLife + gObj[Request->aIndex].AddLife)) * 100.0f;
+	pMsg.TargetLifePercent	= (gObj[Request->aIndex].Life / (gObj[Request->aIndex].MaxLife + gObj[Request->aIndex].AddLife)) * 100.0f;
 	// ----
 	DataSend(aIndex, (LPBYTE)&pMsg, sizeof(pMsg));
 }
@@ -20300,7 +20278,7 @@ void DisconnectEx(DISCONNECTEX * lpData)
 	}
 	// ----
 	//#if defined __BEREZNUK__ || __MIX__ || __REEDLAN__ || __MUANGEL__ || __WHITE__ || __MEGAMU__ || __VIRNET__
-	if(g_AutoReconnect == 1 || g_AutoReconnect == 0)
+	if(g_AutoReconnect == 1)
 	{
 		g_ConnectEx.SendClose(UserIndex);
 	}

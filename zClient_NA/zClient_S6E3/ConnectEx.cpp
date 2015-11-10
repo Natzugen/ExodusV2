@@ -93,7 +93,6 @@ void ConnectEx::Load()
 	this->m_LastSendTick	= 0;
 	this->m_ReconnectTick	= 0;
 	this->m_WantMUHelper	= false;
-	this->m_OfflineExpirience = false;
 	// ----
 	SetRange((LPVOID)0x007A889B, 18, ASM::NOP);
 	SetOp((LPVOID)0x007A889B, (LPVOID)MenuExit, ASM::JMP);
@@ -186,9 +185,9 @@ void ConnectEx::ClearGame()
 
 void ConnectEx::RestoreGame()
 {
-//#ifdef __MUANGEL__
+#ifdef __MUANGEL__
 	this->m_ReconnectTick	= 0;
-//#endif
+#endif
 	// ----
 	this->m_LastSendTick	= 0;
 	this->m_ConnectState	= ConnectExType::OnLine;

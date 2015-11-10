@@ -9,7 +9,7 @@
 // -------------------------------------------------------------------------------
 
 #define WIN32_LEAN_AND_MEAN
-#define _WIN32_WINNT			0x500
+#define _WIN32_WINNT			0x501
 // -------------------------------------------------------------------------------
 
 //#define LICENSE
@@ -130,7 +130,7 @@
 #endif
 
 #define GAMESERVER_VERSION		"1.0.0.99"
-#define GAMESERVER_NAME			"ExodusGameserver"
+#define GAMESERVER_NAME			"GX_zGameServer"
 // ----
 #define ZEONWINDOW_STAT				// Zeon custom statistic on window
 #define ZEONWINDOW					// Zeon custom window for gameserver
@@ -171,3 +171,4 @@
 #define PROTOCOL_ATTACK			0x11
 #define PROTOCOL_BEATTACK		0xDB//0xD7
 // -------------------------------------------------------------------------------
+#define __CustomTitle "Salvation"

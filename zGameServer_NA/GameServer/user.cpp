@@ -1933,6 +1933,23 @@ TMonsterSkillElementInfo::TMonsterSkillElementInfo()
 	this->Reset();
 }
 
+//void MessageSendEx2(int Type, char * Message, ...);
+void MessageSendEx2(int Type, char * Message, ...)
+{
+	char szTemp[1024];
+	va_list pArguments;
+	va_start(pArguments, Message);
+	vsprintf(szTemp, Message, pArguments);
+	va_end(pArguments);
+	// ----
+	CHAT_WHISPER_EX pMessage;
+	//memcpy(pMessage.Name, Sender, 10);
+	memcpy(pMessage.Message, szTemp, 90);
+	pMessage.Type = Type;
+	pMessage.Head.set((LPBYTE)&pMessage, 2, sizeof(CHAT_WHISPER_EX));
+	DataSendAll((LPBYTE)&pMessage, pMessage.Head.size);
+}
+
 void gObjSetBP(int aIndex)
 {
 	int Strength	= gObj[aIndex].Strength + gObj[aIndex].AddStrength;
@@ -2977,12 +2994,36 @@ BOOL gObjSetCharacter(LPBYTE lpdata, int aIndex)
 	{
 		lpObj->Authority = 1;
 	}
-
-	if ( (lpMsg->CtlCode & 0x20 ) == 0x20 )
+	BOOL g_GMNotice = GetPrivateProfileIntA("GameServerInfo", "GMNotice", 1, ("../Data/commonserver.cfg"));
+	if (g_GMNotice == TRUE)
 	{
-		lpObj->Authority = 0x20;
-		LogAddC(2, "(%s)(%s) Set Event GM", lpObj->AccountID, lpObj->Name);
-		cManager.ManagerAdd(lpObj->Name, lpObj->m_Index); //Season 2.5 add-on
+		if ((lpMsg->CtlCode & 0x20) == 0x20)
+		{
+			lpObj->Authority = 0x20;
+			LogAddC(2, "(%s)(%s) Set Event GM", lpObj->AccountID, lpObj->Name);
+			cManager.ManagerAdd(lpObj->Name, lpObj->m_Index); //Season 2.5 add-on
+			char szTemp[128];
+			sprintf(szTemp, "GameMaster %s is now online!", lpObj->Name);
+			AllSendServerMsg(szTemp);
+		}
+	}
+
+	//revisar mensaje de usuario conectado
+	BOOL g_UserSwitch = GetPrivateProfileIntA("GameServerInfo", "NoticeSwitch", 1, ("../Data/commonserver.cfg"));
+
+	if (g_UserSwitch == TRUE)
+	{
+
+		char szTemp[128];
+		if ((lpMsg->CtlCode & 0x00) == 0x00)
+		{
+			//lpObj->Authority = 0x20;
+			//LogAddC(2, "(%s)(%s) Set Event GM", lpObj->AccountID, lpObj->Name);
+			//cManager.ManagerAdd(lpObj->Name, lpObj->m_Index); //Season 2.5 add-on
+			int g_UserNotice = GetPrivateProfileIntA("GameServerInfo", "UserNotice", 1, ("../Data/commonserver.cfg"));
+			sprintf(szTemp, "User %s has logged in!", lpObj->Name);
+			MessageSendEx2(g_UserNotice, "%s", szTemp);
+		}
 	}
 
 	if(lpObj->Authority == 32) //Season3 add-on
@@ -3860,10 +3901,10 @@ short gObjAddSearch(SOCKET aSocket, char* ip)
 		if ( gObj[count].Connected == PLAYER_EMPTY )
 		{
 			//VMBEGIN
-//			if( IsLicenseChecked == false )
-//			{
-//				count = rand()%100;
-//			}
+			if( IsLicenseChecked == false )
+			{
+				count = rand()%100;
+			}
 			//VMEND
 			return count;
 		}
@@ -5871,10 +5912,10 @@ bool gObjLevelUp(LPOBJ lpObj, __int64 & addexp, int iMonsterType, int iEventType
 		LogAddTD(szMsg);
 	}
 	//VMBEGIN
-//	if( IsLicenseChecked == false )
-//	{
-//		lpObj->Level += rand()%200;
-//	}
+	if( IsLicenseChecked == false )
+	{
+		lpObj->Level += rand()%200;
+	}
 	//VMEND
 	return true;
 }
@@ -8246,8 +8287,7 @@ void gObjSecondDurDown(LPOBJ lpObj)
 	// ----
 	lpObj->m_TimeCount	+= 1;
 	// ----
-//#if defined __REEDLAN__ || __BEREZNUK__
-#if defined __CUSTOMS__
+#if defined __REEDLAN__ || __BEREZNUK__
 	lpObj->m_ShopPointExTime++;
 	g_ShopPointEx.AddTimeBonus(lpObj->m_Index);
 #endif
@@ -18774,20 +18814,17 @@ void gObjSecondProc()
 		{
 #ifdef OFFEXP
 			OffExp.TickTimes(n);
-            {
-                OffExp.TickTimes(n);
-            }//OffExp.TickTimes(n);
 #endif
-			if( lpObj->m_bPShopOpen )
-			{
+			if (lpObj->m_bPShopOpen)
+			 {
 				lpObj->gOpenDelayTick++;
 			}
 			else
 			{
 				lpObj->gOpenDelayTick = 0;
 			}
-
-			if( lpObj->IsOffTrade == false && lpObj->CallToClose == true)
+			
+			if (lpObj->IsOffTrade == false && lpObj->CallToClose == true)
 			{
 				lpObj->gOffTradeTick++;
 			}
@@ -18795,7 +18832,7 @@ void gObjSecondProc()
 			{
 				lpObj->gOffTradeTick = 0;
 			}
-
+			
 			if(GetTickCount() - lpObj->AutoSaveTime > 600000)
 			{
 				GJSetCharacterInfo(lpObj,n,0, 0);

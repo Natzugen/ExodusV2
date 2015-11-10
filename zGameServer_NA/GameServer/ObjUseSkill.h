@@ -125,6 +125,7 @@ public:
 	int		SkillMonkDarkSideGetTargetIndex(int aIndex, int aTargetIndex, CMagicInf * lpMagic, WORD * wTargetList);	//00531a30
 	int		SkillCharge(int aIndex, CMagicInf * lpMagic, int aTargetIndex);									//00531f10
 	void    SkillDarkSide(int aIndex, int iTargetIndex, CMagicInf *lpMagic);
+
 };
 
 

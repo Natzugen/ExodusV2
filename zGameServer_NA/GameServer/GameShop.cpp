@@ -216,7 +216,7 @@ void GameShop::ReadPackageList(char * File)	//-> Complete
 				// ----
 				this->PackageCount++;
 			}
-			else if( Category > 0 && Category < 1000 )
+			else if( Category > 0 )
 			{
 				Token = GetToken();
 				// ----
@@ -662,7 +662,7 @@ bool GameShop::RequestPackageBuy(int aIndex, GAMESHOP_REQ_BUY * lpRequest)
 	if( !lpPackage )
 	{
 #if( GAMESHOP_DEBUG == 1 )
-	LogAddC(2, "[DEBUG] [%s] Invalid package", __FUNCTION__);
+		LogAddC(2, "[DEBUG] [%s] Invalid package", __FUNCTION__);
 #endif
 		return false;
 	}
@@ -780,14 +780,14 @@ void GameShop::RequestStorage(int aIndex, GAMESHOP_REQ_STORAGE * lpRequest)
 			pStorageItem.IBSIndex	= lpUser->GameShop.MainStorage[i].IBSIndex;
 			Counter++;
 		}
-		else if( lpRequest->StorageType == 0x47 && lpUser->GameShop.GiftStorage[i].AuthIndex != 0 && lpUser->GameShop.GiftStorage[i].AuthID != 0 )
+		/*else if( lpRequest->StorageType == 0x47 && lpUser->GameShop.GiftStorage[i].AuthIndex != 0 && lpUser->GameShop.GiftStorage[i].AuthID != 0 )
 		{
 		pStorageItem.AuthIndex	= lpUser->GameShop.GiftStorage[i].AuthIndex;
 		pStorageItem.AuthID		= lpUser->GameShop.GiftStorage[i].AuthID;
 		pStorageItem.IBSID		= lpUser->GameShop.GiftStorage[i].IBSID;
 		pStorageItem.IBSIndex	= lpUser->GameShop.GiftStorage[i].IBSIndex;
 		Counter++;
-		}
+		}*/
 		else
 		{
 			continue;
@@ -940,12 +940,10 @@ void GameShop::RequestStorageItemUse(int aIndex, GAMESHOP_REQ_STORAGEITEMUSE * l
 	else if(lpItem->ItemID == ITEMGET(14,91))
 	{
 		GDSummonerStateUpdate(lpUser, lpUser->m_Index);
-		GCServerMsgStringSend("You can create Summoner character", aIndex, 1);
 	}
 	else if(lpItem->ItemID == ITEMGET(14, 169))
 	{
 		GDRageFighterStateUpdate(lpUser, lpUser->m_Index);
-		GCServerMsgStringSend("You can create RageFighter character", aIndex, 1);
 	}
 	else
 	{
@@ -1079,24 +1077,24 @@ bool GameShop::AddPackageInStorage(int aIndex, GAMESHOP_ITEM_DATA * lpItem, BYTE
 			}
 		}
 	}
-	else if( Type == 1 )	//-> Gift Storage
+	/*else if( Type == 1 )	//-> Gift Storage
 	{
-		for( int i = 0; i < MAX_STORAGE_ITEM; i++ )
-		{
-			if( lpUser->GameShop.GiftStorage[i].AuthIndex == 0 && lpUser->GameShop.GiftStorage[i].AuthID == 0 )
-			{
-				lpUser->GameShop.GiftStorage[i].AuthIndex	= rand()%10000+4400/200;
-				lpUser->GameShop.GiftStorage[i].AuthID		= rand()%250000+1700/12;
-				lpUser->GameShop.GiftStorage[i].ItemID		= lpItem->ItemID;
-				lpUser->GameShop.GiftStorage[i].IBSID		= lpItem->IBSID;
-				lpUser->GameShop.GiftStorage[i].IBSCategory	= 0;
-				lpUser->GameShop.GiftStorage[i].IBSIndex	= 0;
-				lpUser->GameShop.GiftStorage[i].PackageID	= lpItem->PackageID;
-				// ----
-				return true;
-			}
-		}
-	}//end test
+	for( int i = 0; i < MAX_STORAGE_ITEM; i++ )
+	{
+	if( lpUser->GameShop.GiftStorage[i].AuthIndex == 0 && lpUser->GameShop.GiftStorage[i].AuthID == 0 )
+	{
+	lpUser->GameShop.GiftStorage[i].AuthIndex	= rand()%10000+4400/200;
+	lpUser->GameShop.GiftStorage[i].AuthID		= rand()%250000+1700/12;
+	lpUser->GameShop.GiftStorage[i].ItemID		= lpItem->ItemID;
+	lpUser->GameShop.GiftStorage[i].IBSID		= lpItem->IBSID;
+	lpUser->GameShop.GiftStorage[i].IBSCategory	= 0;
+	lpUser->GameShop.GiftStorage[i].IBSIndex	= 0;
+	lpUser->GameShop.GiftStorage[i].PackageID	= lpItem->PackageID;
+	// ----
+	return true;
+	}
+	}
+	}*/
 	// ----
 	return false;
 }
@@ -1118,10 +1116,10 @@ int GameShop::GetItemCountInStorage(int aIndex, int ClientStorageType)	//-> Comp
 		}
 		else if( ClientStorageType == 0x47 )
 		{
-			if( lpUser->GameShop.GiftStorage[i].AuthIndex != 0 && lpUser->GameShop.GiftStorage[i].AuthID != 0 )
-			{
-				Count++;
-			}
+			//if( lpUser->GameShop.GiftStorage[i].AuthIndex != 0 && lpUser->GameShop.GiftStorage[i].AuthID != 0 )
+			//{
+			//	Count++;
+			//}
 		}
 	}
 	// ----
@@ -1144,13 +1142,13 @@ bool GameShop::DeleteItemInStorage(int aIndex, int AuthIndex, int AuthID)	//-> C
 			this->RequestStorage(aIndex, &pUpdate);
 			return true;
 		}
-		else if( lpUser->GameShop.GiftStorage[i].AuthIndex == AuthIndex && lpUser->GameShop.GiftStorage[i].AuthID == AuthID )
-		{
-			pUpdate.StorageType = 0x47;
-			ZeroMemory(&lpUser->GameShop.GiftStorage[i], sizeof(lpUser->GameShop.GiftStorage[i]));
-			this->RequestStorage(aIndex, &pUpdate);
-			return true;
-		}
+		//else if( lpUser->GameShop.GiftStorage[i].AuthIndex == AuthIndex && lpUser->GameShop.GiftStorage[i].AuthID == AuthID )
+		//{
+		//	pUpdate.StorageType = 0x47;
+		//	ZeroMemory(&lpUser->GameShop.GiftStorage[i], sizeof(lpUser->GameShop.GiftStorage[i]));
+		//	this->RequestStorage(aIndex, &pUpdate);
+		//	return true;
+		//}
 	}
 	// ----
 	return false;
@@ -1218,22 +1216,6 @@ bool GameShop::CanBeBuy(int aIndex, short ItemID)
 			return false;
 		}
 	}
-		else if ( ItemID == ITEMGET(14, 91) )		//Fix Summoner and RageFighter card
-	{
-		if ( lpUser->Summoner == 1)
-		{
-			GCServerMsgStringSend("You can create Summoner character", aIndex, 1);
-			return false;
-		}
-	}
-	else if ( ItemID == ITEMGET(14, 169) )		//Fix Summoner and RageFighter card
-	{
-		if ( lpUser->RageFighter == 1)
-		{
-			GCServerMsgStringSend("You can create RageFighter character", aIndex, 1);
-			return false;
-		}
-	}
 	// ----
 	return true;
 }
@@ -1293,12 +1275,12 @@ GAMESHOP_ITEM_DATA * GameShop::GetStorageItem(int aIndex, int AuthIndex, int Aut
 				lpUser->GameShop.MainStorage[i].IBSIndex, lpUser->GameShop.MainStorage[i].PackageID);
 			break;
 		}
-				else if( lpUser->GameShop.GiftStorage[i].AuthIndex == AuthIndex && lpUser->GameShop.GiftStorage[i].AuthID == AuthID)
+		/*		else if( lpUser->GameShop.GiftStorage[i].AuthIndex == AuthIndex && lpUser->GameShop.GiftStorage[i].AuthID == AuthID)
 		{
 		lpItem = this->GetItem(lpUser->GameShop.GiftStorage[i].ItemID, lpUser->GameShop.GiftStorage[i].IBSCategory, 
 		lpUser->GameShop.GiftStorage[i].IBSIndex, lpUser->GameShop.GiftStorage[i].PackageID);
 		break;
-		}
+		}*/
 	}
 	// ----
 	return lpItem;
@@ -1356,7 +1338,7 @@ void GameShop::GDSaveStorageItem(int aIndex, GAMESHOP_USER_STORAGE Item)
 	GAMESHOP_GD_SAVE_STORAGEITEM pRequest;
 	PHeadSubSetW((LPBYTE)&pRequest, 0xD3, 1, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 	memcpy(&pRequest.Item, &Item, sizeof(pRequest.Item));
-	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING);
+	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING + 1);
 	pRequest.UserIndex = aIndex;
 	cDBSMng.Send((char*)&pRequest, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 }
@@ -1374,7 +1356,7 @@ void GameShop::GDDeleteStorageItem(int aIndex, GAMESHOP_USER_STORAGE Item)
 	GAMESHOP_GD_DEL_STORAGEITEM pRequest;
 	PHeadSubSetW((LPBYTE)&pRequest, 0xD3, 2, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 	memcpy(&pRequest.Item, &Item, sizeof(pRequest.Item));
-	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING);
+	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING + 1);
 	pRequest.UserIndex = aIndex;
 	cDBSMng.Send((char*)&pRequest, sizeof(GAMESHOP_GD_SAVE_STORAGEITEM));
 }
@@ -1430,7 +1412,7 @@ void GameShop::GDSavePoint(int aIndex)
 	// ----
 	GAMESHOP_GD_SAVE_POINT pRequest;
 	pRequest.h.set((LPBYTE)&pRequest, 0xD2, 0x3, sizeof(pRequest));
-	memcpy(pRequest.AccountID, lpUser->AccountID, 11);
+	memcpy(pRequest.AccountID, lpUser->AccountID, MAX_IDSTRING);
 	pRequest.UserIndex		= aIndex;
 	pRequest.WCoinC			= lpUser->GameShop.WCoinC;
 	pRequest.WCoinP			= lpUser->GameShop.WCoinP;
@@ -1460,8 +1442,8 @@ void GameShop::DGGetPoint(GAMESHOP_DG_GET_POINT * aRecv)
 {
 	if( !gObjIsConnected(aRecv->UserIndex) )
 	{
-		//LogAddC(2, "[GameShop][%s] Error", __FUNCTION__);
-		//return;
+		LogAddC(2, "[GameShop][%s] Error", __FUNCTION__);
+		return;
 	}
 	// ----
 	LPOBJ lpUser = &gObj[aRecv->UserIndex];

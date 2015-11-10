@@ -375,7 +375,6 @@ void CEledoradoEvent::RegenGoldDercon()
 				}
 
 				strcat(szTemp, lMsg.Get(MSGGET(4, 134)));
-				AllSendServerMsg(szTemp);
 			}
 
 			this->m_BossGoldDerconMapNumber[count] = MapNumber;

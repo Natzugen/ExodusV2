@@ -37,63 +37,63 @@ Naked(CraftMasterView)
 		mov CraftMasterView_Buff, edx
 	}
 	// ----
-	//#ifdef __NOVUS__
-	if (pMapNumber == 3
-		&& *(BYTE*)(CraftMasterView_Buff + 45) == 177
-		&& *(BYTE*)(CraftMasterView_Buff + 46) == 104)
+#ifdef __NOVUS__
+	if( pMapNumber == 3 
+		&& *(BYTE*)(CraftMasterView_Buff + 45) == 177 
+		&& *(BYTE*)(CraftMasterView_Buff + 46) == 104 )
 	{
-		*(short*)(CraftMasterView_Buff + 268) = ITEM2(7, 45);
-		*(BYTE*)(CraftMasterView_Buff + 270) = 15;
-		*(short*)(CraftMasterView_Buff + 304) = ITEM2(8, 45);
-		*(BYTE*)(CraftMasterView_Buff + 306) = 15;
-		*(short*)(CraftMasterView_Buff + 340) = ITEM2(9, 45);
-		*(BYTE*)(CraftMasterView_Buff + 342) = 15;
-		*(short*)(CraftMasterView_Buff + 376) = ITEM2(10, 45);
-		*(BYTE*)(CraftMasterView_Buff + 378) = 15;
-		*(short*)(CraftMasterView_Buff + 412) = ITEM2(11, 45);
-		*(BYTE*)(CraftMasterView_Buff + 414) = 15;
-		*(short*)(CraftMasterView_Buff + 520) = ITEM2(12, 36);
-		*(short*)(CraftMasterView_Buff + 448) = (short)-1;
+		*(short*)(CraftMasterView_Buff + 268)	= ITEM2(7, 45);
+		*(BYTE*)(CraftMasterView_Buff + 270)	= 15;
+		*(short*)(CraftMasterView_Buff + 304)	= ITEM2(8, 45);
+		*(BYTE*)(CraftMasterView_Buff + 306)	= 15;
+		*(short*)(CraftMasterView_Buff + 340)	= ITEM2(9, 45);
+		*(BYTE*)(CraftMasterView_Buff + 342)	= 15;
+		*(short*)(CraftMasterView_Buff + 376)	= ITEM2(10, 45);
+		*(BYTE*)(CraftMasterView_Buff + 378)	= 15;
+		*(short*)(CraftMasterView_Buff + 412)	= ITEM2(11, 45);
+		*(BYTE*)(CraftMasterView_Buff + 414)	= 15;
+		*(short*)(CraftMasterView_Buff + 520)	= ITEM2(12, 36);
+		*(short*)(CraftMasterView_Buff + 448)	= (short)-1;
 	}
-	//#endif
+#endif
 	// ----
-	if (pMapNumber == 79
-		&& *(BYTE*)(CraftMasterView_Buff + 45) == 108
-		&& *(BYTE*)(CraftMasterView_Buff + 46) == 135)
+	if( pMapNumber == 79 
+		&& *(BYTE*)(CraftMasterView_Buff + 45) == 108 
+		&& *(BYTE*)(CraftMasterView_Buff + 46) == 135 )
 	{
-		*(short*)(CraftMasterView_Buff + 268) = ITEM2(7, 3);
-		*(BYTE*)(CraftMasterView_Buff + 270) = 15;
-		*(short*)(CraftMasterView_Buff + 304) = ITEM2(8, 3);
-		*(BYTE*)(CraftMasterView_Buff + 306) = 15;
-		*(short*)(CraftMasterView_Buff + 340) = ITEM2(9, 3);
-		*(BYTE*)(CraftMasterView_Buff + 342) = 15;
-		*(short*)(CraftMasterView_Buff + 376) = ITEM2(10, 3);
-		*(BYTE*)(CraftMasterView_Buff + 378) = 15;
-		*(short*)(CraftMasterView_Buff + 412) = ITEM2(11, 3);
-		*(BYTE*)(CraftMasterView_Buff + 414) = 15;
-		*(short*)(CraftMasterView_Buff + 520) = ITEM2(12, 37);
-		*(short*)(CraftMasterView_Buff + 448) = (short)-1;
+		*(short*)(CraftMasterView_Buff + 268)	= ITEM2(7, 3);
+		*(BYTE*)(CraftMasterView_Buff + 270)	= 15;
+		*(short*)(CraftMasterView_Buff + 304)	= ITEM2(8, 3);
+		*(BYTE*)(CraftMasterView_Buff + 306)	= 15;
+		*(short*)(CraftMasterView_Buff + 340)	= ITEM2(9, 3);
+		*(BYTE*)(CraftMasterView_Buff + 342)	= 15;
+		*(short*)(CraftMasterView_Buff + 376)	= ITEM2(10, 3);
+		*(BYTE*)(CraftMasterView_Buff + 378)	= 15;
+		*(short*)(CraftMasterView_Buff + 412)	= ITEM2(11, 3);
+		*(BYTE*)(CraftMasterView_Buff + 414)	= 15;
+		*(short*)(CraftMasterView_Buff + 520)	= ITEM2(12, 37);
+		*(short*)(CraftMasterView_Buff + 448)	= (short)-1;
 	}
 	else
 	{
-		*(short*)(CraftMasterView_Buff + 268) = ITEM2(7, 30);
-		*(BYTE*)(CraftMasterView_Buff + 270) = 9;
-		*(short*)(CraftMasterView_Buff + 304) = ITEM2(8, 30);
-		*(BYTE*)(CraftMasterView_Buff + 306) = 9;
-		*(short*)(CraftMasterView_Buff + 340) = ITEM2(9, 30);
-		*(BYTE*)(CraftMasterView_Buff + 342) = 9;
-		*(short*)(CraftMasterView_Buff + 376) = ITEM2(10, 30);
-		*(BYTE*)(CraftMasterView_Buff + 378) = 9;
-		*(short*)(CraftMasterView_Buff + 412) = ITEM2(11, 30);
-		*(BYTE*)(CraftMasterView_Buff + 414) = 9;
-		*(short*)(CraftMasterView_Buff + 520) = ITEM2(12, 1);
-		*(short*)(CraftMasterView_Buff + 448) = (short)-1;
+		*(short*)(CraftMasterView_Buff + 268)	= ITEM2(7, 30);
+		*(BYTE*)(CraftMasterView_Buff + 270)	= 9;
+		*(short*)(CraftMasterView_Buff + 304)	= ITEM2(8, 30);
+		*(BYTE*)(CraftMasterView_Buff + 306)	= 9;
+		*(short*)(CraftMasterView_Buff + 340)	= ITEM2(9, 30);
+		*(BYTE*)(CraftMasterView_Buff + 342)	= 9;
+		*(short*)(CraftMasterView_Buff + 376)	= ITEM2(10, 30);
+		*(BYTE*)(CraftMasterView_Buff + 378)	= 9;
+		*(short*)(CraftMasterView_Buff + 412)	= ITEM2(11, 30);
+		*(BYTE*)(CraftMasterView_Buff + 414)	= 9;
+		*(short*)(CraftMasterView_Buff + 520)	= ITEM2(12, 1);
+		*(short*)(CraftMasterView_Buff + 448)	= (short)-1;
 	}
 	// ----
 	_asm
 	{
 		mov CraftMasterView_Buff, 0x00585390
-			jmp CraftMasterView_Buff
+		jmp CraftMasterView_Buff
 	}
 }
 // ----------------------------------------------------------------------------------------------
@@ -142,47 +142,47 @@ void Monster::Load()
 //00580BB0	->
 void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 {
-	lpViewObj Object = &*(ObjectPreview*)ObjectPointer;
-	int MapClass = pMapNumber - 9;	//ebp-4
+	lpViewObj Object	= &*(ObjectPreview*)ObjectPointer;
+	int MapClass		= pMapNumber - 9;	//ebp-4
 	// ----
-	if (MapClass > 0 && MapClass <= 8 && MonsterID >= 84 && MonsterID <= 143)
+	if( MapClass > 0 && MapClass <= 8 && MonsterID >= 84 && MonsterID <= 143 )
 	{
-		Object->Unknown130 = 0;
-		*(float*)(ObjectPointer + 872) += (double)(MapClass / 3) * 0.05;
+		Object->Unknown130				= 0;
+		*(float*)(ObjectPointer + 872)	+= (double)(MapClass / 3) * 0.05;
 	}
 	// ----
-	if (!Object)
+	if( !Object )
 	{
 		return;
 	}
 	// ----
-	for (int i = 0; i < MAX_MONSTER; i++)
+	for( int i = 0; i < MAX_MONSTER; i++ )
 	{
 		gMonster.lpNpcName[i] = *(NpcNameList*)(oNpcName + sizeof(NpcNameList) * i);
 		// ----
-		if (MonsterID == gMonster.lpNpcName[i].ObjectID)
+		if( MonsterID == gMonster.lpNpcName[i].ObjectID )
 		{
-			//#ifdef __NOVUS__
-			if (MonsterID == 375
-				&& pMapNumber == 3
-				&& Object->RespawnPosX == 177
-				&& Object->RespawnPosY == 104)
+#ifdef __NOVUS__
+			if( MonsterID == 375 
+				&& pMapNumber == 3 
+				&& Object->RespawnPosX == 177 
+				&& Object->RespawnPosY == 104 )
 			{
 				sprintf(Object->Name, "Craft Master");
 				break;
 			}
-			//#endif
+#endif
 			// ----
-			if (MonsterID == 375
-				&& pMapNumber == 79
-				&& Object->RespawnPosX == 108
-				&& Object->RespawnPosY == 135)
+			if( MonsterID == 375 
+				&& pMapNumber == 79 
+				&& Object->RespawnPosX == 108 
+				&& Object->RespawnPosY == 135 )
 			{
 				sprintf(Object->Name, "Reset Master");
 				break;
 			}
 			// ----
-			memcpy(Object->Name, gMonster.lpNpcName[i].Name, sizeof(gMonster.lpNpcName[i].Name) - 1);
+			memcpy(Object->Name, gMonster.lpNpcName[i].Name, sizeof(gMonster.lpNpcName[i].Name)-1);
 			break;
 		}
 	}
@@ -191,27 +191,27 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 	*(BYTE*)(ObjectPointer + 798) = 0;
 	Object->Unknown128 = *(DWORD*)0x879343C;
 	// ----
-	if (MonsterID == 200)	//-> Soccerball
+	if( MonsterID == 200 )	//-> Soccerball
 	{
 		*(BYTE*)(ObjectPointer + 800) = emMonster;
 	}
 	else
 	{
-		if (MonsterID < 260)
+		if( MonsterID < 260 )
 		{
-			if (MonsterID <= 200)
+			if( MonsterID <= 200 )
 			{
-				if (MonsterID < 150)
+				if( MonsterID < 150 )
 				{
-					if (MonsterID <= 110)
+					if( MonsterID <= 110 )
 					{
-						if (MonsterID < 100)
+						if( MonsterID < 100 )
 						{
-							*(BYTE*)(ObjectPointer + 800) = emMonster;
+							*(BYTE*)(ObjectPointer + 800)	= emMonster;
 						}
 						else
 						{
-							*(BYTE*)(ObjectPointer + 800) = emNone;
+							*(BYTE*)(ObjectPointer + 800)	= emNone;
 						}
 					}
 					else
@@ -221,7 +221,7 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 				}
 				else
 				{
-					*(BYTE*)(ObjectPointer + 800) = emMonster;
+					*(BYTE*)(ObjectPointer + 800)	= emMonster;
 				}
 			}
 			else
@@ -235,7 +235,7 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 		}
 	}
 	// ----
-	switch (MonsterID)
+	switch(MonsterID)
 	{
 		//-> 칸투르 npc
 	case 367:	//-> Gateway Machine
@@ -243,19 +243,15 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 		//-> 조화의 보석 관련 npc
 	case 369:	//-> Osbourne
 	case 370:	//-> Jerridon
-
 		//-> 화이트엔젤 이벤트 아이템 지급 NPC 추가
 	case 371:	//-> Leo the Helper
-
 		//-> 카오스카드 담당
 	case 375:	//-> Chaos Card Master
 		//-> 공성전 신규 물약 NPC
 	case 376:	//-> Pamela the Supplier
 	case 377:	//-> Angela the Supplier
-
 		//-> 설날 복주머니 이름
 	case 379:	//-> Natasha the Firecracker Merchant
-
 		//-> 신규 이벤트맵
 	case 380:	//-> Stone Statue
 	case 381:	//-> MU Allies General
@@ -280,7 +276,6 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 	case 453:	//-> Seed Researcher
 		//-> 체험서버용 NPC 추가	
 	case 464:	//-> Re-Initialization Helper
-
 		//-> 크리스마스이벤트 NPC 추가(국내 적용 추가)
 	case 465:	//-> Santa Claus
 	case 467:	//-> Snowman
@@ -292,7 +287,6 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 	case 473:	//-> Donner
 	case 474:	//-> Vixen
 	case 475:	//-> Blitzen
-
 		//-> 상용화 7주년 이벤트 NPC 추가
 	case 478:	//-> Delgado
 		//-> PK필드 몬스터 NPC 추가
@@ -312,7 +306,6 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 	case 545:	//-> Christine the General Goods Merchant
 	case 546:	//-> Jeweler Raul
 	case 547:	//-> Market Union Member Julia
-
 		//-> 스켈레톤변신반지용 변신스켈레톤 추가
 	case 566:	//-> Mercenary Guild Manager Tercia
 	case 567:	//-> Priestess Veina
@@ -322,18 +315,18 @@ void Monster::SetMainAttribute(int ObjectPointer, int MonsterID)
 	case 578:	//-> Weapons Merchant Bolo
 		//-> 럭키아이템 NPC 추가 2010-09-01 이기수	
 	case 579:	//-> David
-	{
-		*(BYTE*)(ObjectPointer + 800) = emNPC;
-	}
+		{
+			*(BYTE*)(ObjectPointer + 800) = emNPC;
+		}
 		break;
 	}
 	// ----
-	if (MonsterID >= 480 && MonsterID <= 491)	//-> PK필드 몬스터
+	if( MonsterID >= 480 && MonsterID <= 491 )	//-> PK필드 몬스터
 	{
 		*(BYTE*)(ObjectPointer + 800) = emMonster;
 	}
 	// ----
-	if (MonsterID == 451)	//-> Cherry Blossom Tree
+	if( MonsterID == 451 )	//-> Cherry Blossom Tree
 	{
 		*(BYTE*)(ObjectPointer + 800) = emNone;
 	}
